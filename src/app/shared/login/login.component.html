@@ -1,0 +1,40 @@
+<div class="centent">    
+    <div class="center">  
+        <div>
+            <div class="color-black">
+                <div class="flex-end">
+                </div>
+                <br>
+                <div class="text-center">
+                    <h1>Connexion</h1>
+                    <p>Bonjour</p>
+                </div>
+            </div>
+
+            <div>
+                <mat-form-field class="input-login" appearance="outline">
+                    <mat-label>Adresse</mat-label>
+                    <input matInput type="text" name="username" [(ngModel)]="user.username" >
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="input-login" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="typeInput" name="password" [(ngModel)]="user.password" >
+                    <button matSuffix mat-icon-button (click)="showPassword()">
+                        <mat-icon>{{iconPassword}}</mat-icon>
+                    </button>
+                    <mat-hint *ngIf="userResponse && userResponse.message" class="error">{{userResponse.message}}</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="flex-space-between">
+                <mat-checkbox [(ngModel)]="resterConnecter"><b>Remember</b></mat-checkbox>
+                <span class="cursor-pointer">ForgotPassword</span>
+            </div>
+            <br>  
+            <button (click)="signin()" mat-raised-button class="btn-connection">Connexion</button>
+            
+        </div>         
+       
+    </div>
+</div> 

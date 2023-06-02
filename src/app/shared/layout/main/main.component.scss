@@ -1,0 +1,33 @@
+#body-content
+{
+    padding : 10px 10px 0 10px;
+}
+.responsive-body
+{
+    display: flex;
+    height: calc(100% - var(--heigth-topbar));
+}
+#app-menu
+{
+    width: var(--width-menu);
+}
+
+@media screen and (min-width: 681px)
+{
+    #body-content
+    {
+        width: calc(100% - 240px);
+    }
+}
+@media screen and (max-width: 681px)
+{
+    
+    #body-content
+    {
+        width: 100%;
+    }
+    #app-menu
+    {
+        display: none;
+    }
+}

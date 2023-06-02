@@ -1,0 +1,36 @@
+<div id="topbar">
+    <div class="display-flex-between">
+        <div class="display-flex">
+                
+            <button mat-icon-button  id="menu-icon"  (click)="doMenu()" class="menu">
+                <mat-icon class="color-white">menu</mat-icon>
+            </button>
+            <span class="color-white bar-separateur">|</span>
+            <a class="color-white logo-text" routerLink="">BIG-OPEN</a>
+            <!-- <img id="logo" src="assets/images/logo.png"> -->
+
+            
+        </div>
+        
+        <div class="display-flex font-weight-500">
+            <div class="color-white upper-case" >
+            </div>
+            <span class="color-white bar-separateur">|</span>
+            <img (click)="op.toggle($event)" class="avatar cursor-pointer" src="assets/images/rami.jpg">
+            <span (click)="op.toggle($event)" *ngIf="generalService.user" class="name-user color-white">
+                {{generalService.user.name}}
+            </span>
+        </div>
+    </div>
+   
+
+</div>
+
+<p-overlayPanel #op  [style]="{width: '250px'}">
+    <a (click)="profile()" >Profile</a>
+    <hr>
+    <a (click)="deconnection()">Déconnection</a>
+</p-overlayPanel>
+<p-sidebar [(visible)]="showMenu" [style]="{width:'85%'}" [showCloseIcon]="false" [baseZIndex]="10000">
+    <app-menu></app-menu>
+</p-sidebar>

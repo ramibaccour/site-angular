@@ -1,0 +1,89 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root
+{
+    --color: #9002fb;
+    --heigth-topbar : 72px;
+    --width-menu : 250px;
+}
+body
+{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+h1,h2,h3,h4,h5,h6
+{
+    margin: 0;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.card-header
+{
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    background: #f8f9fa;
+    color: #343a40;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    font-weight: bold;
+}
+.card-content
+{
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    background: #ffffff;
+    color: #495057;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top: 0 none;
+}
+.save, .success
+{
+    background-color: #0d904f;
+    color: white;
+}
+.failure
+{
+    background-color: red;
+    color: white;
+}
+.btn-add
+{
+    background-color: rgb(76, 0, 255);
+    color: white;
+}
+.error 
+{
+    font-size: 10px;
+    color: red;
+}
+.flex-end
+{
+    display: flex;
+    justify-content: flex-end;
+}
+.stock-icon
+{
+    height: 16px;
+    width: 16px;
+    background-size: cover;
+}
+.stock-icon-2
+{
+    height: 16px;
+    width: 16px;
+    background-size: cover;
+}
+.fournisseur-icon-2
+{
+    height: 16px;
+    width: 16px;
+    background-size: cover;
+}
+.droit-acces
+{
+    height: 16px;
+    width: 16px;
+    background-size: cover;
+}

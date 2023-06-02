@@ -1,0 +1,216 @@
+<div (window:resize)="onResized($event)" [ngStyle]="getStyleTable()" *ngIf="header" [id]="'table'+index">
+    <!-- -------------------------header------------------------- -->
+    <div class="sticky">
+        <div [ngClass]="responsiveSwitcher ? 'table-header':'display-none'">
+            <div [ngClass]="checkHaveExpandeRow()? 'display-flex' : ''">
+                <div style="width: 40px;" *ngIf="checkHaveExpandeRow()"></div>
+                <div  [ngClass]="checkHaveExpandeRow()? 'width-100-40' : 'width-100-percent'" class="responsive-table">
+                    <div *ngIf="header.selectable && (header.selectable  == 'list' || header.selectable  == 'unique')"  class="cell-header"  [ngStyle]="{'min-width':'60px', width : '60px'}">
+                        Sélection
+                    </div>
+                    <div *ngFor="let field of header.fields" [ngStyle]="getStyleFieldsResponsive(field)" class="display-flex-align-items-center cell-header">
+                        <div>{{field.label}}</div>
+                        <div *ngIf="field.sort">
+                            <mat-icon (click)="sortClick(field, 'asc')" class="cursor-pointer" *ngIf="field.direction =='asc'">arrow_upward</mat-icon>
+                            <mat-icon (click)="sortClick(field, 'desc')" class="cursor-pointer" *ngIf="field.direction =='desc'">arrow_downward</mat-icon>
+                            <mat-icon (click)="sortClick(field, '')" class="cursor-pointer" *ngIf="field.direction ==''">sort</mat-icon>                            
+                        </div>                            
+                    </div>
+                    <!-- <div *ngIf="header.action" class="cell-header"  [ngStyle]="{'min-width':header.action.minWidth,'width':header.action.width}">{{header.action.label}}</div> -->
+                </div>
+            </div>
+            
+            
+        </div>
+        <!-- -------------------------filter------------------------- -->
+        <div *ngIf="header.showFilter && showFilter()" [ngClass]="checkHaveExpandeRow()? 'table-filter display-flex' : 'table-filter'">
+            <div style="width: 40px;" *ngIf="checkHaveExpandeRow()"></div>
+            <div style="font-size: 12px;"  [ngClass]="(responsiveSwitcher ? ' responsive-table ':' responsive-table flex-wrap ') + (checkHaveExpandeRow()? ' width-100-40 ' : ' width-100-percent ')">            
+                <div *ngIf="header.selectable && (header.selectable  == 'list' || header.selectable  == 'unique')" class="cell-header" [ngStyle]="{'min-width':'60px', width : '60px'}" ></div>
+                <div *ngFor="let field of header.fields" class="cell-header" [ngStyle]="field.style ? field.style :{'min-width':field.minWidth,'width':field.width}">
+                    <ng-container *ngIf="field.filter" >
+<!------------------------------------------------ filter text -------------------------------------------------->
+                        <div *ngIf="field.filter.type == 'text'">
+                            <mat-form-field  [ngStyle]="{'width':'100%'}" appearance="outline">
+                                <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
+                                <input (input)="filter(field,'filter')" matInput [(ngModel)]="field.filter.value">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                            
+                        </div>
+                        <!-- -------------------------select filter------------------------- -->  
+                        <div *ngIf="field.filter.type == 'select'">
+                            <mat-form-field 
+                                [ngStyle]="{'width':'100%'}"
+                                appearance="outline"
+                                (selectionChange)="filter(field,'filter')">
+                                <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
+                                <mat-select [(ngModel)]="field.filter.value" name="food" (selectionChange)="filter(field,'filter')">
+                                    <mat-option *ngIf="field.filter.showEmptyValue" value=""></mat-option>
+                                    <mat-option *ngFor="let food of field.filter.data" [value]="(food.id != undefined)? food.id : food[field.filter.id]">
+                                    {{food.name? food.name : food[field.filter.name]}}
+                                    </mat-option>
+                                </mat-select>  
+                            </mat-form-field>
+
+                        </div>     
+                        <!-- -------------------------multi-select filter------------------------- -->
+                        <div *ngIf="field.filter.type == 'multi-select'">
+                            <mat-form-field 
+                                [ngStyle]="{'width':'100%'}"
+                                appearance="outline"
+                                (selectionChange)="filter(field,'filter')">
+                                <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
+                                <mat-select [(ngModel)]="field.filter.value" name="foodss" [multiple]="field.filter.multiple? field.filter.multiple: true">
+                                    <mat-option *ngIf="field.filter.showEmptyValue" value=""></mat-option>
+                                    <mat-option *ngFor="let food of field.filter.data" [value]="food.id? food.id : food[field.filter.id]">
+                                        {{food.name? food.name : food[field.filter.name]}}
+                                    </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </div>    
+                        <!-- -------------------------custom-select filter------------------------- -->
+                        <div *ngIf="field.filter.type == 'custom-select'">
+                            <div class="display-flex-align-items-center">
+                                <mat-form-field 
+                                    *ngIf="field.filter.data && field.filter.data.length>0"
+                                    [ngStyle]="{'width':'calc(100% - 25px)'}"
+                                    appearance="outline">
+                                    <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
+                                    <mat-select [(ngModel)]="field.filter.value" name="foots" [multiple]="field.filter.multiple? field.filter.multiple: false">
+                                        <mat-option (onSelectionChange)="filter(field,'filter')" *ngIf="field.filter.showEmptyValue" value=""></mat-option>
+                                        <mat-option (onSelectionChange)="filter(field,'filter')" *ngFor="let food of field.filter.data" [value]="food.id? food.id : food[field.filter.id]">
+                                            {{food.name? food.name : food[field.filter.name]}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-icon style="width: 20px; cursor: pointer;"  (click)="customSelectSerarch(field)" matSuffix>search</mat-icon>
+                            </div>
+                        </div>
+                        <!-- -------------------------date filter------------------------- -->
+                        <div *ngIf="field.filter.type == 'date'">
+                            <mat-form-field  [ngStyle]="{'width':'100%'}"  appearance="outline">
+                                <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input (dateChange)="filterdate(field)" [(ngModel)]="field.filter.value.start" matStartDate placeholder="Start date">
+                                    <input (dateChange)="filterdate(field)" [(ngModel)]="field.filter.value.end"  matEndDate placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker>
+                                    <mat-date-range-picker-actions>
+                                        <button (click)="viderDate(field)" mat-button matDateRangePickerCancel>Annuler</button>
+                                        <button (click)="filterdate(field)" mat-raised-button color="primary" matDateRangePickerApply>Appliquer</button>
+                                    </mat-date-range-picker-actions>
+                                </mat-date-range-picker>
+                            </mat-form-field>
+
+                        
+                        </div>
+<!------------------------------------------------ filter checkbox -------------------------------------------------->
+                        <div *ngIf="field.filter.type == 'checkbox'">
+                            <mat-checkbox (change)="filter(field,'filter')" class="example-margin" [(ngModel)]="field.filter.value"></mat-checkbox>
+                        </div>                    
+                    </ng-container>
+
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    <!-- -------------------------centent------------------------- -->
+    <div>
+        <div class="table-centent">
+            <ng-container  *ngIf="data">
+                <ng-container *ngFor="let row of data;let i = index" >
+                    <div  [ngClass]="checkHaveExpandeRow()? 'display-flex-align-items' : ''">
+                        <div style="width: 40px;" *ngIf="checkHaveExpandeRow()">
+                            <button (click)="detailVisibility[i] = !detailVisibility[i]" mat-icon-button >
+                                <mat-icon *ngIf="!detailVisibility[i]">add</mat-icon>
+                                <mat-icon *ngIf="detailVisibility[i]">remove</mat-icon>
+                            </button>
+                        </div>
+                        <div [ngClass]="(checkHaveExpandeRow()? ' width-100-40 ' : ' width-100-percent ') + (responsiveSwitcher ? ' responsive-table row-table' : ' row-table')" >
+                            <div *ngIf="header.selectable && (header.selectable  == 'list' || header.selectable  == 'unique')" [ngStyle]="{'min-width': responsiveSwitcher ? '60px' :'100%','width':responsiveSwitcher ? '60px' :'100%'}">
+                                <div [ngClass]="responsiveSwitcher ? '':'responsive-table row-table-responsive'">
+                                    <div  [ngClass]="responsiveSwitcher ? 'display-none':'cell-header'">
+                                        Sélection
+                                    </div>
+                                    <div>
+                                        <mat-checkbox (change)="selectableCheckboxChange(row,header.selectable,i)" [(ngModel)]="row['SELECTABLE']"></mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngFor="let field of header.fields; let j = index" [ngStyle]="getStyleFieldsResponsive(field)">
+                                <div [ngClass]="responsiveSwitcher ? '':'responsive-table row-table-responsive'">
+                                    <div  [ngClass]="responsiveSwitcher ? 'display-none':'cell-header'">
+                                        {{field.label}}
+                                    </div>
+                                    <div >                                    
+<!------------------------------------------------ contenet text -------------------------------------------------->                                
+                                    <div *ngIf="field.type =='text'" [innerHtml]="transform(row[field.name])"></div>
+<!------------------------------------------------ contenet number -------------------------------------------------->    
+                                    <div *ngIf="field.type =='number'"> {{row[field.name] | number:'1.3-3'}}</div>
+<!------------------------------------------------ contenet date -------------------------------------------------->    
+                                    <div *ngIf="field.type =='date'">{{row[field.name] | date : field.format}}</div>
+<!------------------------------------------------ contenet icon -------------------------------------------------->    
+                                    <div *ngIf="field.type =='icon'">
+                                        <mat-icon aria-hidden="false" [ngStyle]="{color:row[field.name+'_color']? row[field.name+'_color'] : '#fff'}" >{{row[field.name+"_icon"]}}</mat-icon>
+                                    </div>
+<!------------------------------------------------ contenet action -------------------------------------------------->    
+                                    <div *ngIf="field.type =='action'">
+                                        <ng-container *ngFor="let btn of field.buttons" >
+                                            <button 
+                                                    *ngIf="btn.show!= undefined? btn.show: true"                                                      
+                                                    (click)="cellClick(btn,row)" 
+                                                    [disabled]="row[field.name] && row[field.name][btn.name].disabled != undefined? row[field.name][btn.name].disabled :  btn.disabled != undefined ? btn.disabled : false" 
+                                                    mat-icon-button 
+                                                    [matTooltip]="btn.label" 
+                                                    [ngStyle]="{color: row[field.name] && row[field.name][btn.name].disabled != undefined &&  row[field.name][btn.name].disabled == true? ' #dee2e6' :   btn.color? btn.color :'#fff'}">
+                                                <mat-icon>{{btn.icon}}</mat-icon>
+                                            </button>
+                                        </ng-container>
+                                    </div>
+                                    </div>
+                                </div>                    
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div style="margin: 5px 5px 0 55px;" *ngIf="checkHaveExpandeRow() && detailVisibility[i]">
+                        <app-table [header]="row['ROWEXPAND'].header" [data]="row['ROWEXPAND'].data" (action)="emitAction($event)"></app-table>
+                    </div>
+                </ng-container>                
+            </ng-container> 
+        <!-- -------------------------footer------------------------- -->
+            <ng-container *ngIf="footer && footer.data && footer.fields">
+                <ng-container *ngFor="let row of footer.data;let i = index" >
+                    <div  [ngClass]="checkHaveExpandeRow()? 'display-flex-align-items' : ''">
+                        <div style="width: 40px;" *ngIf="checkHaveExpandeRow()">                    
+                        </div>
+                        <div [ngClass]="(checkHaveExpandeRow()? ' width-100-40 ' : ' width-100-percent ') + (responsiveSwitcher ? ' responsive-table row-table' : ' row-table')" >
+                            <div *ngIf="header.selectable && (header.selectable  == 'list' || header.selectable  == 'unique')" [ngStyle]="{'min-width': responsiveSwitcher ? '60px' :'100%','width':responsiveSwitcher ? '60px' :'100%'}"></div>
+                            
+                            <div [ngClass]="responsiveSwitcher ? '' : 'row-table-responsive'"   *ngFor="let field of footer.fields; let j = index" [ngStyle]="getStyleFieldsResponsive(field)">
+                                <div *ngIf="row[field.name]" [innerHtml]="transform(row[field.name])"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </ng-container>
+            </ng-container>
+
+        
+        </div>
+        <!-- -------------------------pager------------------------- -->
+        <mat-paginator 
+                *ngIf="pager && data" 
+                [length]="pager.count"
+                [pageSize]="pager.size"
+                [pageSizeOptions]="tabSize"
+                (page)="pageChange($event)"
+                aria-label="Select page">
+        </mat-paginator>
+    </div>
+
+</div>

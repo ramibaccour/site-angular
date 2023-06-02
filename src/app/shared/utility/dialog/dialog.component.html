@@ -1,0 +1,19 @@
+<div class="card-header">{{data.titre}}</div>
+<div class="card-content">
+{{data.text}}
+<br>
+<br>
+<br>
+<div class="flex-end">
+    <button mat-button *ngIf="data.BtnClose" (click)="close()">{{data.BtnClose.text}}</button>
+    <button mat-button *ngIf="data.BtnOk" (click)="ok()">{{data.BtnOk.text}}</button>
+    <!-- <button  mat-raised-button [ngClass]="data.BtnClose.class">
+        <mat-icon>{{data.BtnClose.icon}}</mat-icon>
+        {{data.BtnClose.text}}
+    </button>
+    <button *ngIf="data.BtnOk" (click)="ok()" mat-raised-button [ngClass]="data.BtnClose.class">
+        <mat-icon>{{data.BtnOk.icon}}</mat-icon>
+        {{data.BtnOk.text}}
+    </button> -->
+</div>
+</div>

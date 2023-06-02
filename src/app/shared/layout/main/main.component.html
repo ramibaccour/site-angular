@@ -1,0 +1,9 @@
+<app-topbar></app-topbar>
+<div class="responsive-body">
+    <div *ngIf="generalService.showMenu" id="app-menu">
+        <app-menu></app-menu>
+    </div>
+    <div id="body-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>
