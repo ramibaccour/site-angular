@@ -14,7 +14,7 @@ import { User } from '../entites/user';
 export class GeneralService 
 {
   constructor(private sanitized: DomSanitizer, public router: Router, public route: ActivatedRoute, private _snackBar: MatSnackBar,public dialog: MatDialog, private http: HttpClient){}
-  url = "http://localhost/site/admin/controller.php";
+  url = "http://localhost/site-frant/admin/controller.php";
   
   headers;
   user = new User();

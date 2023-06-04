@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Article } from 'src/app/entites/article';
 import { ArticleFilter } from 'src/app/entites/articleFilter';
+import { DateFilter } from 'src/app/entites/dateFilter';
 import { ListeArticle } from 'src/app/entites/listeArticle';
 import { ArticleService } from 'src/app/services/article.service';
 import { GeneralService } from 'src/app/services/general.service';
@@ -14,14 +14,15 @@ export class ArticleListeComponent implements OnInit
 {
   constructor (private articleService : ArticleService, private generalService : GeneralService){}
   listeArticle = new ListeArticle();
+  tabSize = [5,10,50];
   pager = 
   {
     count : 0,
     size : 5,
     page : 0,
-    tabSize :[5,10,50]
+    tabSize : this.tabSize
   }
-  articleFilter = new ArticleFilter();
+  articleFilter = this.getNewarticleFilter();
   header = {
     fields : 
             [
@@ -65,8 +66,8 @@ export class ArticleListeComponent implements OnInit
                 {
                   show:true,
                   type:"date",//text, select, checkbox, date
-                  returnProperty : "debutPromoFilter",
-                  value : {start : new Date(), end : new Date()}
+                  returnProperty : "debut_promoFilter",
+                  value : {start : this.articleFilter.debut_promoFilter.start, end : this.articleFilter.debut_promoFilter.end}
                 },
                 order:3
                 
@@ -106,18 +107,20 @@ export class ArticleListeComponent implements OnInit
   {
     this.getListeArticle();
   }
+  getNewarticleFilter()
+  {
+    var dateDebut = new Date()
+    dateDebut.setMonth(dateDebut.getMonth()-1 );
+    var datefin = new Date()
+    var dateFilter = new DateFilter()
+    dateFilter.start = dateDebut;
+    dateFilter.end = datefin;
+    return new ArticleFilter(dateFilter ,new DateFilter());
+  }
   getListeArticle() 
   {
     this.articleService.listeArticle((this.pager.page * this.pager.size).toString(), this.pager.size.toString(),this.articleFilter).subscribe(listeArticle =>
     {
-      listeArticle.listeArticle.forEach(article => 
-      {
-        if(article.debut_promo && article.debut_promo != null)
-          article.debut_promo = new Date(article.debut_promo)
-        if(article.fin_promo && article.fin_promo != null)
-          article.fin_promo = new Date(article.fin_promo)
-      });
-
       this.listeArticle = listeArticle;
       this.pager.count = listeArticle.count;
     })
@@ -126,9 +129,9 @@ export class ArticleListeComponent implements OnInit
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      this.pager;
       event.filter.isDeleted = event.filter.isDeleted == true ? 1: event.filter.isDeleted == false ? 0 : "";
-      this.articleFilter = event.filter;
+      var filter = event.filterTable;
+      this.articleFilter = filter;
       if(event.action == "filter" && event.component.name == "isDeleted")
       {
         this.generalService.changeIconDelete(event, this.header)          

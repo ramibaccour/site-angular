@@ -78,13 +78,13 @@ export class TableComponent implements OnInit
   {
     var tab;
     tab = []
-    if(this.tabSize && this.tabSize.length >1 && this.pager)
+    if(this.tabSize && this.pager.tabSize.length >1 && this.pager)
     {
-      tab.push(this.tabSize[0]);
-      for(var i=1; i<this.tabSize.length;i++)
+      tab.push(this.pager.tabSize[0]);
+      for(var i=1; i<this.pager.tabSize.length;i++)
       {
-        if(this.tabSize[i]<this.pager.count)
-          tab.push(this.tabSize[i]);
+        if(this.pager.tabSize[i]<this.pager.count)
+          tab.push(this.pager.tabSize[i]);
       } 
       this.tabSize = tab;
     }
@@ -185,7 +185,7 @@ export class TableComponent implements OnInit
     else
       return {}
   }
-  getFilter()
+  getFilter(setPager = true)
   {
     var rObj = {};
     this.header.fields.map( field => 
@@ -209,8 +209,10 @@ export class TableComponent implements OnInit
       }
       
     });
-
-    return Object.assign(rObj,this.getPager());
+    if(setPager)
+      return Object.assign(rObj,this.getPager());
+    return rObj;
+    
   }
   showFilter()
   {
@@ -226,7 +228,8 @@ export class TableComponent implements OnInit
       {
         action : action,
         component : name,
-        filter : this.getFilter()
+        filter : this.getFilter(),
+        filterTable : this.getFilter(false)
       }); 
     }, 700);
   }
@@ -236,7 +239,8 @@ export class TableComponent implements OnInit
       {
         action : "customSelectSerarch",
         component : field,
-        filter : this.getFilter()
+        filter : this.getFilter(),
+        filterTable : this.getFilter(false)
       }); 
   }
   cellClick(buttonAction, row)
@@ -246,6 +250,7 @@ export class TableComponent implements OnInit
       action : "cellClick",
       component : buttonAction,
       filter : this.getFilter(),
+      filterTable : this.getFilter(false),
       row : row
     }); 
   }
@@ -261,6 +266,7 @@ export class TableComponent implements OnInit
     {
       action : "sortClick",
       component : field,
+      filterTable : this.getFilter(false),
       filter : this.getFilter(),
       direction : field.direction
     }); 
@@ -293,6 +299,7 @@ export class TableComponent implements OnInit
     {
       index,
       action : action,
+      filterTable : this.getFilter(false),
       filter : this.getFilter(),
       row : row,
       selectedElement : this.selectedElement

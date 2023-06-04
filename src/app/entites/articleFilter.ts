@@ -3,12 +3,12 @@ import { DateFilter } from "./dateFilter";
 
 export class ArticleFilter extends Article
 {
-    debutPromoFilter : DateFilter
-    finPromoFilter : DateFilter
-    constructor ()
+    debut_promoFilter : DateFilter
+    fin_promoFilter : DateFilter
+    constructor (debutPromo : DateFilter, finPromo : DateFilter)
     {
         super();
-        this.debutPromoFilter = new DateFilter;
-        this.finPromoFilter = new DateFilter;
+        this.debut_promoFilter = debutPromo;
+        this.fin_promoFilter = finPromo;
     }
 }

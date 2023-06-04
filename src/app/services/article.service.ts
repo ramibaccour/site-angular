@@ -5,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs';
 import { ListeArticle } from '../entites/listeArticle';
-import { Article } from '../entites/article';
 import { ArticleFilter } from '../entites/articleFilter';
 
 @Injectable({

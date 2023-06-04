@@ -40,6 +40,8 @@ import { DialogComponent } from './shared/utility/dialog/dialog.component';
 import { LoginComponent } from './shared/login/login.component';
 import { ArticleFormComponent } from './components/article/article-form/article-form.component';
 import { ArticleListeComponent } from './components/article/article-liste/article-liste.component';
+import { CategorieListeComponent } from './components/categorie/categorie-liste/categorie-liste.component';
+import { CategorieFormComponent } from './components/categorie/categorie-form/categorie-form.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { ArticleListeComponent } from './components/article/article-liste/articl
     DialogComponent,
     LoginComponent,
     ArticleFormComponent,
-    ArticleListeComponent
+    ArticleListeComponent,
+    CategorieListeComponent,
+    CategorieFormComponent
   ],
   imports: [
     ReactiveFormsModule,

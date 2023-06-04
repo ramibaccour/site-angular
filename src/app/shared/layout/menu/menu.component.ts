@@ -22,12 +22,13 @@ export class MenuComponent implements OnInit
         [
             {
                 label: 'Ajouter',
-                icon:'pi pi-fw pi-align-left'
+                icon:'pi pi-fw pi-align-left',
+                routerLink : "/article/ajouter"
             },
             {
                 label: 'Liste',
                 icon:'pi pi-fw pi-align-right',
-                routerLink : "article/liste"
+                routerLink : "/article/liste"
             }
         ]
       },
@@ -38,11 +39,13 @@ export class MenuComponent implements OnInit
         [
             {
                 label: 'Ajouter',
-                icon:'pi pi-fw pi-align-left'
+                icon:'pi pi-fw pi-align-left',
+                routerLink : "/categorie/ajouter"
             },
             {
                 label: 'Liste',
-                icon:'pi pi-fw pi-align-right'
+                icon:'pi pi-fw pi-align-right',
+                routerLink : "/categorie/liste"
             }
         ]
       },

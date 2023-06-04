@@ -5,6 +5,8 @@ import { LoginComponent } from './shared/login/login.component';
 import { AccueilleComponent } from './components/accueille/accueille.component';
 import { ArticleListeComponent } from './components/article/article-liste/article-liste.component';
 import { ArticleFormComponent } from './components/article/article-form/article-form.component';
+import { CategorieListeComponent } from './components/categorie/categorie-liste/categorie-liste.component';
+import { CategorieFormComponent } from './components/categorie/categorie-form/categorie-form.component';
 
 const routes: Routes =
 [
@@ -34,6 +36,20 @@ const routes: Routes =
         {
             path: 'ajouter', 
             component: ArticleFormComponent
+        }     
+    ]
+  },
+  {
+    path: 'categorie', component: MainComponent,
+    children: 
+    [
+        {
+            path: 'liste', 
+            component: CategorieListeComponent
+        },
+        {
+            path: 'ajouter', 
+            component: CategorieFormComponent
         }     
     ]
   },
