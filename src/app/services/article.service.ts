@@ -17,8 +17,8 @@ export class ArticleService
   
   listeArticle(page,limit,articleFilter : ArticleFilter, error?): Observable<ListeArticle>
   {
-    var param = {...{pager : {page,limit}}, ...{filter :articleFilter}, ...{listeArticle : ""}};
-    return this.http.post<any>(this.generalService.url , param)
+    var param = {...{pager : {page,limit}}, ...{filter :articleFilter}};
+    return this.http.post<any>(this.generalService.url + "/liste-article" , param)
     .pipe(catchError(error? error: ()=>{ return of([]); }))    
   }
   setFilter(page,limit,articleFilter : ArticleFilter) : HttpParams

@@ -20,23 +20,23 @@ export class Article
     description_seo? : string;
     constructor()
     {
-        this.id = -1;
-        this.name = "";
-        this.description = "";
-        this.full_description = "";
-        this.price = 0;
-        this.new_price = 0;
-        // this.debut_promo = new Date();
-        // this.fin_promo = new Date();
-        this.badge = "";
-        this.disponible = 0;
-        this.quantite = 0;
-        this.is_deleted = 0;
-        this.valider = 0;
-        this.id_fournisseur = 0;
-        this.id_marque = 0;
-        this.tva = 0;
-        this.title_seo = "";
-        this.description_seo = "";
+        // this.id = -1;
+        // this.name = "";
+        // this.description = "";
+        // this.full_description = "";
+        // this.price = 0;
+        // this.new_price = 0;
+        // // this.debut_promo = new Date();
+        // // this.fin_promo = new Date();
+        // this.badge = "";
+        // this.disponible = 0;
+        // this.quantite = 0;
+        // this.is_deleted = 0;
+        // this.valider = 0;
+        // this.id_fournisseur = 0;
+        // this.id_marque = 0;
+        // this.tva = 0;
+        // this.title_seo = "";
+        // this.description_seo = "";
     }
 }

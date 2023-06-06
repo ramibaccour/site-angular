@@ -34,9 +34,13 @@ const routes: Routes =
             component: ArticleListeComponent
         },
         {
-            path: 'ajouter', 
+            path: 'formulaire', 
             component: ArticleFormComponent
-        }     
+        },
+        {
+            path: 'formulaire/:id', 
+            component: ArticleFormComponent
+        }      
     ]
   },
   {
@@ -48,9 +52,13 @@ const routes: Routes =
             component: CategorieListeComponent
         },
         {
-            path: 'ajouter', 
+            path: 'formulaire', 
             component: CategorieFormComponent
-        }     
+        },
+        {
+            path: 'formulaire/:id', 
+            component: CategorieFormComponent
+        }    
     ]
   },
   

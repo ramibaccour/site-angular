@@ -8,6 +8,7 @@ export class ArticleFilter extends Article
     constructor (debutPromo : DateFilter, finPromo : DateFilter)
     {
         super();
+        this.is_deleted = 0;
         this.debut_promoFilter = debutPromo;
         this.fin_promoFilter = finPromo;
     }

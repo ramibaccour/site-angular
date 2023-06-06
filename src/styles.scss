@@ -40,11 +40,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .save, .success
 {
-    background-color: #0d904f;
+    --mdc-snackbar-container-color: #0d904f!important;
+    background-color: #0d904f!important;
     color: white;
 }
 .failure
 {
+    --mdc-snackbar-container-color: red!important;
     background-color: red;
     color: white;
 }

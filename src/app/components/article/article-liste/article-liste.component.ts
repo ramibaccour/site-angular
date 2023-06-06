@@ -4,6 +4,8 @@ import { DateFilter } from 'src/app/entites/dateFilter';
 import { ListeArticle } from 'src/app/entites/listeArticle';
 import { ArticleService } from 'src/app/services/article.service';
 import { GeneralService } from 'src/app/services/general.service';
+import { DialogComponent } from 'src/app/shared/utility/dialog/dialog.component';
+import { ArticleFormComponent } from '../article-form/article-form.component';
 
 @Component({
   selector: 'app-article-liste',
@@ -22,7 +24,7 @@ export class ArticleListeComponent implements OnInit
     page : 0,
     tabSize : this.tabSize
   }
-  articleFilter = this.getNewarticleFilter();
+  articleFilter = this.getNewArticleFilter();
   header = {
     fields : 
             [
@@ -73,7 +75,7 @@ export class ArticleListeComponent implements OnInit
                 
               },             
               {
-                name:"isDeleted",
+                name:"is_deleted",
                 type:"icon",//text, bouton, link, icon, date
                 label:"Supprimer",
                 filter:
@@ -101,13 +103,24 @@ export class ArticleListeComponent implements OnInit
               }
             ],
     showFilter : true,
-    breakpoint : 500
+    breakpoint : 830
   };
   ngOnInit() 
   {
-    this.getListeArticle();
+    this.getListeArticle(false);
   }
-  getNewarticleFilter()
+  getListeArticle(setSpinner = true) 
+  {
+    if(setSpinner)
+      this.generalService.showSpinner = true;
+    this.articleService.listeArticle((this.pager.page * this.pager.size).toString(), this.pager.size.toString(),this.articleFilter).subscribe(listeArticle =>
+    {
+      this.listeArticle = listeArticle;
+      this.pager.count = listeArticle.count;
+      this.generalService.showSpinner = false;
+    })
+  }
+  getNewArticleFilter()
   {
     var dateDebut = new Date()
     dateDebut.setMonth(dateDebut.getMonth()-1 );
@@ -115,40 +128,53 @@ export class ArticleListeComponent implements OnInit
     var dateFilter = new DateFilter()
     dateFilter.start = dateDebut;
     dateFilter.end = datefin;
-    return new ArticleFilter(dateFilter ,new DateFilter());
-  }
-  getListeArticle() 
-  {
-    this.articleService.listeArticle((this.pager.page * this.pager.size).toString(), this.pager.size.toString(),this.articleFilter).subscribe(listeArticle =>
-    {
-      this.listeArticle = listeArticle;
-      this.pager.count = listeArticle.count;
-    })
+    var articleFilter = new ArticleFilter(dateFilter ,new DateFilter());
+    articleFilter.is_deleted = 0;
+    return articleFilter;
   }
   action(event)
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      event.filter.isDeleted = event.filter.isDeleted == true ? 1: event.filter.isDeleted == false ? 0 : "";
-      var filter = event.filterTable;
-      this.articleFilter = filter;
-      if(event.action == "filter" && event.component.name == "isDeleted")
+      event.filterTable.is_deleted = event.filter.is_deleted == true ? "1":  "0";
+      this.articleFilter = event.filterTable;
+      if(event.action == "filter" && event.component.name == "is_deleted")
       {
         this.generalService.changeIconDelete(event, this.header)          
       }
       this.getListeArticle()
       
     }
-    // if(event.action == "cellClick")
-    // {
-    //   if(event.component.name == "edit")
-    //     this.generalService.router.navigate(["droit-acces/formulaire/" + event.row["id"]])
+    if(event.action == "cellClick")
+    {
+      if(event.component.name == "edit")
+      {
+        this.editArtile(event.row["id"])
+      }
       
-    //   if(event.component.name == "delete")
-    //   {
-    //     this.deleteGroupeModule(event)
-    //   }
-    // }    
+      if(event.component.name == "delete")
+      {
+        this.deleteArticle(event)
+      }
+    }    
   }
-
+  editArtile(id)
+  {
+    this.generalService.idArticle = id;
+    const dialogRef = this.generalService. dialog.open(ArticleFormComponent)
+    dialogRef.afterClosed().subscribe(result => 
+    {
+      this.getListeArticle()
+    });
+  }
+  deleteArticle(event)
+  {
+    var fn  = ()=>
+    {
+      this.getListeArticle();
+      var btnDel = event.component.icon == "delete"
+      this.generalService.openSnackBar(btnDel? "Supprimer" : "Restaurer",true);
+    };
+    this.generalService.deleteElement("/delete-article/" + event.row["id"],fn,event.component.icon);
+  }
 }

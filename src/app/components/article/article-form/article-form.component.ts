@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GeneralService } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-article-form',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArticleFormComponent implements OnInit 
 {
-  constructor (){}
+  constructor (private generalService : GeneralService){}
   ngOnInit() 
   {
+    this.getArticle()
   }
-
+  getArticle()
+  {
+    if(this.generalService.idArticle && this.generalService.idArticle >0)
+    {
+      this.generalService.openSnackBar(this.generalService.idArticle.toString(), false)
+    }
+  }
 }

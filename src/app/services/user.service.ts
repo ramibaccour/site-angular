@@ -19,7 +19,7 @@ export class UserService
   }
   signin(user : User,error?): Observable<User>
   {
-    return this.http.post<any>(this.generalService.url,{...{signin : ""}, ...user} )
+    return this.http.post<any>(this.generalService.url + "/signin",user )
     .pipe(catchError(error? error: this.generalService.erreur))    
   }
   httpPost(user : User,error?): Observable<User>

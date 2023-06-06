@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../entites/user';
+import { DialogComponent } from '../shared/utility/dialog/dialog.component';
 // declare var ol;
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class GeneralService
   showMenu = true;
   menus;
   leftMenu;
+  idArticle : number;
   erreur = ()=>
   {
     this.showSpinner = false;
@@ -112,7 +114,7 @@ export class GeneralService
       var btn = header.buttons.find(b =>{return b.name == "delete"});
       if(btn)
       {
-        if( event.filter.isArchived == true )
+        if( event.filter.is_deleted == true )
         {
           btn.icon = "restore";
           btn.label = "Restaurer";
@@ -208,4 +210,25 @@ export class GeneralService
     this.openSnackBar("Erreur inattendue veuillez réessayer", false)
     return of([]);
   } 
+  deleteElement(url,fn,action,error = this.erreur)
+  {
+    var btnDel = action == "delete"
+    const dialogRef = this.dialog.open(DialogComponent,
+    {
+      data : 
+            {
+              titre : btnDel? "Suppression" : "Restaurer", 
+              text : "Voulez-vous vraiment " + (btnDel? "supprimer" : "restaurer") + " cet élément",
+              BtnClose : {text : "Annuler", icon : "cancel_presentation"},
+              BtnOk : {text : btnDel? "Supprimer" : "Restaurer", icon : btnDel? "delete" : "restore"}
+            }
+    })
+    dialogRef.afterClosed().subscribe(result => 
+    {
+      if(result && result == "ok")
+      {        
+        this.httpDelete(url,fn,error)
+      }
+    });
+  }
 }
