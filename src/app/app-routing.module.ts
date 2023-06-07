@@ -7,6 +7,8 @@ import { ArticleListeComponent } from './components/article/article-liste/articl
 import { ArticleFormComponent } from './components/article/article-form/article-form.component';
 import { CategorieListeComponent } from './components/categorie/categorie-liste/categorie-liste.component';
 import { CategorieFormComponent } from './components/categorie/categorie-form/categorie-form.component';
+import { ParametreFormComponent } from './components/parametre/parametre-form/parametre-form.component';
+import { ParametreListeComponent } from './components/parametre/parametre-liste/parametre-liste.component';
 
 const routes: Routes =
 [
@@ -40,6 +42,20 @@ const routes: Routes =
         {
             path: 'formulaire/:id', 
             component: ArticleFormComponent
+        }      
+    ]
+  },
+  {
+    path: 'parametre', component: MainComponent,
+    children: 
+    [
+        {
+            path: 'liste', 
+            component: ParametreListeComponent
+        },
+        {
+            path: 'formulaire/:id', 
+            component: ParametreFormComponent
         }      
     ]
   },

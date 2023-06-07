@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../entites/user';
 import { DialogComponent } from '../shared/utility/dialog/dialog.component';
 // declare var ol;
@@ -28,6 +28,7 @@ export class GeneralService
   menus;
   leftMenu;
   idArticle : number;
+  idParametre : number;
   erreur = ()=>
   {
     this.showSpinner = false;
@@ -230,5 +231,31 @@ export class GeneralService
         this.httpDelete(url,fn,error)
       }
     });
+  }
+  
+  setFilter(page,limit,objectFilter ) : HttpParams
+  {
+    var params = new HttpParams().set('page', page).set('limit', limit).set('listeArticle', "");
+    var listePropertiArticle = Object.keys(objectFilter);
+    listePropertiArticle.forEach(propertiArticle =>
+    {
+      if(typeof(objectFilter[propertiArticle]) == "number" || typeof(objectFilter[propertiArticle]) == "string" )
+        params = params.append(propertiArticle, objectFilter[propertiArticle])
+      else if(this.isTypeDateFilter(objectFilter[propertiArticle]))
+      {
+        if(objectFilter[propertiArticle] && objectFilter[propertiArticle].start)
+          params = params.append("dateDebut", objectFilter[propertiArticle].start.toString());
+        if(objectFilter[propertiArticle] && objectFilter[propertiArticle].end)
+          params = params.append("dateFin", objectFilter[propertiArticle].end.toString());
+      }
+      
+    });
+    return params;
+  }
+  isTypeDateFilter(object) : boolean
+  {
+    if(object && object.start && object.end)
+      return true;
+    return false;
   }
 }

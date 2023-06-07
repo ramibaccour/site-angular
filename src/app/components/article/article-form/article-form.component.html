@@ -1,1 +1,29 @@
-<p>article-form works!</p>
+<div class="card-header">Formulaire article</div>
+<div class="card-content">
+    <form #formContent="ngForm">
+        <div>
+            <mat-form-field class="widt-400" appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input matInput type="text" name="nom" [(ngModel)]="article.name" >
+                <mat-hint *ngIf="submit && !article.name" class="error">Le nom est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-label>Déscription</mat-label>
+            <div id="description"></div>
+        </div>
+        <br>
+        <div>
+            <mat-label>Déscription compléte</mat-label>
+            <div id="full_description"></div>
+        </div>
+        <br>        
+        <div>
+            <mat-form-field class="widt-400" appearance="outline">
+                <mat-label>Prix</mat-label>
+                <input matInput type="text" name="price" [(ngModel)]="article.price" >
+                <mat-hint *ngIf="submit && !article.price" class="error">Le prix est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>
+    </form>
+</div>

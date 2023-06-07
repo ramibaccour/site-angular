@@ -42,6 +42,8 @@ import { ArticleFormComponent } from './components/article/article-form/article-
 import { ArticleListeComponent } from './components/article/article-liste/article-liste.component';
 import { CategorieListeComponent } from './components/categorie/categorie-liste/categorie-liste.component';
 import { CategorieFormComponent } from './components/categorie/categorie-form/categorie-form.component';
+import { ParametreListeComponent } from './components/parametre/parametre-liste/parametre-liste.component';
+import { ParametreFormComponent } from './components/parametre/parametre-form/parametre-form.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { CategorieFormComponent } from './components/categorie/categorie-form/ca
     ArticleFormComponent,
     ArticleListeComponent,
     CategorieListeComponent,
-    CategorieFormComponent
+    CategorieFormComponent,
+    ParametreListeComponent,
+    ParametreFormComponent
   ],
   imports: [
     ReactiveFormsModule,

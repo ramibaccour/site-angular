@@ -23,7 +23,7 @@ export class MenuComponent implements OnInit
             {
                 label: 'Ajouter',
                 icon:'pi pi-fw pi-align-left',
-                routerLink : "/article/ajouter"
+                routerLink : "/article/formulaire"
             },
             {
                 label: 'Liste',
@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit
             {
                 label: 'Ajouter',
                 icon:'pi pi-fw pi-align-left',
-                routerLink : "/categorie/ajouter"
+                routerLink : "/categorie/formulaire"
             },
             {
                 label: 'Liste',
@@ -68,11 +68,12 @@ export class MenuComponent implements OnInit
         label: 'Paramétre',
         icon:'pi pi-fw pi-pencil',
         items: 
-        [            
-            {
-                label: 'Liste',
-                icon:'pi pi-fw pi-align-right'
-            }
+        [ 
+          {
+              label: 'Liste',
+              icon:'pi pi-fw pi-align-right',
+              routerLink : "/parametre/liste"
+          }
         ]
       }
     ]

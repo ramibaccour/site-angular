@@ -31,7 +31,7 @@ export class ArticleListeComponent implements OnInit
               {
                 name: "name",
                 type:"text",//text, bouton, link, icon
-                label:"Nom service",
+                label:"Nom",
                 minWidth : "100px",
                 width:"30%",
                 filter : 
@@ -40,6 +40,8 @@ export class ArticleListeComponent implements OnInit
                   type:"text",//text, select, checkbox, date
                   value : ""
                 },
+                show : true,
+                required : true,
                 order:1
                 
               },
@@ -55,6 +57,8 @@ export class ArticleListeComponent implements OnInit
                   type:"text",//text, select, checkbox, date
                   value : ""
                 },
+                show : true,
+                required : true,
                 order:2
                 
               },   
@@ -71,6 +75,8 @@ export class ArticleListeComponent implements OnInit
                   returnProperty : "debut_promoFilter",
                   value : {start : this.articleFilter.debut_promoFilter.start, end : this.articleFilter.debut_promoFilter.end}
                 },
+                show : false,
+                required : true,
                 order:3
                 
               },             
@@ -86,6 +92,8 @@ export class ArticleListeComponent implements OnInit
                         },
                 minWidth : "100px",
                 width:"30%",
+                show : true,
+                required : true,
                 order:6
               },
               {
@@ -99,6 +107,8 @@ export class ArticleListeComponent implements OnInit
                   {name:"delete",icon:"delete",label:"Supprimer",color:"#f44336"},
                   {name:"edit",icon:"edit",label:"Editer",color:"#3f51b5"}
                 ],
+                show : true,
+                required : true,
                 order:8
               }
             ],

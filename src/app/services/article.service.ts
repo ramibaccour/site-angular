@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GeneralService } from './general.service';
 import { catchError } from 'rxjs/operators';
@@ -21,29 +21,9 @@ export class ArticleService
     return this.http.post<any>(this.generalService.url + "/liste-article" , param)
     .pipe(catchError(error? error: ()=>{ return of([]); }))    
   }
-  setFilter(page,limit,articleFilter : ArticleFilter) : HttpParams
+  getArticle(id : number, error?)
   {
-    var params = new HttpParams().set('page', page).set('limit', limit).set('listeArticle', "");
-    var listePropertiArticle = Object.keys(articleFilter);
-    listePropertiArticle.forEach(propertiArticle =>
-    {
-      if(typeof(articleFilter[propertiArticle]) == "number" || typeof(articleFilter[propertiArticle]) == "string" )
-        params = params.append(propertiArticle, articleFilter[propertiArticle])
-      else if(this.isTypeDateFilter(articleFilter[propertiArticle]))
-      {
-        if(articleFilter[propertiArticle] && articleFilter[propertiArticle].start)
-          params = params.append("dateDebut", articleFilter[propertiArticle].start.toString());
-        if(articleFilter[propertiArticle] && articleFilter[propertiArticle].end)
-          params = params.append("dateFin", articleFilter[propertiArticle].end.toString());
-      }
-      
-    });
-    return params;
-  }
-  isTypeDateFilter(object) : boolean
-  {
-    if(object && object.start && object.end)
-      return true;
-    return false;
+    return this.http.get<any>(this.generalService.url + "/find-article/" + id )
+    .pipe(catchError(error? error: ()=>{ return of([]); }))  
   }
 }
