@@ -171,10 +171,11 @@ export class ArticleListeComponent implements OnInit
   editArtile(id)
   {
     this.generalService.idArticle = id;
-    const dialogRef = this.generalService. dialog.open(ArticleFormComponent)
-    dialogRef.afterClosed().subscribe(result => 
+    this.generalService.dialogRefArticle = this.generalService.dialogArticle.open(ArticleFormComponent)
+    this.generalService.dialogRefArticle.afterClosed().subscribe(result => 
     {
-      this.getListeArticle()
+      this.generalService.idArticle = -1;
+      this.getListeArticle();
     });
   }
   deleteArticle(event)

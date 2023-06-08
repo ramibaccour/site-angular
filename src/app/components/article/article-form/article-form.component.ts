@@ -52,4 +52,19 @@ export class ArticleFormComponent implements OnInit
   {
     quill.clipboard.dangerouslyPasteHTML(html);
   }
+  
+  modeModale() : boolean
+  {
+    if(this.generalService.idArticle && this.generalService.idArticle >0)
+      return true
+    return false
+  }
+  save()
+  {
+
+  }
+  close()
+  {
+    this.generalService.dialogRefArticle.close();
+  }
 }

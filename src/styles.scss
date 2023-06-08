@@ -27,6 +27,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .card-content
 {
@@ -42,7 +45,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 {
     --mdc-snackbar-container-color: #0d904f!important;
     background-color: #0d904f!important;
-    color: white;
+    color: white!important;
 }
 .failure
 {
@@ -88,4 +91,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 16px;
     width: 16px;
     background-size: cover;
+}
+.close-frm
+{
+    cursor: pointer;
+    color: grey;
+}
+.btn-close-frm
+{
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 10px;
 }

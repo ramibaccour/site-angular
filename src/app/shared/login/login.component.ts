@@ -47,10 +47,15 @@ export class LoginComponent implements OnInit
     this.userService.signin(this.user).subscribe(user =>
     {
       this.generalService.showSpinner = false;
-      this.generalService.user = user;
-      if(this.resterConnecter)
-      localStorage.setItem("user",JSON.stringify(user));   
-      this.router.navigate(["/accueille"])
+      if(user && user.id)
+      {
+        this.generalService.user = user;
+        if(this.resterConnecter)
+          localStorage.setItem("user",JSON.stringify(user));   
+        this.router.navigate(["/accueille"])
+      }
+      else
+      this.generalService.openSnackBar("Login et/ou mot de passe incorrecte",false)
 
     })
   }

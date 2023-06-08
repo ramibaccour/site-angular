@@ -24,9 +24,26 @@ export class ParametreFormComponent  implements OnInit
   }
   getParametre(id)
   {
-    this.parametreService.getParametre(id).subscribe(art =>
+    this.parametreService.getParametre(id).subscribe(param =>
     {
-      this.parametre = art;
+      this.parametre = param;
     })
+  }
+  modeModale() : boolean
+  {
+    if(this.generalService.idParametre && this.generalService.idParametre >0)
+      return true
+    return false
+  }
+  save()
+  {
+    this.parametreService.saveParametre(this.parametre).subscribe(param =>
+    {
+      this.parametre = param;
+    })
+  }
+  close()
+  {
+    this.generalService.dialogRefParametre.close();
   }
 }

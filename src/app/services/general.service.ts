@@ -14,7 +14,7 @@ import { DialogComponent } from '../shared/utility/dialog/dialog.component';
 })
 export class GeneralService 
 {
-  constructor(private sanitized: DomSanitizer, public router: Router, public route: ActivatedRoute, private _snackBar: MatSnackBar,public dialog: MatDialog, private http: HttpClient){}
+  constructor(private sanitized: DomSanitizer, public router: Router, public route: ActivatedRoute, private _snackBar: MatSnackBar,public dialogParametre: MatDialog,public dialogArticle: MatDialog, private http: HttpClient){}
   url = "http://localhost/site-frant/admin/controller.php";
   
   headers;
@@ -27,8 +27,10 @@ export class GeneralService
   showMenu = true;
   menus;
   leftMenu;
-  idArticle : number;
-  idParametre : number;
+  idArticle : number = -1;
+  idParametre : number = -1;
+  dialogRefParametre
+  dialogRefArticle
   erreur = ()=>
   {
     this.showSpinner = false;
@@ -214,7 +216,7 @@ export class GeneralService
   deleteElement(url,fn,action,error = this.erreur)
   {
     var btnDel = action == "delete"
-    const dialogRef = this.dialog.open(DialogComponent,
+    const dialogRef = this.dialogParametre.open(DialogComponent,
     {
       data : 
             {

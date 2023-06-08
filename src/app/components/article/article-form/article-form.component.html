@@ -1,4 +1,9 @@
-<div class="card-header">Formulaire article</div>
+<div class="card-header">
+    <span>
+        Formulaire article
+    </span>
+    <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
+</div>
 <div class="card-content">
     <form #formContent="ngForm">
         <div>
@@ -26,4 +31,14 @@
             </mat-form-field>
         </div>
     </form>
+    <div class="btn-close-frm">
+        <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="save">
+            <mat-icon>close</mat-icon>
+            Fermer
+        </button>
+        <button (click)="save()" mat-raised-button class="save">
+            <mat-icon>save</mat-icon>
+            Enregistrer
+        </button>
+    </div>
 </div>
