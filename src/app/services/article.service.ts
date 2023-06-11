@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { GeneralService } from './general.service';
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs';
 import { ListeArticle } from '../entites/listeArticle';
 import { ArticleFilter } from '../entites/articleFilter';
 import { Article } from '../entites/article';
+import { Parametre } from '../entites/parametre';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,17 @@ import { Article } from '../entites/article';
 export class ArticleService 
 {
 
-  constructor(private http: HttpClient,private generalService : GeneralService) { }
+  constructor(private http: HttpClient,private generalService : GeneralService,public dialogArticle: MatDialog) { }
   
+  idArticle : number = -1;
+  dialogRefArticle;
   listeArticle(page,limit,articleFilter : ArticleFilter, error?): Observable<ListeArticle>
   {
     var param = {...{pager : {page,limit}}, ...{filter :articleFilter}};
     return this.http.post<any>(this.generalService.url + "/liste-article" , param)
     .pipe(catchError(error? error: this.generalService.error))    
   }
-  getArticle(id : number, error?)
+  getArticle(id : number, error?): Observable<Article>
   {
     return this.http.get<any>(this.generalService.url + "/find-article/" + id )
     .pipe(catchError(error? error: this.generalService.error))  

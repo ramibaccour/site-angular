@@ -1,1 +1,35 @@
-<p>categorie-form works!</p>
+<div class="card-header">
+    <span>
+        Formulaire catégorie
+    </span>
+    <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
+</div>
+<div class="card-content">
+    <form #formContent="ngForm">
+        <div>
+            <mat-form-field class="width-400" appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input matInput type="text" name="nom" [(ngModel)]="categorie.name" >
+                <mat-hint *ngIf="submit && !categorie.name" class="error">Le nom est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>
+           
+        <div>
+            <mat-form-field class="width-400" appearance="outline">
+                <mat-label>Ordre</mat-label>
+                <input matInput type="text" name="ordre" [(ngModel)]="categorie.ordre" >
+                <mat-hint *ngIf="submit && !categorie.ordre" class="error">Le prix est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>
+    </form>
+    <div class="btn-close-frm">
+        <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">
+            <mat-icon>close</mat-icon>
+            Fermer
+        </button>
+        <button (click)="save()" mat-raised-button class="save">
+            <mat-icon>save</mat-icon>
+            Enregistrer
+        </button>
+    </div>
+</div>

@@ -5,14 +5,17 @@ import { Observable, catchError, of } from "rxjs";
 import { ListeParametre } from "../entites/ListeParametre";
 import { Injectable } from "@angular/core";
 import { Parametre } from "../entites/parametre";
+import { MatDialog } from "@angular/material/dialog";
 
 @Injectable({
     providedIn: 'root'
   })
 export class ParametreService
 {
-    constructor(private http: HttpClient,private generalService : GeneralService) { }
+    constructor(private http: HttpClient,private generalService : GeneralService,public dialogParametre: MatDialog) { }
   
+    idParametre : number = -1;
+    dialogRefParametre
     listeParametre(page,limit,parametreFilter : ParametreFilter, error?): Observable<ListeParametre>
     {
       var param = {...{pager : {page,limit}}, ...{filter :parametreFilter}};

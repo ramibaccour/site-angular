@@ -24,64 +24,23 @@ export class ParametreListeComponent implements OnInit
     tabSize : this.tabSize
   }
   parametreFilter = this.getNewParametreFilter();
-  header = {
-    fields : 
-            [
-              {
-                name: "name",
-                type:"text",//text, bouton, link, icon
-                label:"Nom",
-                minWidth : "100px",
-                width:"30%",
-                filter : 
-                {
-                  show:true,
-                  type:"text",//text, select, checkbox, date
-                  value : ""
-                },
-                show : true,
-                required : true,
-                order:1
-                
-              },
-              {
-                name: "value",
-                type:"text",//text, bouton, link, icon
-                label:"Valeur",
-                minWidth : "100px",
-                width:"30%",
-                filter : 
-                {
-                  show:true,
-                  type:"text",//text, select, checkbox, date
-                  value : ""
-                },
-                show : true,
-                required : true,
-                order:2
-                
-              },
-              {
-                name:"action",
-                type:"action",//text, bouton, link, icon, date
-                label:"Action",
-                minWidth : "100px",
-                width:"30%",
-                buttons: 
-                [
-                  {name:"edit",icon:"edit",label:"Editer",color:"#3f51b5"}
-                ],
-                show : true,
-                required : true,
-                order:8
-              }
-            ],
-    showFilter : true,
-    breakpoint : 830
-  };
+  header;
   ngOnInit() 
   {
     this.getListeParametre(false);
+    this.getHeadParametre();
+  }
+  getHeadParametre()
+  {
+    this.parametreService.getParametre(2).subscribe(param =>
+    {
+      if(param && param.id)
+      {
+        var header = JSON.parse(param.value? param.value : "");
+        header.fields = header.fields.filter(field =>{return field.show && field.active});
+        this.header = header;
+      }
+    })
   }
   getListeParametre(setSpinner = true) 
   {
@@ -117,12 +76,12 @@ export class ParametreListeComponent implements OnInit
   }
   editParametre(id)
   {
-    this.generalService.idParametre = id;
-    this.generalService.dialogRefParametre = this.generalService. dialogParametre.open(ParametreFormComponent)
-    this.generalService.dialogRefParametre.afterClosed().subscribe(result => 
+    this.parametreService.idParametre = id;
+    this.parametreService.dialogRefParametre = this.generalService. dialog.open(ParametreFormComponent)
+    this.parametreService.dialogRefParametre.afterClosed().subscribe(result => 
     {
       this.getListeParametre();
-      this.generalService.idParametre = -1;
+      this.parametreService.idParametre = -1;
     });
   }
 }

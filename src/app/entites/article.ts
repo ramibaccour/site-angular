@@ -11,11 +11,11 @@ export class Article
     badge? : string;
     disponible? : number;
     quantite? : number;
-    is_deleted? : number;
     valider? : number;
     id_fournisseur? : number;
     id_marque? : number;
     tva? : number;
+    is_deleted? : number;
     title_seo? : string;
     description_seo? : string;
     constructor()

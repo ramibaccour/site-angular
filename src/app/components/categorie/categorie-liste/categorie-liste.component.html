@@ -1,1 +1,24 @@
-<p>categorie-liste works!</p>
+<div class="card-header">Liste catégories</div>
+<div class="card-content">
+    <p-tree #tree [value]="categorieTree" [selectionMode]="'single'" (onNodeSelect)="onNodeSelect($event)" [(selection)]="selectedNode" >
+        <ng-template let-node pTemplate="default">
+            <p-checkbox [disabled]="true" [(ngModel)]="node.data.selected" [binary]="true" inputId="binary"></p-checkbox>
+            {{ node.label }}
+        </ng-template>
+    </p-tree>
+    <br>
+    <div class="btn-close-frm">
+        <button (click)="supprimer()" mat-raised-button class="btn-close">
+            <mat-icon>edit</mat-icon>
+            Supprimer
+        </button>
+        <button (click)="modifier()" mat-raised-button class="btn-update">
+            <mat-icon>edit</mat-icon>
+            Modifier
+        </button>
+        <button (click)="ajouter()" mat-raised-button class="btn-add">
+            <mat-icon>edit</mat-icon>
+            Ajouter
+        </button>
+    </div>
+</div>

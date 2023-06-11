@@ -14,7 +14,7 @@ import { DialogComponent } from '../shared/utility/dialog/dialog.component';
 })
 export class GeneralService 
 {
-  constructor(private sanitized: DomSanitizer, public router: Router, public route: ActivatedRoute, private _snackBar: MatSnackBar,public dialogParametre: MatDialog,public dialogArticle: MatDialog, private http: HttpClient){}
+  constructor(private sanitized: DomSanitizer, public router: Router, public route: ActivatedRoute, private _snackBar: MatSnackBar, private http: HttpClient,public dialog: MatDialog){}
   url = "http://localhost/site-frant/admin/controller.php";
   
   headers;
@@ -27,18 +27,14 @@ export class GeneralService
   showMenu = true;
   menus;
   leftMenu;
-  idArticle : number = -1;
-  idParametre : number = -1;
-  dialogRefParametre
-  dialogRefArticle
   erreur = ()=>
   {
     this.showSpinner = false;
     this.openSnackBar("Erreur Inattendu",false);
   }
-  httpPost(object,url, fn,error)
+  httpPost(object,url, fn,error?)
   {
-    return this.http.post<any>(this.url + url, object, {headers : this.headers})
+    return this.http.post<any>(this.url + url, object)
     .pipe(catchError(error? error: ()=>{ return of([]); }))    
     .subscribe(fn);
   }
@@ -213,10 +209,10 @@ export class GeneralService
     this.openSnackBar("Erreur inattendue veuillez réessayer", false)
     return of([]);
   } 
-  deleteElement(url,fn,action,error = this.erreur)
+  deleteElement(url,fn,action,error = this.erreur, object?)
   {
     var btnDel = action == "delete"
-    const dialogRef = this.dialogParametre.open(DialogComponent,
+    const dialogRef = this.dialog.open(DialogComponent,
     {
       data : 
             {
@@ -229,30 +225,13 @@ export class GeneralService
     dialogRef.afterClosed().subscribe(result => 
     {
       if(result && result == "ok")
-      {        
-        this.httpDelete(url,fn,error)
+      {     
+        if(!object)   
+          this.httpDelete(url,fn,error)
+        else
+          this.httpPost(object,url,fn,error )
       }
     });
-  }
-  
-  setFilter(page,limit,objectFilter ) : HttpParams
-  {
-    var params = new HttpParams().set('page', page).set('limit', limit).set('listeArticle', "");
-    var listePropertiArticle = Object.keys(objectFilter);
-    listePropertiArticle.forEach(propertiArticle =>
-    {
-      if(typeof(objectFilter[propertiArticle]) == "number" || typeof(objectFilter[propertiArticle]) == "string" )
-        params = params.append(propertiArticle, objectFilter[propertiArticle])
-      else if(this.isTypeDateFilter(objectFilter[propertiArticle]))
-      {
-        if(objectFilter[propertiArticle] && objectFilter[propertiArticle].start)
-          params = params.append("dateDebut", objectFilter[propertiArticle].start.toString());
-        if(objectFilter[propertiArticle] && objectFilter[propertiArticle].end)
-          params = params.append("dateFin", objectFilter[propertiArticle].end.toString());
-      }
-      
-    });
-    return params;
   }
   isTypeDateFilter(object) : boolean
   {

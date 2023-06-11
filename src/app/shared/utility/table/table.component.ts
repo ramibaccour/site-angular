@@ -102,7 +102,7 @@ export class TableComponent implements OnInit
   
   onResized(event)
   {
-    if(this.header.breakpoint >= event.target.innerWidth)
+    if(this.header && this.header.breakpoint >= event.target.innerWidth)
       this.responsiveSwitcher = false;
     else
       this.responsiveSwitcher = true;

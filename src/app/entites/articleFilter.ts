@@ -5,10 +5,10 @@ export class ArticleFilter extends Article
 {
     debut_promoFilter : DateFilter
     fin_promoFilter : DateFilter
-    constructor (debutPromo : DateFilter, finPromo : DateFilter)
+    constructor (is_deleted : number,debutPromo : DateFilter, finPromo : DateFilter)
     {
         super();
-        this.is_deleted = 0;
+        this.is_deleted = is_deleted;
         this.debut_promoFilter = debutPromo;
         this.fin_promoFilter = finPromo;
     }

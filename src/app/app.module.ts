@@ -30,7 +30,6 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {SidebarModule} from 'primeng/sidebar';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {TreeModule} from 'primeng/tree';
-import { AccueilleComponent } from './components/accueille/accueille.component';
 //------------------------End Primeng----------------------
 import { MainComponent } from './shared/layout/main/main.component';
 import { TopbarComponent } from './shared/layout/topbar/topbar.component';
@@ -40,15 +39,15 @@ import { DialogComponent } from './shared/utility/dialog/dialog.component';
 import { LoginComponent } from './shared/login/login.component';
 import { ArticleFormComponent } from './components/article/article-form/article-form.component';
 import { ArticleListeComponent } from './components/article/article-liste/article-liste.component';
-import { CategorieListeComponent } from './components/categorie/categorie-liste/categorie-liste.component';
 import { CategorieFormComponent } from './components/categorie/categorie-form/categorie-form.component';
 import { ParametreListeComponent } from './components/parametre/parametre-liste/parametre-liste.component';
 import { ParametreFormComponent } from './components/parametre/parametre-form/parametre-form.component';
+import { AccueilleListeComponent } from './components/accueille/accueille-liste/accueille-liste.component';
+import { AccueilleFormComponent } from './components/accueille/accueille-form/accueille-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AccueilleComponent,
     MainComponent,
     TopbarComponent,
     MenuComponent,
@@ -57,10 +56,12 @@ import { ParametreFormComponent } from './components/parametre/parametre-form/pa
     LoginComponent,
     ArticleFormComponent,
     ArticleListeComponent,
-    CategorieListeComponent,
+    // CategorieListeComponent,
     CategorieFormComponent,
     ParametreListeComponent,
-    ParametreFormComponent
+    ParametreFormComponent,
+    AccueilleListeComponent,
+    AccueilleFormComponent
   ],
   imports: [
     ReactiveFormsModule,

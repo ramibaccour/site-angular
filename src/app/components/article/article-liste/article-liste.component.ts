@@ -6,6 +6,7 @@ import { ArticleService } from 'src/app/services/article.service';
 import { GeneralService } from 'src/app/services/general.service';
 import { DialogComponent } from 'src/app/shared/utility/dialog/dialog.component';
 import { ArticleFormComponent } from '../article-form/article-form.component';
+import { ParametreService } from 'src/app/services/parametre.service';
 
 @Component({
   selector: 'app-article-liste',
@@ -14,7 +15,7 @@ import { ArticleFormComponent } from '../article-form/article-form.component';
 })
 export class ArticleListeComponent implements OnInit 
 {
-  constructor (private articleService : ArticleService, private generalService : GeneralService){}
+  constructor (private articleService : ArticleService, private generalService : GeneralService, private parametreService : ParametreService){}
   listeArticle = new ListeArticle();
   tabSize = [5,10,50];
   pager = 
@@ -24,100 +25,30 @@ export class ArticleListeComponent implements OnInit
     page : 0,
     tabSize : this.tabSize
   }
-  articleFilter = this.getNewArticleFilter();
-  header = {
-    fields : 
-            [
-              {
-                name: "name",
-                type:"text",//text, bouton, link, icon
-                label:"Nom",
-                minWidth : "100px",
-                width:"30%",
-                filter : 
-                {
-                  show:true,
-                  type:"text",//text, select, checkbox, date
-                  value : ""
-                },
-                show : true,
-                required : true,
-                order:1
-                
-              },
-              {
-                name: "description",
-                type:"text",//text, bouton, link, icon
-                label:"Description",
-                minWidth : "100px",
-                width:"30%",
-                filter : 
-                {
-                  show:true,
-                  type:"text",//text, select, checkbox, date
-                  value : ""
-                },
-                show : true,
-                required : true,
-                order:2
-                
-              },   
-              {
-                name: "debut_promo",
-                type:"date",//text, bouton, link, icon
-                label:"Début promo",
-                minWidth : "100px",
-                width:"30%",
-                filter : 
-                {
-                  show:true,
-                  type:"date",//text, select, checkbox, date
-                  returnProperty : "debut_promoFilter",
-                  value : {start : this.articleFilter.debut_promoFilter.start, end : this.articleFilter.debut_promoFilter.end}
-                },
-                show : false,
-                required : true,
-                order:3
-                
-              },             
-              {
-                name:"is_deleted",
-                type:"icon",//text, bouton, link, icon, date
-                label:"Supprimer",
-                filter:
-                        {
-                          show:true,
-                          type:"checkbox",//text, select, checkbox, date
-                          value :""
-                        },
-                minWidth : "100px",
-                width:"30%",
-                show : true,
-                required : true,
-                order:6
-              },
-              {
-                name:"action",
-                type:"action",//text, bouton, link, icon, date
-                label:"Action",
-                minWidth : "100px",
-                width:"30%",
-                buttons: 
-                [
-                  {name:"delete",icon:"delete",label:"Supprimer",color:"#f44336"},
-                  {name:"edit",icon:"edit",label:"Editer",color:"#3f51b5"}
-                ],
-                show : true,
-                required : true,
-                order:8
-              }
-            ],
-    showFilter : true,
-    breakpoint : 830
-  };
+  articleFilter = new ArticleFilter(0,new DateFilter(),new DateFilter());//this.getNewArticleFilter()
+  header;
   ngOnInit() 
   {
+    this.getHeadArticle();
     this.getListeArticle(false);
+  }
+  getHeadArticle()
+  {
+    this.parametreService.getParametre(1).subscribe(param =>
+    {
+      if(param && param.id)
+      {
+        var header = JSON.parse(param.value? param.value : "");
+        header.fields = header.fields.filter(field =>{return field.show && field.active});
+        var fieldDebut_promo = header.fields.find(field => {return field.name == "debut_promo"});
+        if(fieldDebut_promo)
+        {
+          fieldDebut_promo.filter.value.start = this.articleFilter.debut_promoFilter.start
+          fieldDebut_promo.filter.value.end = this.articleFilter.debut_promoFilter.end
+        }
+        this.header = header;
+      }
+    })
   }
   getListeArticle(setSpinner = true) 
   {
@@ -138,8 +69,7 @@ export class ArticleListeComponent implements OnInit
     var dateFilter = new DateFilter()
     dateFilter.start = dateDebut;
     dateFilter.end = datefin;
-    var articleFilter = new ArticleFilter(dateFilter ,new DateFilter());
-    articleFilter.is_deleted = 0;
+    var articleFilter = new ArticleFilter(0,dateFilter ,new DateFilter());
     return articleFilter;
   }
   action(event)
@@ -170,11 +100,11 @@ export class ArticleListeComponent implements OnInit
   }
   editArtile(id)
   {
-    this.generalService.idArticle = id;
-    this.generalService.dialogRefArticle = this.generalService.dialogArticle.open(ArticleFormComponent)
-    this.generalService.dialogRefArticle.afterClosed().subscribe(result => 
+    this.articleService.idArticle = id;
+    this.articleService.dialogRefArticle = this.articleService.dialogArticle.open(ArticleFormComponent,{height: '80%', width: '80%'    })
+    this.articleService.dialogRefArticle.afterClosed().subscribe(result => 
     {
-      this.generalService.idArticle = -1;
+      this.articleService.idArticle = -1;
       this.getListeArticle();
     });
   }

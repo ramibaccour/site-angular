@@ -17,9 +17,9 @@ export class ParametreFormComponent  implements OnInit
   full_description;
   ngOnInit() 
   {
-    if(this.generalService.idParametre && this.generalService.idParametre >0)
+    if(this.parametreService.idParametre && this.parametreService.idParametre >0)
     {
-      this.getParametre(this.generalService.idParametre)
+      this.getParametre(this.parametreService.idParametre)
     }
   }
   getParametre(id)
@@ -31,7 +31,7 @@ export class ParametreFormComponent  implements OnInit
   }
   modeModale() : boolean
   {
-    if(this.generalService.idParametre && this.generalService.idParametre >0)
+    if(this.parametreService.idParametre && this.parametreService.idParametre >0)
       return true
     return false
   }
@@ -39,11 +39,16 @@ export class ParametreFormComponent  implements OnInit
   {
     this.parametreService.saveParametre(this.parametre).subscribe(param =>
     {
-      this.parametre = param;
+      if(param && param.id && param.id>0)
+      {
+        this.generalService.openSnackBar("Enregister",true)
+        this.close();
+      }
     })
   }
   close()
   {
-    this.generalService.dialogRefParametre.close();
+    if(this.parametreService.dialogRefParametre)
+      this.parametreService.dialogRefParametre.close();
   }
 }
