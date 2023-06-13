@@ -17,10 +17,10 @@ export class Field
                 "end" : Date
               },
       data : 
-            [
-                id : string,
-                name : string
-            ]
+            {
+              id: string | undefined;
+              name: string | undefined;
+            }[]
     };
     show : boolean;
     required : boolean;

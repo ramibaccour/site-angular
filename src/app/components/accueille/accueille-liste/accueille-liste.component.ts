@@ -6,6 +6,9 @@ import { GeneralService } from 'src/app/services/general.service';
 import { AccueilleFormComponent } from '../accueille-form/accueille-form.component';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { Accueille } from 'src/app/entites/accueille';
+import { TypeAccueilleService } from 'src/app/services/typeAccueille.service';
+import { TypeAccueille } from 'src/app/entites/typeAccueille';
+import { Header } from 'src/app/entites/header';
 @Component({
   selector: 'app-accueille-liste',
   templateUrl: './accueille-liste.component.html',
@@ -13,15 +16,34 @@ import { Accueille } from 'src/app/entites/accueille';
 })
 export class AccueilleListeComponent implements OnInit 
 {
-  constructor (private accueilleService : AccueilleService, private generalService : GeneralService, private parametreService : ParametreService){}
+  constructor ( private accueilleService : AccueilleService, 
+                private generalService : GeneralService, 
+                private parametreService : ParametreService,
+                private typeAccueilleService : TypeAccueilleService){}
   listeAccueille : Accueille[];
   accueilleFilter = new AccueilleFilter();
-  header;
+  header : Header;
+  listeTypeAccueille : TypeAccueille[]
   ngOnInit() 
   {
     this.accueilleFilter.is_deleted = 0;
     this.getHeadAccueille();
     this.getListeAccueille(false);
+  }
+  getTypeAccueille()
+  {
+    this.typeAccueilleService.getTypeAccueille().subscribe(typeAccueille =>
+    {
+      this.listeTypeAccueille = typeAccueille;
+      if(this.header)
+      {
+        var field = this.header.fields.find(f =>{return f.name == "type_content"});
+        if(field && field.filter)
+        {
+          field.filter.data = this.listeTypeAccueille.map(type =>{ return {id : type.id?.toString(), name : type.type}});;
+        }
+      }
+    })
   }
   getHeadAccueille()
   {
@@ -32,6 +54,7 @@ export class AccueilleListeComponent implements OnInit
         var header = JSON.parse(param.value? param.value : "");
         header.fields = header.fields.filter(field =>{return field.show && field.active});
         this.header = header;
+        this.getTypeAccueille();
       }
     })
   }
