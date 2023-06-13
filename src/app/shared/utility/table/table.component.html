@@ -9,7 +9,7 @@
                         Sélection
                     </div>
                     <div *ngFor="let field of header.fields" [ngStyle]="getStyleFieldsResponsive(field)" class="display-flex-align-items-center cell-header">
-                        <div>{{field.label}}</div>
+                        <div [ngStyle]="{'width' : (field.sort? 'calc(100% - 30px)':'100%')}">{{field.label}}</div>
                         <div *ngIf="field.sort">
                             <mat-icon (click)="sortClick(field, 'asc')" class="cursor-pointer" *ngIf="field.direction =='asc'">arrow_upward</mat-icon>
                             <mat-icon (click)="sortClick(field, 'desc')" class="cursor-pointer" *ngIf="field.direction =='desc'">arrow_downward</mat-icon>
@@ -27,8 +27,8 @@
             <div style="width: 40px;" *ngIf="checkHaveExpandeRow()"></div>
             <div style="font-size: 12px;"  [ngClass]="(responsiveSwitcher ? ' responsive-table ':' responsive-table flex-wrap ') + (checkHaveExpandeRow()? ' width-100-40 ' : ' width-100-percent ')">            
                 <div *ngIf="header.selectable && (header.selectable  == 'list' || header.selectable  == 'unique')" class="cell-header" [ngStyle]="{'min-width':'60px', width : '60px'}" ></div>
-                <div *ngFor="let field of header.fields" class="cell-header" [ngStyle]="field.style ? field.style :{'min-width':field.minWidth,'width':field.width}">
-                    <ng-container *ngIf="field.filter" >
+                <div *ngFor="let field of header.fields" class="cell-header" [ngStyle]="getStyleFieldsResponsive(field)" >
+                    <ng-container *ngIf="field.filter && (field.filter.show != undefined? field.filter.show : true)" >
 <!------------------------------------------------ filter text -------------------------------------------------->
                         <div *ngIf="field.filter.type == 'text'">
                             <mat-form-field  [ngStyle]="{'width':'100%'}" appearance="outline">
@@ -61,9 +61,9 @@
                                 appearance="outline"
                                 (selectionChange)="filter(field,'filter')">
                                 <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
-                                <mat-select [(ngModel)]="field.filter.value" name="foodss" [multiple]="field.filter.multiple? field.filter.multiple: true">
-                                    <mat-option *ngIf="field.filter.showEmptyValue" value=""></mat-option>
-                                    <mat-option *ngFor="let food of field.filter.data" [value]="food.id? food.id : food[field.filter.id]">
+                                <mat-select [(ngModel)]="field.filter.value" name="foodss" [multiple]="field.filter.multiple != undefined? field.filter.multiple: true">
+                                    <mat-option  (onSelectionChange)="filter(field,'filter')" *ngIf="field.filter.showEmptyValue" value=""></mat-option>
+                                    <mat-option  (onSelectionChange)="filter(field,'filter')" *ngFor="let food of field.filter.data" [value]="food.id? food.id : food[field.filter.id]">
                                         {{food.name? food.name : food[field.filter.name]}}
                                     </mat-option>
                                 </mat-select>
@@ -77,14 +77,14 @@
                                     [ngStyle]="{'width':'calc(100% - 25px)'}"
                                     appearance="outline">
                                     <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
-                                    <mat-select [(ngModel)]="field.filter.value" name="foots" [multiple]="field.filter.multiple? field.filter.multiple: false">
+                                    <mat-select [(ngModel)]="field.filter.value" name="foots" [multiple]="field.filter.multiple != undefined? field.filter.multiple: false">
                                         <mat-option (onSelectionChange)="filter(field,'filter')" *ngIf="field.filter.showEmptyValue" value=""></mat-option>
                                         <mat-option (onSelectionChange)="filter(field,'filter')" *ngFor="let food of field.filter.data" [value]="food.id? food.id : food[field.filter.id]">
                                             {{food.name? food.name : food[field.filter.name]}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <mat-icon style="width: 20px; cursor: pointer;"  (click)="customSelectSerarch(field)" matSuffix>search</mat-icon>
+                                <mat-icon *ngIf="field.filter.showSearchIcon != undefined? field.filter.showSearchIcon : true" style="width: 20px; cursor: pointer;"  (click)="customSelectSerarch(field)" matSuffix>search</mat-icon>
                             </div>
                         </div>
                         <!-- -------------------------date filter------------------------- -->
@@ -125,8 +125,8 @@
                     <div  [ngClass]="checkHaveExpandeRow()? 'display-flex-align-items' : ''">
                         <div style="width: 40px;" *ngIf="checkHaveExpandeRow()">
                             <button (click)="detailVisibility[i] = !detailVisibility[i]" mat-icon-button >
-                                <mat-icon *ngIf="!detailVisibility[i]">add</mat-icon>
-                                <mat-icon *ngIf="detailVisibility[i]">remove</mat-icon>
+                                <mat-icon *ngIf="!detailVisibility[i]">keyboard_arrow_right</mat-icon>
+                                <mat-icon *ngIf="detailVisibility[i]">keyboard_arrow_down</mat-icon>
                             </button>
                         </div>
                         <div [ngClass]="(checkHaveExpandeRow()? ' width-100-40 ' : ' width-100-percent ') + (responsiveSwitcher ? ' responsive-table row-table' : ' row-table')" >
@@ -147,11 +147,11 @@
                                     </div>
                                     <div >                                    
 <!------------------------------------------------ contenet text -------------------------------------------------->                                
-                                    <div *ngIf="field.type =='text'" [innerHtml]="transform(row[field.name])"></div>
+                                    <div *ngIf="field.type =='text'" [innerHtml]="transform(getNamePropty(field.name,row))"></div>
 <!------------------------------------------------ contenet number -------------------------------------------------->    
-                                    <div *ngIf="field.type =='number'"> {{row[field.name] | number:'1.3-3'}}</div>
+                                    <div *ngIf="field.type =='number'"> {{getNamePropty(field.name,row) | number:'1.3-3'}}</div>
 <!------------------------------------------------ contenet date -------------------------------------------------->    
-                                    <div *ngIf="field.type =='date'">{{row[field.name] | date : field.format}}</div>
+                                    <div *ngIf="field.type =='date'">{{getNamePropty(field.name,row) | date : field.format}}</div>
 <!------------------------------------------------ contenet icon -------------------------------------------------->    
                                     <div *ngIf="field.type =='icon'">
                                         <mat-icon aria-hidden="false" [ngStyle]="{color:row[field.name+'_color']? row[field.name+'_color'] : '#fff'}" >{{row[field.name+"_icon"]}}</mat-icon>
@@ -184,6 +184,7 @@
         <!-- -------------------------footer------------------------- -->
             <ng-container *ngIf="footer && footer.data && footer.fields">
                 <ng-container *ngFor="let row of footer.data;let i = index" >
+                    
                     <div  [ngClass]="checkHaveExpandeRow()? 'display-flex-align-items' : ''">
                         <div style="width: 40px;" *ngIf="checkHaveExpandeRow()">                    
                         </div>

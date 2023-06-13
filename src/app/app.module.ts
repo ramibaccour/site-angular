@@ -36,6 +36,7 @@ import { TopbarComponent } from './shared/layout/topbar/topbar.component';
 import { MenuComponent } from './shared/layout/menu/menu.component';
 import { TableComponent } from './shared/utility/table/table.component';
 import { DialogComponent } from './shared/utility/dialog/dialog.component';
+import { ImageComponent } from './shared/utility/image/image.component';
 import { LoginComponent } from './shared/login/login.component';
 import { ArticleFormComponent } from './components/article/article-form/article-form.component';
 import { ArticleListeComponent } from './components/article/article-liste/article-liste.component';
@@ -52,11 +53,11 @@ import { AccueilleFormComponent } from './components/accueille/accueille-form/ac
     TopbarComponent,
     MenuComponent,
     TableComponent,
+    ImageComponent,
     DialogComponent,
     LoginComponent,
     ArticleFormComponent,
     ArticleListeComponent,
-    // CategorieListeComponent,
     CategorieFormComponent,
     ParametreListeComponent,
     ParametreFormComponent,

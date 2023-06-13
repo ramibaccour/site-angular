@@ -1,1 +1,34 @@
-<p>accueille-form works!</p>
+<div class="card-header">
+    <span>
+        Formulaire accueille
+    </span>
+    <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
+</div>
+<div class="card-content">
+    <form #formContent="ngForm">
+        <div>
+            <mat-form-field class="width-400" appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input matInput type="text" name="nom" [(ngModel)]="accueille.name" >
+                <mat-hint *ngIf="submit && !accueille.name" class="error">Le nom est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>       
+        <div>
+            <mat-form-field class="width-800" appearance="outline">
+                <mat-label>Valeur</mat-label>
+                <textarea matInput name="price" [(ngModel)]="accueille.text" cols="350"></textarea>
+                <mat-hint *ngIf="submit && !accueille.text" class="error">Le text est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>
+    </form>
+    <div class="btn-close-frm">
+        <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">
+            <mat-icon>close</mat-icon>
+            Fermer
+        </button>
+        <button (click)="save()" mat-raised-button class="save">
+            <mat-icon>save</mat-icon>
+            Enregistrer
+        </button>
+    </div>
+</div>

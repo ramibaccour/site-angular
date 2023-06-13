@@ -1,0 +1,35 @@
+ .inputLabel
+ {
+    border: 5px solid #d2d5da;
+    text-align: center;
+    line-height: 61px;
+    background-color: #eeeef1;
+}
+.cropInputs
+{
+ padding: 10px;
+ position: fixed;
+ top:0;
+ left: calc((100% - 280px) / 2); 
+ width: 300px;
+ background-color: #e7e8e8;
+//  text-align: center;
+}
+.inputtools p {width: 150px;}
+// .inputtools p span {display: block; min-width: 40px; height: 40px; float: left;}
+// .inputtools p span img {width: 40px;height: auto; line-height: 40px;}
+
+.cropButtons img {width: 25px;}
+/* input styles */
+
+.flex-space-between
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.inputtools
+{
+    display: flex;
+    margin-bottom: 10px;
+}

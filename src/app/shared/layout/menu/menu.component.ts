@@ -56,11 +56,13 @@ export class MenuComponent implements OnInit
         [
             {
                 label: 'Ajouter',
-                icon:'pi pi-fw pi-align-left'
+                icon:'pi pi-fw pi-align-left',
+                routerLink : "/accueille/formulaire"
             },
             {
                 label: 'Liste',
-                icon:'pi pi-fw pi-align-right'
+                icon:'pi pi-fw pi-align-right',
+                routerLink : "/accueille/liste"
             }
         ]
       },

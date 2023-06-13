@@ -1,0 +1,71 @@
+<input type="file" id="upphoto" style="display:none;">
+<div class="card-header flex-space-between">
+    Liste des articles
+    <button (click)="close()" mat-icon-button >
+        <mat-icon>close</mat-icon>
+    </button>
+    
+</div>
+<div class="card-content">
+    <label for="upphoto">
+        <div class="inputLabel">
+           Cliquez ici pour télécharger une image
+        </div>
+    </label>
+    <img id="croppedImg" style="border:1px solid #000; margin:auto;">
+    <div class="flex-end">
+        <button (click)="save()" mat-raised-button class="save">
+            <mat-icon>check</mat-icon>
+            Choisir
+        </button>&nbsp;
+        <button (click)="close()" mat-raised-button class="failure">
+            <mat-icon>close</mat-icon>
+            Annuler
+        </button>        
+    </div>
+
+    <div class="cropHolder">
+        <div id="cropWrapper">
+            <img id="inputImage" src="assets/images/face.jpg">
+        </div>
+        <div class="cropInputs">
+            <div class="inputtools">
+                <p>                    
+                    <span>Mouvement horizontal</span>
+                </p>
+                <input type="range" name="xmove" id="xmove" min="0" value="0" class="btn-add">
+            </div>
+            <div class="inputtools">
+                <p>
+                    <span>Mouvement vertical</span>
+                </p>
+                <input type="range" name="ymove" id="ymove" min="0" value="0" class="btn-add">
+            </div>
+            <div class="inputtools">
+                <p>
+                    <span>Zoom</span>
+                </p>
+                <div>
+                    
+                    <button id="zplus" mat-mini-fab  class="btn-add">
+                        <mat-icon>add</mat-icon>
+                    </button>&nbsp;
+                    <button id="zminus" mat-mini-fab  class="btn-add">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <br>
+            <button id="cropSubmit" mat-raised-button class="save">
+                <mat-icon>check</mat-icon>
+                Choisir
+            </button>&nbsp;
+            <button id="closeCrop" mat-raised-button class="failure">
+                <mat-icon>close</mat-icon>
+                Annuler
+            </button>
+           
+        </div>
+    </div>
+</div>
+<img style="display: none" id="imageOptimiser">

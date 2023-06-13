@@ -47,6 +47,7 @@ export class TableComponent implements OnInit
   @Input() set footer(value) 
   {
     this._footer = value;
+    this.sortFooter();
   }
   get footer()
   {
@@ -102,7 +103,7 @@ export class TableComponent implements OnInit
   
   onResized(event)
   {
-    if(this.header && this.header.breakpoint >= event.target.innerWidth)
+    if(this.header.breakpoint >= event.target.innerWidth)
       this.responsiveSwitcher = false;
     else
       this.responsiveSwitcher = true;
@@ -112,6 +113,11 @@ export class TableComponent implements OnInit
   {
       if(this.header && this.header.fields)
         this.header.fields.sort((b, a) => b.order > a.order ? 1 : -1)
+  }
+  sortFooter()
+  {
+      if(this.footer && this.footer.fields)
+        this.footer.fields.sort((b, a) => b.order > a.order ? 1 : -1)
   }
   filter(name : string, action : string)
   {
@@ -329,6 +335,36 @@ export class TableComponent implements OnInit
     }
       
     return false
+  }
+  getNamePropty(property : string, row )
+  {
+    var tab = property.split(".")
+    if(tab && tab.length>1)
+    {
+      var p = "row." + property;
+      try
+      {
+        var rs = eval(p);
+        if(rs != null && rs != undefined)
+          return rs;
+        else
+          return ""
+      }
+      catch
+      {
+        return "";
+      }
+
+    }
+    else
+    {
+      var rs = row[property];
+      if(rs != null && rs != undefined)
+          return rs;
+      else
+          return ""
+      return 
+    }
   }
   setFormaDateServer(date :Date): String
   {

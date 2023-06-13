@@ -4,7 +4,6 @@ import { DateFilter } from 'src/app/entites/dateFilter';
 import { ListeArticle } from 'src/app/entites/listeArticle';
 import { ArticleService } from 'src/app/services/article.service';
 import { GeneralService } from 'src/app/services/general.service';
-import { DialogComponent } from 'src/app/shared/utility/dialog/dialog.component';
 import { ArticleFormComponent } from '../article-form/article-form.component';
 import { ParametreService } from 'src/app/services/parametre.service';
 

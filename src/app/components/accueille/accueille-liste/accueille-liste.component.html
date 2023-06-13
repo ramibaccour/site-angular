@@ -1,1 +1,4 @@
-<p>accueille-liste works!</p>
+<div class="card-header">Liste accueilles</div>
+<div class="card-content">
+    <app-table [header]="header" [data]="listeAccueille" (action)="action($event)" ></app-table>
+</div>
