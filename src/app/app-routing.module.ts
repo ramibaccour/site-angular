@@ -10,11 +10,26 @@ import { ParametreFormComponent } from './components/parametre/parametre-form/pa
 import { ParametreListeComponent } from './components/parametre/parametre-liste/parametre-liste.component';
 import { AccueilleListeComponent } from './components/accueille/accueille-liste/accueille-liste.component';
 import { AccueilleFormComponent } from './components/accueille/accueille-form/accueille-form.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes =
 [
-  
-  {
+    {
+        path: '', component: MainComponent,
+        children: 
+        [
+            {
+                path: '', 
+                pathMatch: 'full',
+                redirectTo : "accueille",
+            },
+            {
+                path: 'accueille', 
+                component: HomeComponent
+            }     
+        ]
+    },
+    {
     path: 'article', component: MainComponent,
     children: 
     [

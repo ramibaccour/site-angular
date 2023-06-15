@@ -1,71 +1,81 @@
-<input type="file" id="upphoto" style="display:none;">
-<div class="card-header flex-space-between">
-    Liste des articles
-    <button (click)="close()" mat-icon-button >
-        <mat-icon>close</mat-icon>
-    </button>
-    
-</div>
-<div class="card-content">
-    <label for="upphoto">
-        <div class="inputLabel">
-           Cliquez ici pour télécharger une image
-        </div>
-    </label>
-    <img id="croppedImg" style="border:1px solid #000; margin:auto;">
-    <div class="flex-end">
-        <button (click)="save()" mat-raised-button class="save">
-            <mat-icon>check</mat-icon>
-            Choisir
-        </button>&nbsp;
-        <button (click)="close()" mat-raised-button class="failure">
-            <mat-icon>close</mat-icon>
-            Annuler
-        </button>        
-    </div>
 
-    <div class="cropHolder">
-        <div id="cropWrapper">
-            <img id="inputImage" src="assets/images/face.jpg">
-        </div>
-        <div class="cropInputs">
-            <div class="inputtools">
-                <p>                    
-                    <span>Mouvement horizontal</span>
-                </p>
-                <input type="range" name="xmove" id="xmove" min="0" value="0" class="btn-add">
+<div style="width: 90px;" (click)="addImage()">
+    <mat-label>Image</mat-label>
+    <br>
+    <img [src]="src" class="add-image">
+    <br>
+    <mat-hint *ngIf="submit && required && !src" class="error">L'image' est obligatoire</mat-hint>
+</div>
+<input type="file" id="upphoto-{{index}}" style="display:none;">
+<img style="display: none" id="imageOptimiser-{{index}}">   
+<ng-template #template>
+    <div class="card-content">
+        <label for="upphoto-{{index}}">
+            <div class="inputLabel">
+            Cliquez ici pour télécharger une image
             </div>
-            <div class="inputtools">
-                <p>
-                    <span>Mouvement vertical</span>
-                </p>
-                <input type="range" name="ymove" id="ymove" min="0" value="0" class="btn-add">
-            </div>
-            <div class="inputtools">
-                <p>
-                    <span>Zoom</span>
-                </p>
-                <div>
-                    
-                    <button id="zplus" mat-mini-fab  class="btn-add">
-                        <mat-icon>add</mat-icon>
-                    </button>&nbsp;
-                    <button id="zminus" mat-mini-fab  class="btn-add">
-                        <mat-icon>remove</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <br>
-            <button id="cropSubmit" mat-raised-button class="save">
+        </label>
+        <img id="croppedImg-{{index}}" style="border:1px solid #000; margin:auto;">
+        <div class="flex-end">
+            <button (click)="save()" mat-raised-button class="save">
                 <mat-icon>check</mat-icon>
                 Choisir
             </button>&nbsp;
-            <button id="closeCrop" mat-raised-button class="failure">
+            <button mat-raised-button class="failure">
                 <mat-icon>close</mat-icon>
                 Annuler
-            </button>
-           
+            </button>        
+        </div>
+       
+        <div class="cropHolder">
+            <div style="position: absolute; top:0; left:0; right: 0; bottom: 0; margin: auto; width: 100vw; height: 100vh;" id="cropWrapper-{{index}}">
+                <img id="inputImage-{{index}}" src="assets/images/face.jpg">
+            </div>
+            <div class="cropInputs">
+                <div class="inputtools">
+                    <p>                    
+                        <span>Mouvement horizontal</span>
+                    </p>
+                    <input type="range" name="xmove" id="xmove-{{index}}" min="0" value="0" class="btn-add">
+                </div>
+                <div class="inputtools">
+                    <p>
+                        <span>Mouvement vertical</span>
+                    </p>
+                    <input type="range" name="ymove" id="ymove-{{index}}" min="0" value="0" class="btn-add">
+                </div>
+                <div class="inputtools">
+                    <p>
+                        <span>Zoom</span>
+                    </p>
+                    <div>
+                        
+                        <button id="zplus-{{index}}" mat-mini-fab  class="btn-add">
+                            <mat-icon>add</mat-icon>
+                        </button>&nbsp;
+                        <button id="zminus-{{index}}" mat-mini-fab  class="btn-add">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <button id="cropSubmit-{{index}}" mat-raised-button class="save">
+                    <mat-icon>check</mat-icon>
+                    Choisir
+                </button>&nbsp;
+                <button id="closeCrop-{{index}}" mat-raised-button class="failure">
+                    <mat-icon>close</mat-icon>
+                    Annuler
+                </button>
+            
+            </div>
         </div>
     </div>
-</div>
-<img style="display: none" id="imageOptimiser">
+</ng-template>
+
+
+
+
+
+
+

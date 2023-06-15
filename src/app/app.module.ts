@@ -45,7 +45,7 @@ import { ParametreListeComponent } from './components/parametre/parametre-liste/
 import { ParametreFormComponent } from './components/parametre/parametre-form/parametre-form.component';
 import { AccueilleListeComponent } from './components/accueille/accueille-liste/accueille-liste.component';
 import { AccueilleFormComponent } from './components/accueille/accueille-form/accueille-form.component';
-
+import {HomeComponent} from './components/home/home.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +62,8 @@ import { AccueilleFormComponent } from './components/accueille/accueille-form/ac
     ParametreListeComponent,
     ParametreFormComponent,
     AccueilleListeComponent,
-    AccueilleFormComponent
+    AccueilleFormComponent,
+    HomeComponent
   ],
   imports: [
     ReactiveFormsModule,

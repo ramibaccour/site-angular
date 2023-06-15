@@ -239,4 +239,17 @@ export class GeneralService
       return true;
     return false;
   }
+  genererChaine(n: number): string 
+  {
+    const caracteresAlphanumeriques = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let chaine = '';
+  
+    for (let i = 0; i < n; i++) 
+    {
+      const randomIndex = Math.floor(Math.random() * caracteresAlphanumeriques.length);
+      chaine += caracteresAlphanumeriques.charAt(randomIndex);
+    }
+  
+    return chaine;
+  }
 }

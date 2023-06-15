@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AccueilleFilter } from 'src/app/entites/accueilleFilter';
-import { DateFilter } from 'src/app/entites/dateFilter';
 import { AccueilleService } from 'src/app/services/accueille.service';
 import { GeneralService } from 'src/app/services/general.service';
 import { AccueilleFormComponent } from '../accueille-form/accueille-form.component';
@@ -28,7 +27,6 @@ export class AccueilleListeComponent implements OnInit
   {
     this.accueilleFilter.is_deleted = 0;
     this.getHeadAccueille();
-    this.getListeAccueille(false);
   }
   getTypeAccueille()
   {
@@ -37,12 +35,13 @@ export class AccueilleListeComponent implements OnInit
       this.listeTypeAccueille = typeAccueille;
       if(this.header)
       {
-        var field = this.header.fields.find(f =>{return f.name == "type_content"});
+        var field = this.header.fields.find(f =>{return f.name == "accueilType.type"});
         if(field && field.filter)
         {
-          field.filter.data = this.listeTypeAccueille.map(type =>{ return {id : type.id?.toString(), name : type.type}});;
+          field.filter.data = typeAccueille.map(type =>{ return {id : type.id?.toString(), name : type.type}});;
         }
       }
+      this.getListeAccueille();
     })
   }
   getHeadAccueille()
@@ -64,7 +63,7 @@ export class AccueilleListeComponent implements OnInit
       this.generalService.showSpinner = true;
     this.accueilleService.listeAccueille(this.accueilleFilter).subscribe(listeAccueille =>
     {
-      this.listeAccueille = listeAccueille;
+      this.listeAccueille = listeAccueille.map(acceuille =>{return {...acceuille, ...{accueilType : this.listeTypeAccueille.find(t => {return t.id == acceuille.id_accueil_type})}}});
       this.generalService.showSpinner = false;
     })
   }

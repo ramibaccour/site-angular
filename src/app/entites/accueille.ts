@@ -1,3 +1,5 @@
+import { AccueilType } from "./accueilType";
+
 export class Accueille
 {
     id? : number;
@@ -10,4 +12,6 @@ export class Accueille
     id_accueil_type? : number;
     id_article? : number;
     id_categorie? : number;
+
+    accueilType? : AccueilType
 }
