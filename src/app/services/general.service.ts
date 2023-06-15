@@ -15,8 +15,9 @@ import { DialogComponent } from '../shared/utility/dialog/dialog.component';
 export class GeneralService 
 {
   constructor(private sanitized: DomSanitizer, public router: Router, public route: ActivatedRoute, private _snackBar: MatSnackBar, private http: HttpClient,public dialog: MatDialog){}
-  url = "http://localhost/site-frant/admin/controller.php";
-  
+  baseUrl = "http://localhost/site-frant";
+  url = this.baseUrl + "/admin/controller.php";
+  urlImage = this.baseUrl + "/assets/images_upload/";
   headers;
   user = new User();
   showSpinner;

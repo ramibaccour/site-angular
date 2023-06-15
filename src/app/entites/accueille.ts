@@ -1,17 +1,10 @@
 import { AccueilType } from "./accueilType";
+import { baseAccueille } from "./baseAccueille";
+import { LigneAccueille as LigneAccueille } from "./ligneAccueil";
 
-export class Accueille
+export class Accueille extends baseAccueille
 {
-    id? : number;
-    name? : string;
-    text? : string;
-    image? : string;
-    type_content? : string;
-    ordre? : number;
-    is_deleted? : number;
     id_accueil_type? : number;
-    id_article? : number;
-    id_categorie? : number;
-
     accueilType? : AccueilType
+    listeLigneAccueil : LigneAccueille[]
 }

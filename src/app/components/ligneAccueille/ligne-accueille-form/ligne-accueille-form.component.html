@@ -1,0 +1,36 @@
+<div class="card-header">
+    <span>
+        Formulaire contenu accueille
+    </span>
+    <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
+</div>
+<div class="card-content">
+    <form #formContent="ngForm">    
+        <div>
+            <mat-form-field class="width-400" appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input matInput type="text" name="nom" [(ngModel)]="ligneAccueille.name" >
+                <mat-hint *ngIf="submit && !ligneAccueille.name" class="error">Le nom est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>      
+        <div>
+            <mat-form-field class="width-400" appearance="outline">
+                <mat-label>Texte</mat-label>
+                <textarea matInput name="price" [(ngModel)]="ligneAccueille.text" cols="350"></textarea>
+                <mat-hint *ngIf="submit && !ligneAccueille.text" class="error">Le text est obligatoire</mat-hint>
+            </mat-form-field>
+        </div>
+        <app-image [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="{width : 100, height:200}" (action)="actionImage($event)"></app-image>
+
+    </form>
+    <div class="btn-close-frm">
+        <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">
+            <mat-icon>close</mat-icon>
+            Fermer
+        </button>
+        <button (click)="save()" mat-raised-button class="save">
+            <mat-icon>save</mat-icon>
+            Enregistrer
+        </button>
+    </div>
+</div>

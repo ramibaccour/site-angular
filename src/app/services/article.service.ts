@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/internal/Observable';
 import { ListeArticle } from '../entites/listeArticle';
 import { ArticleFilter } from '../entites/articleFilter';
 import { Article } from '../entites/article';
-import { Parametre } from '../entites/parametre';
 import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
@@ -14,9 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ArticleService 
 {
-
   constructor(private http: HttpClient,private generalService : GeneralService,public dialogArticle: MatDialog) { }
-  
   idArticle : number = -1;
   dialogRefArticle;
   listeArticle(page,limit,articleFilter : ArticleFilter, error?): Observable<ListeArticle>

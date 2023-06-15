@@ -9,7 +9,7 @@ import { TypeAccueilleService } from 'src/app/services/typeAccueille.service';
   templateUrl: './accueille-form.component.html',
   styleUrls: ['./accueille-form.component.scss']
 })
-export class AccueilleFormComponent   implements OnInit 
+export class AccueilleFormComponent implements OnInit 
 {
   constructor (
     private generalService : GeneralService, 
@@ -17,7 +17,6 @@ export class AccueilleFormComponent   implements OnInit
     private typeAccueilleService : TypeAccueilleService){}
   accueille = new Accueille();
   submit = false;
-  description;
   full_description;
   listeTypeAccueille : TypeAccueille[];
   formData = new FormData();
@@ -33,7 +32,7 @@ export class AccueilleFormComponent   implements OnInit
   getSrc()
   {
     if(this.accueille && this.accueille.image)
-      return this.accueille.image;
+      return this.generalService.urlImage + this.accueille.image;
     return "assets/images/add-image.png";
   }
   actionImage(event)
@@ -76,6 +75,8 @@ export class AccueilleFormComponent   implements OnInit
       }
       this.generalService.httpPost(this.formData, "/save-image",fn)
     }
+    if(this.modeAdd())
+      this.accueille.is_deleted = 0;
     this.accueilleService.saveAccueille(accueille).subscribe(param =>
     {
       if(param && param.id && param.id>0)
@@ -90,5 +91,11 @@ export class AccueilleFormComponent   implements OnInit
   {
     if(this.accueilleService.dialogRefAccueille)
       this.accueilleService.dialogRefAccueille.close();
+  }
+  modeAdd() : boolean
+  {
+    if(this.accueille.id && this.accueille.id>0)
+      return false;
+    return true;
   }
 }
