@@ -1,6 +1,6 @@
 export class TypeAccueille
 {
-    id? : number;
-    type? : string;
-    sub_type? : string;
+    id : number;
+    type : string;
+    sub_type : string;
 }

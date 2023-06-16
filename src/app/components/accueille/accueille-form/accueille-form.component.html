@@ -5,34 +5,42 @@
     <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
 </div>
 <div class="card-content">
-    <form #formContent="ngForm">    
-        <div>
-            <mat-form-field class="width-400" appearance="outline">
-                <mat-label>Type</mat-label>
-                <mat-select [(ngModel)]="accueille.id_accueil_type" name="id_accueil_type">
-                    <mat-option *ngFor="let food of listeTypeAccueille" [value]="food.id">
-                    {{food.type}}
-                    </mat-option>
-                </mat-select>  
-            </mat-form-field>
-        </div>  
-        <div>
-            <mat-form-field class="width-400" appearance="outline">
-                <mat-label>Nom</mat-label>
-                <input matInput type="text" name="nom" [(ngModel)]="accueille.name" >
-                <mat-hint *ngIf="submit && !accueille.name" class="error">Le nom est obligatoire</mat-hint>
-            </mat-form-field>
-        </div>      
-        <div>
-            <mat-form-field class="width-400" appearance="outline">
-                <mat-label>Texte</mat-label>
-                <textarea matInput name="price" [(ngModel)]="accueille.text" cols="350"></textarea>
-                <mat-hint *ngIf="submit && !accueille.text" class="error">Le text est obligatoire</mat-hint>
-            </mat-form-field>
-        </div>
-        <app-image [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="{width : 100, height:200}" (action)="actionImage($event)"></app-image>
-
-    </form>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label="Formulaire">
+            <br>
+            <form #formContent="ngForm">    
+                <mat-form-field class="width-400" appearance="outline">
+                    <mat-label>Type</mat-label>
+                    <mat-select (selectionChange)="accueilTypeChange()" [(ngModel)]="accueille.id_accueil_type" name="id_accueil_type">
+                        <mat-option *ngFor="let food of listeTypeAccueille" [value]="food.id">
+                        {{food.type}}
+                        </mat-option>
+                    </mat-select>  
+                </mat-form-field> 
+                <mat-form-field *ngIf="showFiled('name')" class="width-400" appearance="outline">
+                    <mat-label>Nom</mat-label>
+                    <input matInput type="text" name="nom" [(ngModel)]="accueille.name" >
+                    <mat-hint *ngIf="submit && !accueille.name" class="error">Le nom est obligatoire</mat-hint>
+                </mat-form-field>
+                <div *ngIf="showFiled('text')">
+                    <mat-label>Texte</mat-label>
+                    <div id="texte"></div>
+                </div>
+                <app-image  *ngIf="showFiled('image')" [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="{width : 100, height:200}" (action)="actionImage($event)"></app-image>
+            </form>
+        </mat-tab>
+        <mat-tab *ngIf="!modeAdd()" label="Liste details accueile">
+            <br>
+            <div class="btn-close-frm">
+                <button (click)="addLigneAccueille()" mat-raised-button class="btn-add">
+                    <mat-icon>save</mat-icon>
+                    Ajouter
+                </button>
+            </div>
+            <app-table [header]="header" [data]="listeLigneAccueille" (action)="action($event)"></app-table>
+        </mat-tab>
+    </mat-tab-group>
+    
     <div class="btn-close-frm">
         <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">
             <mat-icon>close</mat-icon>

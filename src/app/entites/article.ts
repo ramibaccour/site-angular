@@ -1,23 +1,23 @@
 export class Article
 {
-    id? : number;
-    name? : string;
-    description? : string;
-    full_description? : string;
-    price? : number;
-    new_price? : number;
-    debut_promo? : Date;
-    fin_promo? : Date;
-    badge? : string;
-    disponible? : number;
-    quantite? : number;
-    valider? : number;
-    id_fournisseur? : number;
-    id_marque? : number;
-    tva? : number;
-    is_deleted? : number;
-    title_seo? : string;
-    description_seo? : string;
+    id : number;
+    name : string;
+    description : string;
+    full_description : string;
+    price : number;
+    new_price : number;
+    debut_promo : Date;
+    fin_promo : Date;
+    badge : string;
+    disponible : number;
+    quantite : number;
+    valider : number;
+    id_fournisseur : number;
+    id_marque : number;
+    tva : number;
+    is_deleted : number;
+    title_seo : string;
+    description_seo : string;
     constructor()
     {
         // this.id = -1;

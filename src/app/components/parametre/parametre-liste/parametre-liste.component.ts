@@ -55,7 +55,9 @@ export class ParametreListeComponent implements OnInit
   }
   getNewParametreFilter()
   {
-    return new ParametreFilter();
+    var parametreFilter = new ParametreFilter();
+    // parametreFilter.visible = 1;
+    return parametreFilter;
   }
   action(event)
   {

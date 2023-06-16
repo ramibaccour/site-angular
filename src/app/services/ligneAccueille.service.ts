@@ -6,15 +6,18 @@ import { Observable } from 'rxjs/internal/Observable';
 import { MatDialog } from '@angular/material/dialog';
 import { LigneAccueille } from '../entites/ligneAccueil';
 import { LigneAccueilleFilter } from '../entites/ligneAccueilleFilter';
+import { Accueille } from '../entites/accueille';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LigneAccueilleService
 {
-    constructor(private http: HttpClient,private generalService : GeneralService,public dialogAccueille: MatDialog) { }
+    constructor(private http: HttpClient,private generalService : GeneralService,public dialogLigneAccueille: MatDialog) { }
   
-    idLigneAccueille : number = -1;
+    ligneAccueille : LigneAccueille | null;
+    idAccueille : number = -1;
+    accueille : Accueille | null;
     dialogRefLigneAccueille;
     listeLigneAccueille(ligneAccueilleFilter : LigneAccueilleFilter, error?): Observable<LigneAccueille[]>
     {

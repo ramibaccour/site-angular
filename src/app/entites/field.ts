@@ -26,6 +26,7 @@ export class Field
     required : boolean;
     active : boolean;
     order : number;
+    listeIdTypeAccueille : number[];
     buttons :  
               [
                 name :string,

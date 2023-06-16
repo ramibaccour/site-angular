@@ -8,6 +8,8 @@ import { Accueille } from 'src/app/entites/accueille';
 import { TypeAccueilleService } from 'src/app/services/typeAccueille.service';
 import { TypeAccueille } from 'src/app/entites/typeAccueille';
 import { Header } from 'src/app/entites/header';
+import { LigneAccueilleService } from 'src/app/services/ligneAccueille.service';
+import { LigneAccueilleFormComponent } from '../../ligneAccueille/ligne-accueille-form/ligne-accueille-form.component';
 @Component({
   selector: 'app-accueille-liste',
   templateUrl: './accueille-liste.component.html',
@@ -18,6 +20,7 @@ export class AccueilleListeComponent implements OnInit
   constructor ( private accueilleService : AccueilleService, 
                 private generalService : GeneralService, 
                 private parametreService : ParametreService,
+                private ligneAccueilleService : LigneAccueilleService,
                 private typeAccueilleService : TypeAccueilleService){}
   listeAccueille : Accueille[];
   accueilleFilter = new AccueilleFilter();
@@ -63,7 +66,9 @@ export class AccueilleListeComponent implements OnInit
       this.generalService.showSpinner = true;
     this.accueilleService.listeAccueille(this.accueilleFilter).subscribe(listeAccueille =>
     {
-      this.listeAccueille = listeAccueille.map(acceuille =>{return {...acceuille, ...{accueilType : this.listeTypeAccueille.find(t => {return t.id == acceuille.id_accueil_type})}}});
+      var liste;
+      liste = listeAccueille.map(acceuille =>{return {...acceuille, ...{accueilType : this.listeTypeAccueille.find(t => {return t.id == acceuille.id_accueil_type})}}});
+      this.listeAccueille = liste;
       this.generalService.showSpinner = false;
     })
   }
@@ -84,7 +89,11 @@ export class AccueilleListeComponent implements OnInit
     {
       if(event.component.name == "edit")
       {
-        this.editArtile(event.row["id"])
+        this.editAccueille(event.row["id"])
+      }
+      if(event.component.name == "add")
+      {
+        this.addLigneAccueille(event.row)
       }
       
       if(event.component.name == "delete")
@@ -93,7 +102,17 @@ export class AccueilleListeComponent implements OnInit
       }
     }    
   }
-  editArtile(id)
+  addLigneAccueille(row)
+  {
+    this.ligneAccueilleService.accueille = row;
+    this.ligneAccueilleService.dialogRefLigneAccueille = this.ligneAccueilleService.dialogLigneAccueille.open(LigneAccueilleFormComponent,{height: '80%', width: '80%'    })
+    this.ligneAccueilleService.dialogRefLigneAccueille.afterClosed().subscribe(result => 
+    {
+      this.ligneAccueilleService.accueille = null;
+      this.getListeAccueille();
+    });
+  }
+  editAccueille(id)
   {
     this.accueilleService.idAccueille = id;
     this.accueilleService.dialogRefAccueille = this.accueilleService.dialogAccueille.open(AccueilleFormComponent,{height: '80%', width: '80%'    })

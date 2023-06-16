@@ -24,6 +24,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MomentDateModule} from '@angular/material-moment-adapter';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 //------------------------End material----------------------
 //------------------------Begin Primeng----------------------
 import {OverlayPanelModule} from 'primeng/overlaypanel';
@@ -93,6 +94,7 @@ import { LigneAccueilleListeComponent } from './components/ligneAccueille/ligne-
     MomentDateModule,
     MatPaginatorModule,
     MatExpansionModule,
+    MatTabsModule,
     //------------------------End material----------------------
     
     //------------------------Begin Primeng----------------------
