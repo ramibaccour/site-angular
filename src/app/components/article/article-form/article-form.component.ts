@@ -63,9 +63,10 @@ export class ArticleFormComponent implements OnInit
   }
   save()
   {
-
     if(this.modeAdd())
       this.article.is_deleted = 0;
+    this.article.description = this.getData(this.description);
+    this.article.full_description = this.getData(this.full_description);
     this.articleService.saveArticle(this.article).subscribe(article =>
     {
       if(article && article.id && article.id>0)
@@ -73,6 +74,9 @@ export class ArticleFormComponent implements OnInit
         this.generalService.openSnackBar("Enregister",true)
         this.close();
       }
+      this.article = new Article();
+      this.setData(this.description, "");
+      this.setData(this.full_description, "");
     })
   }
   modeAdd() : boolean

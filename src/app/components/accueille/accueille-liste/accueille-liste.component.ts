@@ -54,7 +54,7 @@ export class AccueilleListeComponent implements OnInit
       if(param && param.id)
       {
         var header = JSON.parse(param.value? param.value : "");
-        header.fields = header.fields.filter(field =>{return field.show && field.active});
+        header.fields = header.fields.filter(field =>{return field.show});
         this.header = header;
         this.getTypeAccueille();
       }

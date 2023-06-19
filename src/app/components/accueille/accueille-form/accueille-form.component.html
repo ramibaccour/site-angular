@@ -5,50 +5,81 @@
     <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
 </div>
 <div class="card-content">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-        <mat-tab label="Formulaire">
-            <br>
-            <form #formContent="ngForm">    
-                <mat-form-field class="width-400" appearance="outline">
-                    <mat-label>Type</mat-label>
-                    <mat-select (selectionChange)="accueilTypeChange()" [(ngModel)]="accueille.id_accueil_type" name="id_accueil_type">
-                        <mat-option *ngFor="let food of listeTypeAccueille" [value]="food.id">
-                        {{food.type}}
-                        </mat-option>
-                    </mat-select>  
-                </mat-form-field> 
-                <mat-form-field *ngIf="showFiled('name')" class="width-400" appearance="outline">
-                    <mat-label>Nom</mat-label>
-                    <input matInput type="text" name="nom" [(ngModel)]="accueille.name" >
-                    <mat-hint *ngIf="submit && !accueille.name" class="error">Le nom est obligatoire</mat-hint>
-                </mat-form-field>
-                <div *ngIf="showFiled('text')">
-                    <mat-label>Texte</mat-label>
-                    <div id="texte"></div>
+    <form #formContent="ngForm">    
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <mat-tab label="Formulaire">
+                <br>
+                    <mat-form-field class="width-400" appearance="outline">
+                        <mat-label>Type</mat-label>
+                        <mat-select [required]="requiredFiled('id_accueil_type')" (selectionChange)="accueilTypeChange()" [(ngModel)]="accueille.id_accueil_type" name="id_accueil_type">
+                            <mat-option *ngFor="let food of listeTypeAccueille" [value]="food.id">
+                            {{food.type}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-hint *ngIf="submit && !accueille.id_accueil_type" class="error">Le type est obligatoire</mat-hint>
+                    </mat-form-field> 
+                    <div *ngIf="showFiled('image')">
+                        <mat-radio-group required="true" (change)="choixSelectionChange()" name="choix-selection" [(ngModel)]="choixSelection">
+                            <mat-radio-button value="1">Sélection libre</mat-radio-button>
+                            <mat-radio-button value="2">Sélection du DB</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
+                    </div>
+                    
+                    <ng-container *ngIf="(showFiled('image') && choixSelection == '1') || !showFiled('image')">
+                        <mat-form-field *ngIf="showFiled('name')" class="width-400" appearance="outline">
+                            <mat-label>Nom</mat-label>
+                            <input matInput type="text"  [required]="requiredFiled('name')"  name="nom" [(ngModel)]="accueille.name" >
+                            <mat-hint *ngIf="submit && !accueille.name" class="error">Le nom est obligatoire</mat-hint>
+                        </mat-form-field>
+                        <div *ngIf="showFiled('text')">
+                            <mat-label>Texte</mat-label>
+                            <div id="texte"></div>
+                            <mat-hint *ngIf="submit && !accueille.text" class="error">Le texte est obligatoire</mat-hint>
+                        </div>
+                        <br>                    
+                        <app-image [required]="requiredFiled('image')" [submit]="submit" *ngIf="showFiled('image')" [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="{width : 100, height:200}" (action)="actionImage($event)"></app-image>
+                    </ng-container>
+                    <div *ngIf="showFiled('id_article') && choixSelection=='2'">
+                        <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
+                            <mat-label>Article</mat-label>
+                            <input disabled="true" [required]="requiredFiled('id_article') && (!accueille.id_categorie)"  matInput type="text" name="article_name" [(ngModel)]="accueille.article.name">
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="selectArticle()">
+                            <mat-icon>search</mat-icon>
+                            </button>
+                            <mat-hint *ngIf="submit && !accueille.id_article" class="error">L'article est obligatoire</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="showFiled('id_categorie')" appearance="outline">
+                            <mat-label>Catégorie</mat-label>
+                            <input disabled="true" [required]="requiredFiled('id_categorie') && (!accueille.id_article)"  matInput type="text" name="id_categorie" [(ngModel)]="accueille.categorie.name">
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="selectCategorie()">
+                            <mat-icon>search</mat-icon>
+                            </button>
+                            <mat-hint *ngIf="submit && !accueille.id_categorie" class="error">La catégorie est obligatoire</mat-hint>
+                        </mat-form-field>
+                    </div>
+            </mat-tab>
+            <mat-tab *ngIf="!modeAdd()" label="Liste details accueile">
+                <br>
+                <div class="btn-close-frm">
+                    <button (click)="addLigneAccueille()" mat-raised-button class="btn-add">
+                        <mat-icon>save</mat-icon>
+                        Ajouter
+                    </button>
                 </div>
-                <app-image  *ngIf="showFiled('image')" [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="{width : 100, height:200}" (action)="actionImage($event)"></app-image>
-            </form>
-        </mat-tab>
-        <mat-tab *ngIf="!modeAdd()" label="Liste details accueile">
-            <br>
-            <div class="btn-close-frm">
-                <button (click)="addLigneAccueille()" mat-raised-button class="btn-add">
-                    <mat-icon>save</mat-icon>
-                    Ajouter
-                </button>
-            </div>
-            <app-table [header]="header" [data]="listeLigneAccueille" (action)="action($event)"></app-table>
-        </mat-tab>
-    </mat-tab-group>
-    
-    <div class="btn-close-frm">
-        <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">
-            <mat-icon>close</mat-icon>
-            Fermer
-        </button>
-        <button (click)="save()" mat-raised-button class="save">
-            <mat-icon>save</mat-icon>
-            Enregistrer
-        </button>
-    </div>
+                <app-table [header]="header" [data]="listeLigneAccueille" (action)="action($event)"></app-table>
+            </mat-tab>
+        </mat-tab-group>
+        
+        <div class="btn-close-frm">
+            <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">
+                <mat-icon>close</mat-icon>
+                Fermer
+            </button>
+            <button (click)="save(formContent)" mat-raised-button class="save">
+                <mat-icon>save</mat-icon>
+                Enregistrer
+            </button>
+        </div>
+    </form>
 </div>

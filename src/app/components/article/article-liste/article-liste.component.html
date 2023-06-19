@@ -1,4 +1,19 @@
-<div class="card-header">Liste articles</div>
+<div class="card-header">
+    <span>
+        Liste articles
+    </span>
+    <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
+</div>
 <div class="card-content">
     <app-table [header]="header" [data]="listeArticle.listeArticle" [pager]="pager" (action)="action($event)" ></app-table>
+    <div class="btn-close-frm">
+        <button (click)="close()" mat-raised-button class="btn-close">
+            <mat-icon>close</mat-icon>
+            Fermer
+        </button>
+        <button  *ngIf="modeModale()"(click)="selectArticle()" mat-raised-button class="save">
+            <mat-icon>keyboard_return</mat-icon>
+            Choisir
+        </button>
+    </div>
 </div>

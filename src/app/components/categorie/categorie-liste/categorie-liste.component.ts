@@ -73,6 +73,14 @@ export class CategorieListeComponent implements OnInit
       this.unselectAllNode(cate);
     });
     event.node.data.selected = !event.node.data.selected;
+    if(this.modeModale())
+    {
+      var cat = new Categorie();
+      cat.id = event.node.data.id;
+      cat.name = event.node.label;
+      this.categorieService.selectedCategorie = [];
+      this.categorieService.selectedCategorie.push(cat);
+    }
   }
   openFrmCategorie(categorieMode :"Add" | "Update" | null)
   {
@@ -104,6 +112,15 @@ export class CategorieListeComponent implements OnInit
   ajouter()
   {
     this.openFrmCategorie('Add');
+  }
+  close()
+  {
+    if(this.categorieService.dialogRefCategorie)
+      this.categorieService.dialogRefCategorie.close()
+  }
+  modeModale()
+  {
+    return this.categorieService.modeModal;
   }
   supprimer()
   {
@@ -152,5 +169,12 @@ export class CategorieListeComponent implements OnInit
         }
       }
     }
+  }
+  selectCategorie()
+  {
+      if(this.categorieService.selectedCategorie && this.categorieService.selectedCategorie.length>0)
+        this.close();
+      else
+        this.generalService.openSnackBar("Veuillez sélectionner un élément",false);
   }
 }

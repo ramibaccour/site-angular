@@ -22,9 +22,9 @@ export class CategorieFormComponent implements OnInit
     if(!this.modeAdd())
     {
       if(id && id>0)
-        this.categorieService.getCategorie(id).subscribe(art =>
+        this.categorieService.getCategorie(id).subscribe(categorie =>
         {
-          this.categorie = art;
+          this.categorie = categorie;
         })
 
     }
@@ -39,7 +39,6 @@ export class CategorieFormComponent implements OnInit
   }
   save()
   {
-
     if(this.modeAdd())
       this.categorie.is_deleted = 0;
     this.categorieService.saveCategorie(this.categorie).subscribe(categorie =>
@@ -47,7 +46,14 @@ export class CategorieFormComponent implements OnInit
       if(categorie && categorie.id && categorie.id>0)
       {
         this.generalService.openSnackBar("Enregister",true)
-        this.close();
+        if(this.modeAdd())
+        {
+          this.categorie = new Categorie();
+          if( this.categorieService.idCategorie>0)
+            this.categorie.id_parent = this.categorieService.idCategorie;
+        }
+        else if(this.modeModale())
+          this.close();
       }
     })
   }

@@ -19,6 +19,7 @@ export class ImageComponent
   file;
   dialogRef
   @ViewChild('template') templateRef: TemplateRef<any>;
+  imageChoisie = false;
   addImage()
   {
     this.dialogRef = this.dialog.open(this.templateRef);
@@ -29,6 +30,10 @@ export class ImageComponent
         this.initFinecrop();
       },50)
     });
+  }
+  isRequired() : boolean
+  {
+    return this.submit && this.required && !this.imageChoisie
   }
   initFinecrop(): void 
   {
@@ -47,6 +52,7 @@ export class ImageComponent
     var srcImage = $("#imageOptimiser-"+this.index).attr("src");
     if(this.file && this.file[0] && this.file[0].files && this.file[0].files[0] && this.file[0].files[0].name)
     {
+      this.imageChoisie = true;
       this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + this.file[0].files[0].name, index: this.index})
       this.dialogRef.close();
       this.src = srcImage;

@@ -25,6 +25,7 @@ import {MomentDateModule} from '@angular/material-moment-adapter';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatRadioModule} from '@angular/material/radio';
 //------------------------End material----------------------
 //------------------------Begin Primeng----------------------
 import {OverlayPanelModule} from 'primeng/overlaypanel';
@@ -95,6 +96,7 @@ import { LigneAccueilleListeComponent } from './components/ligneAccueille/ligne-
     MatPaginatorModule,
     MatExpansionModule,
     MatTabsModule,
+    MatRadioModule,
     //------------------------End material----------------------
     
     //------------------------Begin Primeng----------------------

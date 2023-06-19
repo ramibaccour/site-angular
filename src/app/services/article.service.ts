@@ -15,7 +15,10 @@ export class ArticleService
 {
   constructor(private http: HttpClient,private generalService : GeneralService,public dialogArticle: MatDialog) { }
   idArticle : number = -1;
+  article : Article | null;
+  modeModal = false;
   dialogRefArticle;
+  selectedArticle : Article[];
   listeArticle(page,limit,articleFilter : ArticleFilter, error?): Observable<ListeArticle>
   {
     var param = {...{pager : {page,limit}}, ...{filter :articleFilter}};

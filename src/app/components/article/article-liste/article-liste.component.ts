@@ -6,6 +6,7 @@ import { ArticleService } from 'src/app/services/article.service';
 import { GeneralService } from 'src/app/services/general.service';
 import { ArticleFormComponent } from '../article-form/article-form.component';
 import { ParametreService } from 'src/app/services/parametre.service';
+import { Header } from 'src/app/entites/header';
 
 @Component({
   selector: 'app-article-liste',
@@ -25,7 +26,7 @@ export class ArticleListeComponent implements OnInit
     tabSize : this.tabSize
   }
   articleFilter = new ArticleFilter(0,new DateFilter(),new DateFilter());//this.getNewArticleFilter()
-  header;
+  header : Header;
   ngOnInit() 
   {
     this.getHeadArticle();
@@ -38,12 +39,17 @@ export class ArticleListeComponent implements OnInit
       if(param && param.id)
       {
         var header = JSON.parse(param.value? param.value : "");
-        header.fields = header.fields.filter(field =>{return field.show && field.active});
+        header.fields = header.fields.filter(field =>{return field.show});
         var fieldDebut_promo = header.fields.find(field => {return field.name == "debut_promo"});
         if(fieldDebut_promo)
         {
           fieldDebut_promo.filter.value.start = this.articleFilter.debut_promoFilter.start
           fieldDebut_promo.filter.value.end = this.articleFilter.debut_promoFilter.end
+        }
+        if(this.modeModale())
+        {
+          header.fields = header.fields.filter(f =>{return f.name != "action"})
+          header.selectable = "unique";
         }
         this.header = header;
       }
@@ -96,6 +102,10 @@ export class ArticleListeComponent implements OnInit
         this.deleteArticle(event)
       }
     }    
+    if(event.action == "list" || event.action == "unique")
+    {
+      this.articleService.selectedArticle = event.selectedElement;
+    }
   }
   editArtile(id)
   {
@@ -116,5 +126,21 @@ export class ArticleListeComponent implements OnInit
       this.generalService.openSnackBar(btnDel? "Supprimer" : "Restaurer",true);
     };
     this.generalService.deleteElement("/delete-article/" + event.row["id"],fn,event.component.icon);
+  }
+  close()
+  {
+    if(this.articleService.dialogRefArticle)
+      this.articleService.dialogRefArticle.close()
+  }
+  modeModale()
+  {
+    return this.articleService.modeModal;
+  }
+  selectArticle()
+  {
+      if(this.articleService.selectedArticle && this.articleService.selectedArticle.length>0)
+        this.close();
+      else
+        this.generalService.openSnackBar("Veuillez sélectionner un élément",false);
   }
 }

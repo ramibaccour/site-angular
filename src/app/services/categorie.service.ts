@@ -16,6 +16,9 @@ export class CategorieService
     idCategorie : number = -1;
     categorieMode : "Add" | "Update" | null;
     dialogRefCategorie;
+    selectedCategorie : Categorie[];
+    categorie : Categorie | null;
+    modeModal = false;
     listeCategorie(categorieFilter : CategorieFilter,error?): Observable<Categorie[]>
     {
       return this.http.post<any>(this.generalService.url + "/liste-categorie", categorieFilter)

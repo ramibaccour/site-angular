@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output,  EventEmitter, ViewEncapsulation  } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser'
 import * as moment from 'moment';
 @Component({

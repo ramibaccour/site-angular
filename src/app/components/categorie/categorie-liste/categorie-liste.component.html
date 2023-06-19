@@ -1,4 +1,9 @@
-<div class="card-header">Liste catégories</div>
+<div class="card-header">
+    <span>
+        Liste catégories
+    </span>
+    <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
+</div>
 <div class="card-content">
     <p-tree #tree [value]="categorieTree" [selectionMode]="'single'" (onNodeSelect)="onNodeSelect($event)" [(selection)]="selectedNode" >
         <ng-template let-node pTemplate="default">
@@ -19,6 +24,10 @@
         <button (click)="ajouter()" mat-raised-button class="btn-add">
             <mat-icon>edit</mat-icon>
             Ajouter
+        </button>
+        <button  *ngIf="modeModale()"(click)="selectCategorie()" mat-raised-button class="save">
+            <mat-icon>keyboard_return</mat-icon>
+            Choisir
         </button>
     </div>
 </div>

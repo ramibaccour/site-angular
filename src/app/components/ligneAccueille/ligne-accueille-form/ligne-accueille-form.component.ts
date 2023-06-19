@@ -4,6 +4,12 @@ import { LigneAccueilleService } from 'src/app/services/ligneAccueille.service';
 import { LigneAccueille } from 'src/app/entites/ligneAccueil';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { Field } from 'src/app/entites/field';
+import { ArticleService } from 'src/app/services/article.service';
+import { CategorieService } from 'src/app/services/categorie.service';
+import { CategorieListeComponent } from '../../categorie/categorie-liste/categorie-liste.component';
+import { ArticleListeComponent } from '../../article/article-liste/article-liste.component';
+import { Categorie } from 'src/app/entites/categorie';
+import { Article } from 'src/app/entites/article';
 declare var $;
 declare var Quill;
 @Component({
@@ -16,6 +22,8 @@ export class LigneAccueilleFormComponent implements OnInit
   constructor (
     private generalService : GeneralService, 
     private parametreService : ParametreService,
+    private articleService : ArticleService,
+    private categorieService : CategorieService,
     private ligneAccueilleService : LigneAccueilleService){}
   ligneAccueille = new LigneAccueille();
   submit = false;
@@ -23,6 +31,7 @@ export class LigneAccueilleFormComponent implements OnInit
   image : {src : string, name : string, index: number,file : File | null};
   fieldsLigneAccueille : Field[] = new Array();
   texte : String;
+  choixSelection:string;
   ngOnInit() 
   {
     this.getHeadLigneAccueille();
@@ -41,7 +50,7 @@ export class LigneAccueilleFormComponent implements OnInit
       //mode edit
       if(!this.modeAdd())
       {
-        this.getLigneAccueille(this.ligneAccueilleService.accueille? this.ligneAccueilleService.accueille.id :0)
+        this.getLigneAccueille(this.ligneAccueilleService.ligneAccueille? this.ligneAccueilleService.ligneAccueille.id :0)
       }
     })
   }
@@ -70,15 +79,20 @@ export class LigneAccueilleFormComponent implements OnInit
   
   getLigneAccueille(id)
   {
-    this.ligneAccueilleService.getLigneAccueille(id).subscribe(ligneAccueille =>
-    {
-      this.ligneAccueille = ligneAccueille;
-      setTimeout(()=>
+    if(id>0)
+      this.ligneAccueilleService.getLigneAccueille(id).subscribe(ligneAccueille =>
       {
-        this.initQuil();
-        this.setData(this.texte,this.ligneAccueille.text)
-      },50)
-    })
+        this.ligneAccueille = ligneAccueille;
+        if(!this.ligneAccueille.article)
+          this.ligneAccueille.article = new Article();
+        if(!this.ligneAccueille.categorie)
+          this.ligneAccueille.categorie = new Categorie();
+        setTimeout(()=>
+        {
+          this.initQuil();
+          this.setData(this.texte,this.ligneAccueille.text)
+        },50)
+      })
   }
   initQuil()
   {
@@ -138,8 +152,56 @@ export class LigneAccueilleFormComponent implements OnInit
   {
     if(this.ligneAccueille.id && this.ligneAccueille.id>0)
       return false;
-    else if(this.ligneAccueilleService.accueille && this.ligneAccueilleService.accueille.id && this.ligneAccueilleService.accueille.id >0)
+    else if(this.ligneAccueilleService.ligneAccueille && this.ligneAccueilleService.ligneAccueille.id && this.ligneAccueilleService.ligneAccueille.id >0)
       return false;
     return true;
+  }
+  selectArticle()
+  {
+    this.articleService.selectedArticle = new Array();
+    this.articleService.modeModal = true;
+    this.articleService.dialogRefArticle = this.articleService.dialogArticle.open(ArticleListeComponent,{height: '80%', width: '80%'    })
+    this.articleService.dialogRefArticle.afterClosed().subscribe(result => 
+    {
+      if(this.articleService.selectedArticle  && this.articleService.selectedArticle.length>0)
+      {
+        this.ligneAccueille.article = this.articleService.selectedArticle[0];
+        this.ligneAccueille.id_article = this.articleService.selectedArticle[0].id;
+
+      }
+      this.articleService.modeModal = false;
+    });
+  }
+  selectCategorie()
+  {
+    this.categorieService.selectedCategorie = new Array();
+    this.categorieService.modeModal = true;
+    this.categorieService.dialogRefCategorie = this.categorieService.dialogCategorie.open(CategorieListeComponent,{height: '80%', width: '80%'    })
+    this.categorieService.dialogRefCategorie.afterClosed().subscribe(result => 
+    {
+      if(this.categorieService.selectedCategorie  && this.categorieService.selectedCategorie.length>0)
+      {
+        this.ligneAccueille.categorie = this.categorieService.selectedCategorie[0];
+        this.ligneAccueille.id_categorie = this.categorieService.selectedCategorie[0].id;
+      }
+      this.categorieService.modeModal = false;
+    });
+  }
+  choixSelectionChange()
+  {
+    setTimeout(()=>
+    {
+      this.initQuil()
+    },50)
+  }
+  requiredFiled(name : string) : boolean
+  {
+    if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
+    {
+      var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
+      if(myField && myField.required)
+        return true;
+    }    
+    return false
   }
 }
