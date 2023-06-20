@@ -6,30 +6,40 @@
 </div>
 <div class="card-content">
     <form *ngIf="fields && fields.length>0" #formContent="ngForm">
-        <div *ngIf="showFiled('name')">
-            <mat-form-field class="width-400" appearance="outline">
-                <mat-label>Nom</mat-label>
-                <input matInput type="text" name="nom" [(ngModel)]="article.name" >
-                <mat-hint *ngIf="submit && !article.name" class="error">Le nom est obligatoire</mat-hint>
-            </mat-form-field>
-        </div>
-        <div  *ngIf="showFiled('description')">
-            <mat-label>Déscription</mat-label>
-            <div id="description"></div>
-        </div>
-        <br>
-        <div  *ngIf="showFiled('full_description')">
-            <mat-label>Déscription compléte</mat-label>
-            <div id="full_description"></div>
-        </div>
-        <br>        
-        <div *ngIf="showFiled('price')">
-            <mat-form-field class="width-400" appearance="outline">
-                <mat-label>Prix</mat-label>
-                <input matInput type="text" name="price" [(ngModel)]="article.price" >
-                <mat-hint *ngIf="submit && !article.price" class="error">Le prix est obligatoire</mat-hint>
-            </mat-form-field>
-        </div>
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <mat-tab label="Formulaire">
+                <br>
+                <div *ngIf="showFiled('name')">
+                    <mat-form-field class="width-400" appearance="outline">
+                        <mat-label>Nom</mat-label>
+                        <input matInput type="text" name="nom" [(ngModel)]="article.name" >
+                        <mat-hint *ngIf="submit && !article.name" class="error">Le nom est obligatoire</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div  *ngIf="showFiled('description')">
+                    <mat-label>Déscription</mat-label>
+                    <div id="description"></div>
+                </div>
+                <br>
+                <div  *ngIf="showFiled('full_description')">
+                    <mat-label>Déscription compléte</mat-label>
+                    <div id="full_description"></div>
+                </div>
+                <br>        
+                <div *ngIf="showFiled('price')">
+                    <mat-form-field class="width-400" appearance="outline">
+                        <mat-label>Prix</mat-label>
+                        <input matInput type="text" name="price" [(ngModel)]="article.price" >
+                        <mat-hint *ngIf="submit && !article.price" class="error">Le prix est obligatoire</mat-hint>
+                    </mat-form-field>
+                </div>
+            </mat-tab>
+            <mat-tab label="Liste images">
+                <br>
+                
+            </mat-tab>
+        </mat-tab-group>
+        
     </form>
     <div class="btn-close-frm">
         <button (click)="close()" *ngIf="modeModale()" mat-raised-button class="btn-close">

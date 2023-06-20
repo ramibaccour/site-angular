@@ -52,6 +52,11 @@ export class LigneAccueilleFormComponent implements OnInit
       {
         this.getLigneAccueille(this.ligneAccueilleService.ligneAccueille? this.ligneAccueilleService.ligneAccueille.id :0)
       }
+      else
+      {
+          this.ligneAccueille.article = new Article();
+          this.ligneAccueille.categorie = new Categorie();
+      }
     })
   }
   showFiled(name : string) : boolean

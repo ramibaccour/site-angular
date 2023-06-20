@@ -204,7 +204,7 @@ export class GeneralService
     }          
     return [0,0];
   }
-  error =  ()=>
+  error =  (e)=>
   {
     this.showSpinner = false;
     this.openSnackBar("Erreur inattendue veuillez réessayer", false)

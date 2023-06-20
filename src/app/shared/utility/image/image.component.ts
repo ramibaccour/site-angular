@@ -22,7 +22,7 @@ export class ImageComponent
   imageChoisie = false;
   addImage()
   {
-    this.dialogRef = this.dialog.open(this.templateRef);
+    this.dialogRef = this.dialog.open(this.templateRef, {panelClass : "fullscreen-dialog" });
     this.dialogRef.afterOpened().subscribe(result => 
     {
       setTimeout(()=>

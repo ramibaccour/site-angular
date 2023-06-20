@@ -5,8 +5,8 @@ import { GeneralService } from 'src/app/services/general.service';
 import { AccueilleFormComponent } from '../accueille-form/accueille-form.component';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { Accueille } from 'src/app/entites/accueille';
-import { TypeAccueilleService } from 'src/app/services/typeAccueille.service';
-import { TypeAccueille } from 'src/app/entites/typeAccueille';
+import { AccueilTypeService } from 'src/app/services/accueilType.service';
+import { AccueilType } from 'src/app/entites/accueilType';
 import { Header } from 'src/app/entites/header';
 import { LigneAccueilleService } from 'src/app/services/ligneAccueille.service';
 import { LigneAccueilleFormComponent } from '../../ligneAccueille/ligne-accueille-form/ligne-accueille-form.component';
@@ -21,11 +21,11 @@ export class AccueilleListeComponent implements OnInit
                 private generalService : GeneralService, 
                 private parametreService : ParametreService,
                 private ligneAccueilleService : LigneAccueilleService,
-                private typeAccueilleService : TypeAccueilleService){}
+                private typeAccueilleService : AccueilTypeService){}
   listeAccueille : Accueille[];
   accueilleFilter = new AccueilleFilter();
   header : Header;
-  listeTypeAccueille : TypeAccueille[]
+  listeTypeAccueille : AccueilType[]
   ngOnInit() 
   {
     this.accueilleFilter.is_deleted = 0;

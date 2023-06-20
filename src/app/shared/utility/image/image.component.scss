@@ -22,15 +22,20 @@
 .cropButtons img {width: 25px;}
 /* input styles */
 
-.flex-space-between
-{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 .inputtools
 {
     display: flex;
     margin-bottom: 10px;
 }
 .cropHolder {width: 100vw; height: 100vh; display: none;}
+.my-cropWrapper
+{
+    position: absolute; 
+    top:0; 
+    left:0; 
+    right: 0; 
+    bottom: 0; 
+    margin: auto; 
+    width: 100vw; 
+    height: 100vh; 
+}

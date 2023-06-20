@@ -3,7 +3,8 @@
     $.fn.finecrop = function (options) 
     {
 
-        var defaults = {
+        var defaults = 
+        {
             viewHeight: 0,
             cropWidth: 200,
             cropHeight: 200,
@@ -12,6 +13,25 @@
             zoomValue: 10,
             index  : 0
         };
+        // options.cropWidth    options.cropHeight 
+        var zoomWidth = 0;
+        var zoomHeight = 0;
+        var myZoom = 100;
+        var a,b,x,y;
+        a = 90/(100/window.screen.width);
+        b = 90/(100/window.screen.height)
+        
+        if(options.cropWidth > a)
+            zoomWidth = options.cropWidth - a;
+        if(options.cropHeight > b)
+            zoomHeight = options.cropHeight - b;
+        
+        x= (zoomWidth * (100/options.cropWidth));
+        y= (zoomHeight * (100/options.cropHeight))
+        if(zoomWidth > zoomHeight)
+            myZoom = 100 - x;
+        if(zoomWidth < zoomHeight)
+            myZoom = 100 - y;
         var settings = $.extend({}, defaults, options);
         return this.each(function () 
         {
@@ -51,6 +71,7 @@
                  * Third: 2nd canvas, where image will get cropped 
                  */
                 var cropContainer = $("#cropWrapper-" + settings.index);
+                cropContainer.attr("style","zoom : " + myZoom+"%");
                 var bgcanvas = document.createElement("canvas");
                 bgcanvas.id = "bgCanvas-" + settings.index;
                 bgcanvas.style.border = '1px solid #000';
@@ -60,6 +81,7 @@
                 bgcanvas.style.right = "0";
                 bgcanvas.style.bottom = "0";
                 bgcanvas.style.margin = "auto";
+                bgcanvas.style.zoom = myZoom+"%";
                 $(cropContainer).append(bgcanvas);
 
                 // black sheet div
@@ -74,6 +96,7 @@
                 blacksheet.style.backgroundColor = "rgba(0,0,0,0.7)";
                 blacksheet.style.width = "100%";
                 blacksheet.style.height = "100%";
+                blacksheet.style.zoom = myZoom+"%";
                 $(cropContainer).append(blacksheet);
 
                 // cropped canvas
@@ -88,6 +111,7 @@
                 getCropped.style.right = "0";
                 getCropped.style.bottom = "0";
                 getCropped.style.margin = "auto";
+                getCropped.style.zoom = myZoom+"%";
                 $(cropContainer).append(getCropped);
 
 

@@ -43,6 +43,11 @@
                 <mat-hint *ngIf="submit && !ligneAccueille.id_categorie" class="error">La catégorie est obligatoire</mat-hint>
             </mat-form-field>
         </div>
+        <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
+            <mat-label>Ordre</mat-label>
+            <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="ligneAccueille.ordre" >
+            <mat-hint *ngIf="submit && !ligneAccueille.ordre" class="error">Le prix est obligatoire</mat-hint>
+        </mat-form-field>
     </form>
     <div class="btn-close-frm">
         <button (click)="close()" mat-raised-button class="btn-close">

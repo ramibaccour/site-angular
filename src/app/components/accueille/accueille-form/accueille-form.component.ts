@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Accueille } from 'src/app/entites/accueille';
 import { GeneralService } from 'src/app/services/general.service';
 import { AccueilleService } from 'src/app/services/accueille.service';
-import { TypeAccueille } from 'src/app/entites/typeAccueille';
-import { TypeAccueilleService } from 'src/app/services/typeAccueille.service';
+import { AccueilType } from 'src/app/entites/accueilType';
+import { AccueilTypeService } from 'src/app/services/accueilType.service';
 import { LigneAccueilleFilter } from 'src/app/entites/ligneAccueilleFilter';
 import { Header } from 'primeng/api';
 import { LigneAccueille } from 'src/app/entites/ligneAccueil';
@@ -34,11 +34,11 @@ export class AccueilleFormComponent implements OnInit
     private accueilleService : AccueilleService,
     private parametreService : ParametreService, 
     private ligneAccueilleService : LigneAccueilleService,
-    private typeAccueilleService : TypeAccueilleService){}
+    private typeAccueilleService : AccueilTypeService){}
   accueille = new Accueille();
   submit = false;
   full_description;
-  listeTypeAccueille : TypeAccueille[];
+  listeAccueilleType : AccueilType[];
   formData = new FormData();
   image : {src : string, name : string, index: number,file : File | null};
   ligneAccueilleFilter = new LigneAccueilleFilter();
@@ -47,6 +47,7 @@ export class AccueilleFormComponent implements OnInit
   fieldsAccueille : Field[] = new Array();
   texte;
   choixSelection:string;
+  resolution : {width : number, height:number};
   ngOnInit() 
   {
     this.getHeadAccueille();    
@@ -65,6 +66,14 @@ export class AccueilleFormComponent implements OnInit
   {
     this.accueille.article = new Article();
     this.accueille.categorie = new Categorie();
+    var type = this.listeAccueilleType.find(type =>{return type.id == this.accueille.id_accueil_type})
+    if(type)
+    {
+      var tab = type.resolution.resolution.split("_");
+      var width = parseInt(tab[0]);
+      var height = parseInt(tab[1]);
+      this.resolution = {width, height}
+    }
     setTimeout(()=>
     {
       this.initQuil()
@@ -86,7 +95,7 @@ export class AccueilleFormComponent implements OnInit
   {
     this.typeAccueilleService.getTypeAccueille().subscribe(typeAccueille =>
     {
-      this.listeTypeAccueille = typeAccueille;
+      this.listeAccueilleType = typeAccueille;
     })
   }
   getAccueille(id)
