@@ -1,5 +1,4 @@
-import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 declare var $;
 @Component({
@@ -7,12 +6,15 @@ declare var $;
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements AfterViewInit {
 
   constructor(public generalService : GeneralService) { }
   setColor
-  ngOnInit() 
+  ngAfterViewInit() 
   {
-    
+    setTimeout(()=>
+    {
+      this.generalService.setWidthBodyContent()
+    },50)
   }
 }

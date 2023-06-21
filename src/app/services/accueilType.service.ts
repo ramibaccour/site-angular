@@ -9,9 +9,9 @@ import { AccueilType } from "../entites/accueilType";
 export class AccueilTypeService
 {
     constructor(private http: HttpClient,private generalService : GeneralService) { }
-    getTypeAccueille(error?) : Observable<AccueilType[]>
+    getListeAccueilleType(error?) : Observable<AccueilType[]>
     {
-      return this.http.get<any>(this.generalService.url + "/type-accueille")
+      return this.http.get<any>(this.generalService.url + "/liste-accueille-type")
       .pipe(catchError(error? error: this.generalService.error))  
     }
 }

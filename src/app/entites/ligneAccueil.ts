@@ -4,5 +4,6 @@ import { Resolution } from "./resolution";
 export class LigneAccueille extends baseAccueille
 {
     id_accueil :number;
-    listeResolution : Resolution[]
+    listeResolution : Resolution[];
+    id_parent : number;
 }

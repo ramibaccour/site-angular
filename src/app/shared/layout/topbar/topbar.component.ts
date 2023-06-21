@@ -14,17 +14,13 @@ export class TopbarComponent implements OnInit
   ngOnInit() 
   {
   }   
-  doMenu()
+  setMenu()
   {
     if ($(window).width() >= 681)
-    {
       this.generalService.showMenu = !this.generalService.showMenu;
-    }
     else
-    {
       this.showMenu = !this.showMenu;
-
-    }
+    this.generalService.setWidthBodyContent();
   }
   profile()
   {

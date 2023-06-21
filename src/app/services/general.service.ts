@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../entites/user';
 import { DialogComponent } from '../shared/utility/dialog/dialog.component';
-// declare var ol;
+declare var $;
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +32,20 @@ export class GeneralService
   {
     this.showSpinner = false;
     this.openSnackBar("Erreur Inattendu",false);
+  }
+  setWidthBodyContent() 
+  {
+    if ($(window).width() >= 681)
+    {
+      if(this.showMenu)
+        $("#body-content").attr("style","width : calc(100% - 250px)")
+      else
+        $("#body-content").attr("style","width : 100%")
+    }
+    else
+    {
+      $("#body-content").attr("style","width : 100%")
+    }
   }
   httpPost(object,url, fn,error?)
   {

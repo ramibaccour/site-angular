@@ -42,6 +42,7 @@ export class TableComponent implements OnInit
   {
     this._header = value;
     this.sortHeader();
+    this.onResized({target : {innerWidth : window.innerWidth}});
   }
   @Input() set footer(value) 
   {

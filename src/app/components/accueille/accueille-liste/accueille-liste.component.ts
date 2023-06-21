@@ -33,7 +33,7 @@ export class AccueilleListeComponent implements OnInit
   }
   getTypeAccueille()
   {
-    this.typeAccueilleService.getTypeAccueille().subscribe(typeAccueille =>
+    this.typeAccueilleService.getListeAccueilleType().subscribe(typeAccueille =>
     {
       this.listeTypeAccueille = typeAccueille;
       if(this.header)

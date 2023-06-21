@@ -4,7 +4,7 @@
 {
     --color: #9002fb;
     --heigth-topbar : 72px;
-    --width-menu : 250px;
+    // --width-menu : 250px;
 }
 body
 {
@@ -103,24 +103,40 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     justify-content: flex-end;
     column-gap: 10px;
 }
-.width-400
+
+@media screen and (max-width: 560px)
 {
-    width: 400px;
+    .width-100, .width-200, .width-300, .width-400
+    {
+        width: 100%;
+    }
 }
-.width-500
+@media screen and (min-width: 561px)
 {
-    width: 500px;
+    .width-100
+    {
+        width: 100px;
+    }
+    .width-200
+    {
+        width: 200px;
+    }
+    .width-300
+    {
+        width: 300px;
+    }
+    .width-400
+    {
+        width: 400px;
+    }
 }
-.width-800
-{
-    width: 800px;
-}
+
 .fullscreen-dialog 
 {
-    max-width: 100% !important;
-    max-height: 100% !important;
-    width: 100%;
-    height: 100%;
+    max-width: 90% !important;
+    max-height: 90% !important;
+    width: 90%;
+    height: 90%;
 }
 .add-image
 {

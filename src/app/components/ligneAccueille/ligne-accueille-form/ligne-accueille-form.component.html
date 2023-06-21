@@ -6,15 +6,20 @@
 </div>
 <div class="card-content">
     <form #formContent="ngForm">  
-        <div *ngIf="showFiled('image')">
+        <ng-container *ngIf="showFiled('image')">
             <mat-radio-group required="true" (change)="choixSelectionChange()" name="choix-selection" [(ngModel)]="choixSelection">
                 <mat-radio-button value="1">Sélection libre</mat-radio-button>
                 <mat-radio-button value="2">Sélection du DB</mat-radio-button>
             </mat-radio-group>
             <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
-        </div>  
-        <ng-container *ngIf="(showFiled('image') && choixSelection == '1') || !showFiled('image')">
-            <mat-form-field *ngIf="showFiled('name')" class="width-400" appearance="outline">
+        </ng-container>  
+        <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
+            <mat-label>Ordre</mat-label>
+            <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="ligneAccueille.ordre" >
+            <mat-hint *ngIf="submit && !ligneAccueille.ordre" class="error">Le prix est obligatoire</mat-hint>
+        </mat-form-field>
+        <div *ngIf="(showFiled('image') && choixSelection == '1') || !showFiled('image')">
+            <mat-form-field *ngIf="showFiled('name')" class="width-200" appearance="outline">
                 <mat-label>Nom</mat-label>
                 <input matInput type="text" name="nom" [(ngModel)]="ligneAccueille.name" >
                 <mat-hint *ngIf="submit && !ligneAccueille.name" class="error">Le nom est obligatoire</mat-hint>
@@ -24,7 +29,7 @@
                 <div id="texte"></div>
             </div>
             <app-image *ngIf="showFiled('image')" [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="{width : 100, height:200}" (action)="actionImage($event)"></app-image>
-        </ng-container>
+        </div>
         <div *ngIf="showFiled('id_article') && choixSelection=='2'">
             <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
                 <mat-label>Article</mat-label>
@@ -43,11 +48,6 @@
                 <mat-hint *ngIf="submit && !ligneAccueille.id_categorie" class="error">La catégorie est obligatoire</mat-hint>
             </mat-form-field>
         </div>
-        <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
-            <mat-label>Ordre</mat-label>
-            <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="ligneAccueille.ordre" >
-            <mat-hint *ngIf="submit && !ligneAccueille.ordre" class="error">Le prix est obligatoire</mat-hint>
-        </mat-form-field>
     </form>
     <div class="btn-close-frm">
         <button (click)="close()" mat-raised-button class="btn-close">

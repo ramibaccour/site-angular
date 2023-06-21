@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { GeneralService } from 'src/app/services/general.service';
 declare var $;
@@ -7,104 +7,74 @@ declare var $;
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit 
+export class MenuComponent   
 {
   constructor(public generalService : GeneralService) { }
-  menu: MenuItem[];
-  ngOnInit(): void 
-  {
-    this.menu = 
-    [
-      {
-        label: 'Article',
-        icon:'pi pi-fw pi-pencil',
-        items: 
-        [
-            {
-                label: 'Ajouter',
-                icon:'pi pi-fw pi-align-left',
-                routerLink : "/article/formulaire"
-            },
-            {
-                label: 'Liste',
-                icon:'pi pi-fw pi-align-right',
-                routerLink : "/article/liste"
-            }
-        ]
-      },
-      {
-        label: 'Catégorie',
-        icon:'pi pi-fw pi-pencil',
-        items: 
-        [
-            {
-                label: 'Ajouter',
-                icon:'pi pi-fw pi-align-left',
-                routerLink : "/categorie/formulaire"
-            },
-            {
-                label: 'Liste',
-                icon:'pi pi-fw pi-align-right',
-                routerLink : "/categorie/liste"
-            }
-        ]
-      },
-      {
-        label: 'Accueil',
-        icon:'pi pi-fw pi-pencil',
-        items: 
-        [
-            {
-                label: 'Ajouter',
-                icon:'pi pi-fw pi-align-left',
-                routerLink : "/accueille/formulaire"
-            },
-            {
-                label: 'Liste',
-                icon:'pi pi-fw pi-align-right',
-                routerLink : "/accueille/liste"
-            }
-        ]
-      },
-      {
-        label: 'Paramétre',
-        icon:'pi pi-fw pi-pencil',
-        items: 
-        [ 
+  menu: MenuItem[]= 
+  [
+    {
+      label: 'Article',
+      icon:'pi pi-fw pi-pencil',
+      items: 
+      [
+          {
+              label: 'Ajouter',
+              icon:'pi pi-fw pi-align-left',
+              routerLink : "/article/formulaire"
+              
+          },
           {
               label: 'Liste',
               icon:'pi pi-fw pi-align-right',
-              routerLink : "/parametre/liste"
+              routerLink : "/article/liste"
           }
-        ]
-      }
-    ]
-  }
-  
-  getParentNode()
-  {
-    return this.generalService.leftMenu.filter(menu => { return this.generalService.isEmpty(menu.idParent)} )
-  }
-  getSubParentNode(menuParent)
-  {
-    return this.generalService.leftMenu.filter(menu =>  {return menuParent.id == menu.idParent})
-  }
-  goToMenu(menu)
-  {
-    if(this.getSubParentNode(menu).length == 0)
+      ]
+    },
     {
-      this.generalService.leftMenu.forEach(m => 
-      {
-        m.selected = false;
-      });
-      menu.selected = true;      
+      label: 'Catégorie',
+      icon:'pi pi-fw pi-pencil',
+      items: 
+      [
+          {
+              label: 'Ajouter',
+              icon:'pi pi-fw pi-align-left',
+              routerLink : "/categorie/formulaire"
+          },
+          {
+              label: 'Liste',
+              icon:'pi pi-fw pi-align-right',
+              routerLink : "/categorie/liste"
+          }
+      ]
+    },
+    {
+      label: 'Accueil',
+      icon:'pi pi-fw pi-pencil',
+      items: 
+      [
+          {
+              label: 'Ajouter',
+              icon:'pi pi-fw pi-align-left',
+              routerLink : "/accueille/formulaire"
+          },
+          {
+              label: 'Liste',
+              icon:'pi pi-fw pi-align-right',
+              routerLink : "/accueille/liste"
+          }
+      ]
+    },
+    {
+      label: 'Paramétre',
+      icon:'pi pi-fw pi-pencil',
+      items: 
+      [ 
+        {
+            label: 'Liste',
+            icon:'pi pi-fw pi-align-right',
+            routerLink : "/parametre/liste"
+        }
+      ]
     }
-    else
-      menu.open = !menu.open
-    if(menu.routerLink && menu.routerLink.length>0)
-    {
-      this.generalService.router.navigate(menu.routerLink)
-
-    }    
-  }
+  ];
 }

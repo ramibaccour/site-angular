@@ -49,7 +49,6 @@ import { AccueilleListeComponent } from './components/accueille/accueille-liste/
 import { AccueilleFormComponent } from './components/accueille/accueille-form/accueille-form.component';
 import {HomeComponent} from './components/home/home.component';
 import { LigneAccueilleFormComponent } from './components/ligneAccueille/ligne-accueille-form/ligne-accueille-form.component';
-import { LigneAccueilleListeComponent } from './components/ligneAccueille/ligne-accueille-liste/ligne-accueille-liste.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,8 +67,7 @@ import { LigneAccueilleListeComponent } from './components/ligneAccueille/ligne-
     AccueilleListeComponent,
     AccueilleFormComponent,
     HomeComponent,
-    LigneAccueilleFormComponent,
-    LigneAccueilleListeComponent
+    LigneAccueilleFormComponent
   ],
   imports: [
     ReactiveFormsModule,

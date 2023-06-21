@@ -17,6 +17,11 @@
                             </mat-option>
                         </mat-select>
                         <mat-hint *ngIf="submit && !accueille.id_accueil_type" class="error">Le type est obligatoire</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
+                        <mat-label>Ordre</mat-label>
+                        <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="accueille.ordre" >
+                        <mat-hint *ngIf="submit && !accueille.ordre" class="error">Le prix est obligatoire</mat-hint>
                     </mat-form-field> 
                     <div *ngIf="showFiled('image')">
                         <mat-radio-group required="true" (change)="choixSelectionChange()" name="choix-selection" [(ngModel)]="choixSelection">
@@ -27,7 +32,7 @@
                     </div>
                     
                     <ng-container *ngIf="(showFiled('image') && choixSelection == '1') || !showFiled('image')">
-                        <mat-form-field *ngIf="showFiled('name')" class="width-400" appearance="outline">
+                        <mat-form-field *ngIf="showFiled('name')" class="width-200" appearance="outline">
                             <mat-label>Nom</mat-label>
                             <input matInput type="text"  [required]="requiredFiled('name')"  name="nom" [(ngModel)]="accueille.name" >
                             <mat-hint *ngIf="submit && !accueille.name" class="error">Le nom est obligatoire</mat-hint>
@@ -58,11 +63,6 @@
                             <mat-hint *ngIf="submit && !accueille.id_categorie" class="error">La catégorie est obligatoire</mat-hint>
                         </mat-form-field>
                     </div>
-                    <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
-                        <mat-label>Ordre</mat-label>
-                        <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="accueille.ordre" >
-                        <mat-hint *ngIf="submit && !accueille.ordre" class="error">Le prix est obligatoire</mat-hint>
-                    </mat-form-field>
             </mat-tab>
             <mat-tab *ngIf="!modeAdd()" label="Liste details accueile">
                 <br>

@@ -93,7 +93,7 @@ export class AccueilleFormComponent implements OnInit
   }
   getTypeAccueille()
   {
-    this.typeAccueilleService.getTypeAccueille().subscribe(typeAccueille =>
+    this.typeAccueilleService.getListeAccueilleType().subscribe(typeAccueille =>
     {
       this.listeAccueilleType = typeAccueille;
     })
@@ -106,6 +106,14 @@ export class AccueilleFormComponent implements OnInit
       this.accueilleService.getAccueille(id).subscribe(accueille =>
       {
         this.accueille = accueille;
+        var type = this.listeAccueilleType.find(type =>{return type.id == this.accueille.id_accueil_type})
+        if(type)
+        {
+          var tab = type.resolution.resolution.split("_");
+          var width = parseInt(tab[0]);
+          var height = parseInt(tab[1]);
+          this.resolution = {width, height}
+        }
         if(!this.accueille.article)
           this.accueille.article = new Article();
         if(!this.accueille.categorie)
@@ -205,6 +213,7 @@ export class AccueilleFormComponent implements OnInit
       }  
       this.accueilleService.saveAccueille(accueille).subscribe(accueille =>
       {
+        this.submit = false;
         if(accueille && accueille.id && accueille.id>0)
         {
           this.generalService.openSnackBar("Enregister",true);        

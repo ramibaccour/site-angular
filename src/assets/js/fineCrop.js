@@ -38,6 +38,7 @@
             var $obj = $(this);
             $($obj).change(function () 
             {
+                $("#action-" + settings.index).hide();
                 if (this.files && this.files[0]) 
                 {
                     var reader = new FileReader();
@@ -167,7 +168,9 @@
                     getImgRef();
                     bgCanvas(lValue, tValue);
                 }
-                document.getElementById("cropSubmit-" + settings.index).onclick = function () {
+                document.getElementById("cropSubmit-" + settings.index).onclick = function () 
+                {
+                    $("#action-" + settings.index).show();
                     $("#" + settings.cropOutput).attr('src', getCropped.toDataURL());
                     $(bgcanvas).remove();
                     $(blacksheet).remove();

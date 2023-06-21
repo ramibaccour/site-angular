@@ -4,6 +4,7 @@
 <img (click)="addImage()" [src]="src" class="add-image">
 <br>
 <mat-hint *ngIf="isRequired()" class="error">L'image' est obligatoire</mat-hint>
+<br>
 <input type="file" id="upphoto-{{index}}" style="display:none;">
 <img style="display: none" id="imageOptimiser-{{index}}">   
 <ng-template #template>
@@ -13,13 +14,13 @@
             Cliquez ici pour télécharger une image
             </div>
         </label>
-        <img id="croppedImg-{{index}}" style="border:1px solid #000; margin:auto;">
-        <div class="flex-end">
+        <img id="croppedImg-{{index}}" style="border:1px solid #000; margin:auto;max-width: calc(100% - 10%);">
+        <div id="action-{{index}}" class="flex-end">
             <button (click)="save()" mat-raised-button class="save">
                 <mat-icon>check</mat-icon>
                 Choisir
             </button>&nbsp;
-            <button mat-raised-button class="failure">
+            <button (click)="dialogRef.close()" mat-raised-button class="failure">
                 <mat-icon>close</mat-icon>
                 Annuler
             </button>        
@@ -27,7 +28,7 @@
        
         <div class="cropHolder">
             <div class="my-cropWrapper" id="cropWrapper-{{index}}">
-                <img id="inputImage-{{index}}" src="assets/images/face.jpg">
+                <img id="inputImage-{{index}}" src="assets/images/add-image.png">
             </div>
             <div class="cropInputs">
                 <div class="inputtools">
