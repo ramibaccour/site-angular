@@ -5,7 +5,6 @@ import { AccueilleService } from 'src/app/services/accueille.service';
 import { AccueilType } from 'src/app/entites/accueilType';
 import { AccueilTypeService } from 'src/app/services/accueilType.service';
 import { LigneAccueilleFilter } from 'src/app/entites/ligneAccueilleFilter';
-import { Header } from 'primeng/api';
 import { LigneAccueille } from 'src/app/entites/ligneAccueil';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { LigneAccueilleService } from 'src/app/services/ligneAccueille.service';
@@ -18,6 +17,7 @@ import { NgForm } from '@angular/forms';
 import { CategorieService } from 'src/app/services/categorie.service';
 import { CategorieListeComponent } from '../../categorie/categorie-liste/categorie-liste.component';
 import { Categorie } from 'src/app/entites/categorie';
+import { Header } from 'src/app/entites/header';
 declare var Quill;
 declare var $;
 @Component({
@@ -123,10 +123,10 @@ export class AccueilleFormComponent implements OnInit
           this.initQuil();
           this.setData(this.texte,this.accueille.text)
         },50)
+        this.ligneAccueilleFilter.is_deleted = 0;
+        this.ligneAccueilleFilter.id_accueil = this.accueilleService.idAccueille;
+        this.getHeadLigneAccueille();   
       })   
-      this.ligneAccueilleFilter.is_deleted = 0;
-      this.ligneAccueilleFilter.id_accueil = this.accueilleService.idAccueille;
-      this.getHeadLigneAccueille();   
     }
 
   }
@@ -136,13 +136,15 @@ export class AccueilleFormComponent implements OnInit
       return true
     return false
   }
-  addLigneAccueille()
-  {
+  addLigneAccueille(id_parent : number)
+  { 
+    this.ligneAccueilleService.id_parent = id_parent;
     this.ligneAccueilleService.accueille = this.accueille;
     this.ligneAccueilleService.dialogRefLigneAccueille = this.ligneAccueilleService.dialogLigneAccueille.open(LigneAccueilleFormComponent,{height: '80%', width: '80%'    })
     this.ligneAccueilleService.dialogRefLigneAccueille.afterClosed().subscribe(result => 
     {
-      this.ligneAccueilleService.accueille = null;
+      this.ligneAccueilleService.id_parent = -1;
+      this.ligneAccueilleService.accueille = new Accueille();
       this.getListeLigneAccueille();
     });
   }
@@ -268,8 +270,12 @@ export class AccueilleFormComponent implements OnInit
     {
       if(param && param.id)
       {
-        var header = JSON.parse(param.value? param.value : "");
-        header.fields = header.fields.filter(field =>{return field.show && field.active});
+        var header : Header = JSON.parse(param.value? param.value : "");
+        header.fields = header.fields.filter(field =>{return field.show});
+        if(this.accueille.accueilType.sub_type == "LIST")
+          var action = header.fields.find(field => {return field.name == "action"});
+        if(action)
+          action.buttons = action.buttons.filter(a =>{return a.name != "add"});
         this.header = header;
         this.getListeLigneAccueille();
         if(this.showFiled('image'))
@@ -326,8 +332,8 @@ export class AccueilleFormComponent implements OnInit
     this.ligneAccueilleService.dialogRefLigneAccueille = this.ligneAccueilleService.dialogLigneAccueille.open(LigneAccueilleFormComponent,{height: '80%', width: '80%'    })
     this.ligneAccueilleService.dialogRefLigneAccueille.afterClosed().subscribe(result => 
     {
-      this.ligneAccueilleService.ligneAccueille = null;
-      this.ligneAccueilleService.accueille = null;
+      this.ligneAccueilleService.ligneAccueille = new LigneAccueille();
+      this.ligneAccueilleService.accueille = new Accueille();
       this.getListeLigneAccueille();
     });
   }
@@ -374,6 +380,19 @@ export class AccueilleFormComponent implements OnInit
   }
   choixSelectionChange()
   {
+    if(this.choixSelection == "2")
+    { 
+      this.accueille.name = "";
+      this.accueille.text = "";
+      this.setData(this.texte,"");
+      this.accueille.image = "/assets/images/add-image.png";
+      this.formData = new FormData();
+    }
+    else if(this.choixSelection == "1")
+    {
+      this.accueille.article = new Article();
+      this.accueille.categorie = new Categorie();
+    }
     setTimeout(()=>
     {
       this.initQuil()

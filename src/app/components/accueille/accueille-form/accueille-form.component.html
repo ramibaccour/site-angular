@@ -18,20 +18,19 @@
                         </mat-select>
                         <mat-hint *ngIf="submit && !accueille.id_accueil_type" class="error">Le type est obligatoire</mat-hint>
                     </mat-form-field>
+                    <mat-radio-group *ngIf="showFiled('choix_selection')"  [required]="requiredFiled('choix_selection')"  (change)="choixSelectionChange()" name="choix_selection" [(ngModel)]="choixSelection">
+                        <mat-radio-button value="1">Sélection libre</mat-radio-button>
+                        <mat-radio-button value="2">Sélection du DB</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
+                    
                     <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
                         <mat-label>Ordre</mat-label>
                         <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="accueille.ordre" >
                         <mat-hint *ngIf="submit && !accueille.ordre" class="error">Le prix est obligatoire</mat-hint>
                     </mat-form-field> 
-                    <div *ngIf="showFiled('image')">
-                        <mat-radio-group required="true" (change)="choixSelectionChange()" name="choix-selection" [(ngModel)]="choixSelection">
-                            <mat-radio-button value="1">Sélection libre</mat-radio-button>
-                            <mat-radio-button value="2">Sélection du DB</mat-radio-button>
-                        </mat-radio-group>
-                        <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
-                    </div>
-                    
-                    <ng-container *ngIf="(showFiled('image') && choixSelection == '1') || !showFiled('image')">
+                                     
+                    <div *ngIf="choixSelection == '1' || !showFiled('choix_selection')">
                         <mat-form-field *ngIf="showFiled('name')" class="width-200" appearance="outline">
                             <mat-label>Nom</mat-label>
                             <input matInput type="text"  [required]="requiredFiled('name')"  name="nom" [(ngModel)]="accueille.name" >
@@ -43,9 +42,16 @@
                             <mat-hint *ngIf="submit && !accueille.text" class="error">Le texte est obligatoire</mat-hint>
                         </div>
                         <br>                    
-                        <app-image [required]="requiredFiled('image')" [submit]="submit" *ngIf="showFiled('image')" [index]="1" [src]="getSrc()" [submit]="submit" [required]="true" [resolution]="resolution" (action)="actionImage($event)"></app-image>
-                    </ng-container>
-                    <div *ngIf="showFiled('id_article') && choixSelection=='2'">
+                        <app-image 
+                        [required]="requiredFiled('image')" 
+                        *ngIf="showFiled('image')" 
+                        [index]="1" 
+                        [src]="getSrc()" 
+                        [submit]="submit" 
+                        [resolution]="resolution" 
+                        (action)="actionImage($event)"></app-image>
+                    </div>
+                    <div *ngIf="choixSelection == '2' || !showFiled('choix_selection')">
                         <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
                             <mat-label>Article</mat-label>
                             <input disabled="true" [required]="requiredFiled('id_article') && (!accueille.id_categorie)"  matInput type="text" name="article_name" [(ngModel)]="accueille.article.name">
@@ -67,7 +73,7 @@
             <mat-tab *ngIf="!modeAdd()" label="Liste details accueile">
                 <br>
                 <div class="btn-close-frm">
-                    <button (click)="addLigneAccueille()" mat-raised-button class="btn-add">
+                    <button (click)="addLigneAccueille(-1)" mat-raised-button class="btn-add">
                         <mat-icon>save</mat-icon>
                         Ajouter
                     </button>

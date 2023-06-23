@@ -108,7 +108,7 @@ export class AccueilleListeComponent implements OnInit
     this.ligneAccueilleService.dialogRefLigneAccueille = this.ligneAccueilleService.dialogLigneAccueille.open(LigneAccueilleFormComponent,{height: '80%', width: '80%'    })
     this.ligneAccueilleService.dialogRefLigneAccueille.afterClosed().subscribe(result => 
     {
-      this.ligneAccueilleService.accueille = null;
+      this.ligneAccueilleService.accueille = new Accueille();
       this.getListeAccueille();
     });
   }

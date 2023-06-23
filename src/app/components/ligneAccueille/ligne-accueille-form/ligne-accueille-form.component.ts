@@ -10,6 +10,8 @@ import { CategorieListeComponent } from '../../categorie/categorie-liste/categor
 import { ArticleListeComponent } from '../../article/article-liste/article-liste.component';
 import { Categorie } from 'src/app/entites/categorie';
 import { Article } from 'src/app/entites/article';
+import { Accueille } from 'src/app/entites/accueille';
+import { NgForm } from '@angular/forms';
 declare var $;
 declare var Quill;
 @Component({
@@ -31,7 +33,7 @@ export class LigneAccueilleFormComponent implements OnInit
   image : {src : string, name : string, index: number,file : File | null};
   fieldsLigneAccueille : Field[] = new Array();
   texte : String;
-  choixSelection:string;
+  choixSelection: "1" | "2";
   ngOnInit() 
   {
     this.getHeadLigneAccueille();
@@ -39,6 +41,10 @@ export class LigneAccueilleFormComponent implements OnInit
     if(this.ligneAccueilleService.accueille && this.ligneAccueilleService.accueille.id && this.ligneAccueilleService.accueille.id >0)
     {
       this.ligneAccueille.id_accueil =  this.ligneAccueilleService.accueille.id;
+    }
+    if(this.ligneAccueilleService.id_parent && this.ligneAccueilleService.id_parent >0)
+    {
+      this.ligneAccueille.id_parent =  this.ligneAccueilleService.id_parent;
     }
   }
   getHeadLigneAccueille()
@@ -64,8 +70,21 @@ export class LigneAccueilleFormComponent implements OnInit
     if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
     {
       var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
-      if(myField && myField.active && myField.listeIdTypeAccueille.find(idType => {return idType == (this.ligneAccueilleService.accueille? this.ligneAccueilleService.accueille.id_accueil_type :-1)}))
-        return true;
+      if(myField && myField.active )
+      {
+        if(this.ligneAccueilleService.accueille.accueilType.sub_type == "LIST" ||
+        (this.ligneAccueilleService.accueille.accueilType.sub_type == "LIST_GROUPE" && this.ligneAccueilleService.id_parent > 0))
+        {
+          if(myField.listeIdTypeAccueille.find(idType => {return idType == (this.ligneAccueilleService.accueille? this.ligneAccueilleService.accueille.id_accueil_type :-1)}))
+            return true;
+        }
+        else if(this.ligneAccueilleService.accueille.accueilType.sub_type == "LIST_GROUPE")
+        {
+          if(myField.listeIdTypeAccueilleForParent.find(idType => {return idType == (this.ligneAccueilleService.accueille? this.ligneAccueilleService.accueille.id_accueil_type :-1)}))
+            return true;
+        }
+      }
+        
     }    
     return false
   }
@@ -101,11 +120,35 @@ export class LigneAccueilleFormComponent implements OnInit
   }
   initQuil()
   {
-    if ($("#texte").length )
+    if ($("#texte").length)
+    {
+      if (this.texte instanceof Quill)
+        this.destoryQuill('#texte');
       this.texte = new Quill('#texte', 
       {
         theme: 'snow'
       });
+
+    }
+  }
+  destoryQuill(selector)
+  {
+    if($(selector)[0])
+    {
+        var content = $(selector).find('.ql-editor').html();
+        $(selector).html(content);
+        $(selector).siblings('.ql-toolbar').remove();
+        $(selector + " *[class*='ql-']").removeClass (function (index, css) {
+           return (css.match (/(^|\s)ql-\S+/g) || []).join(' ');
+        });
+        $(selector + "[class*='ql-']").removeClass (function (index, css) {
+           return (css.match (/(^|\s)ql-\S+/g) || []).join(' ');
+        });
+    }
+    else
+    {
+        console.error('editor not exists');
+    }
   }
   getData(quill)
   {
@@ -119,39 +162,48 @@ export class LigneAccueilleFormComponent implements OnInit
     if(quill && quill.clipboard)
       quill.clipboard.dangerouslyPasteHTML(html);
   }
-  save()
+  save(form:NgForm)
   {
-    var ligneAccueille;
-    ligneAccueille = JSON.parse(JSON.stringify(this.ligneAccueille))
-    // il y a une image à enregister  
-    if (this.formData.has('image'))
+    this.submit = true;
+    // formulaire valide
+    if(
+      form.valid && 
+      (
+        (this.showFiled('text') && (this.requiredFiled('text') && this.getData(this.texte).length>0 || !this.requiredFiled('text'))) ||
+        !this.showFiled('text')
+      ))
     {
-      ligneAccueille.image = this.image.name;
-      var fn = ()=>
+      var ligneAccueille;
+      ligneAccueille = JSON.parse(JSON.stringify(this.ligneAccueille))
+      // il y a une image à enregister  
+      if (this.formData.has('image'))
       {
-        this.formData = new FormData();
+        ligneAccueille.image = this.image.name;
+        var fn = ()=>
+        {
+          this.formData = new FormData();
+        }
+        this.generalService.httpPost(this.formData, "/save-image",fn)
       }
-      this.generalService.httpPost(this.formData, "/save-image",fn)
+      if(this.modeAdd())
+        ligneAccueille.is_deleted = 0;
+      this.ligneAccueilleService.saveLigneAccueille(ligneAccueille).subscribe(param =>
+      {
+        this.submit = false;
+        if(param && param.id && param.id>0)
+        {
+          this.generalService.openSnackBar("Enregister",true);
+          
+          this.close();
+        }
+      })
     }
-    if(this.modeAdd())
-      ligneAccueille.is_deleted = 0;
-    this.ligneAccueilleService.saveLigneAccueille(ligneAccueille).subscribe(param =>
-    {
-      if(param && param.id && param.id>0)
-      {
-        this.generalService.openSnackBar("Enregister",true);
-        
-        this.close();
-      }
-    })
+    
   }
   close()
   {
     if(this.ligneAccueilleService.dialogRefLigneAccueille)
-    {
       this.ligneAccueilleService.dialogRefLigneAccueille.close();
-      this.ligneAccueilleService.accueille = null;
-    }
   }
   modeAdd() : boolean
   {
@@ -194,6 +246,19 @@ export class LigneAccueilleFormComponent implements OnInit
   }
   choixSelectionChange()
   {
+    if(this.choixSelection == "2")
+    { 
+      this.ligneAccueille.name = "";
+      this.ligneAccueille.text = "";
+      this.setData(this.texte,"");
+      this.ligneAccueille.image = "assets/images/add-image.png";
+      this.formData = new FormData();
+    }
+    else if(this.choixSelection == "1")
+    {
+      this.ligneAccueille.article = new Article();
+      this.ligneAccueille.categorie = new Categorie();
+    }
     setTimeout(()=>
     {
       this.initQuil()

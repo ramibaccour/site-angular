@@ -27,11 +27,12 @@ export class Field
     active : boolean;
     order : number;
     listeIdTypeAccueille : number[];
+    listeIdTypeAccueilleForParent : number[];
     buttons :  
-              [
+              {
                 name :string,
                 icon :string,
                 label : string,
                 color :string
-              ]
+              }[]
 }

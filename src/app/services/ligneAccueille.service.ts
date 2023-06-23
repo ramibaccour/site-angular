@@ -15,10 +15,11 @@ export class LigneAccueilleService
 {
     constructor(private http: HttpClient,private generalService : GeneralService,public dialogLigneAccueille: MatDialog) { }
   
-    ligneAccueille : LigneAccueille | null;
+    ligneAccueille : LigneAccueille;
     idAccueille : number = -1;
-    accueille : Accueille | null;
+    accueille : Accueille;
     dialogRefLigneAccueille;
+    id_parent : number = -1;
     listeLigneAccueille(ligneAccueilleFilter : LigneAccueilleFilter, error?): Observable<LigneAccueille[]>
     {
       return this.http.post<any>(this.generalService.url + "/liste-ligne-accueille" , ligneAccueilleFilter)
