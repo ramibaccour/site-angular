@@ -30,7 +30,7 @@
                         <mat-hint *ngIf="submit && !accueille.ordre" class="error">Le prix est obligatoire</mat-hint>
                     </mat-form-field> 
                                      
-                    <div *ngIf="choixSelection == '1' || !showFiled('choix_selection')">
+                    <div [hidden]="!(choixSelection == '1' || !showFiled('choix_selection'))">
                         <mat-form-field *ngIf="showFiled('name')" class="width-200" appearance="outline">
                             <mat-label>Nom</mat-label>
                             <input matInput type="text"  [required]="requiredFiled('name')"  name="nom" [(ngModel)]="accueille.name" >
@@ -43,18 +43,20 @@
                         </div>
                         <br>                    
                         <app-image 
-                        [required]="requiredFiled('image')" 
-                        *ngIf="showFiled('image')" 
-                        [index]="1" 
-                        [src]="getSrc()" 
-                        [submit]="submit" 
-                        [resolution]="resolution" 
-                        (action)="actionImage($event)"></app-image>
+                                #imageAccueille
+                                [required]="requiredFiled('image')" 
+                                *ngIf="showFiled('image')" 
+                                [index]="1" 
+                                [src]="getSrc()" 
+                                [submit]="submit" 
+                                [resolution]="resolution" 
+                                (action)="actionImage($event)">
+                        </app-image>
                     </div>
-                    <div *ngIf="choixSelection == '2' || !showFiled('choix_selection')">
+                    <div [hidden]="!(choixSelection == '2' || !showFiled('choix_selection'))">
                         <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
                             <mat-label>Article</mat-label>
-                            <input disabled="true" [required]="requiredFiled('id_article') && (!accueille.id_categorie)"  matInput type="text" name="article_name" [(ngModel)]="accueille.article.name">
+                            <input disabled="true" [required]="requiredFiled('id_article') && (accueille.id_categorie == null || accueille.id_categorie == -1)"  matInput type="text" name="article_name" [(ngModel)]="accueille.article.name">
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="selectArticle()">
                             <mat-icon>search</mat-icon>
                             </button>
@@ -62,7 +64,7 @@
                         </mat-form-field>
                         <mat-form-field *ngIf="showFiled('id_categorie')" appearance="outline">
                             <mat-label>Catégorie</mat-label>
-                            <input disabled="true" [required]="requiredFiled('id_categorie') && (!accueille.id_article)"  matInput type="text" name="id_categorie" [(ngModel)]="accueille.categorie.name">
+                            <input disabled="true" [required]="requiredFiled('id_categorie') && (accueille.id_article == null || accueille.id_article == -1)"  matInput type="text" name="id_categorie" [(ngModel)]="accueille.categorie.name">
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="selectCategorie()">
                             <mat-icon>search</mat-icon>
                             </button>

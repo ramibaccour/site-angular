@@ -14,12 +14,37 @@ export class ImageComponent
   @Input() submit : boolean = false;
   @Input() required : boolean = false;
   @Input() resolution : {width : number, height : number};
+  private _listeResolutions;
+  @Input() set listeResolutions(listeResolutions: {id : number, name : string, width : number, height : number}[])
+  {
+    this._listeResolutions = listeResolutions;
+    this.initResolution()
+  }
+  get listeResolutions()
+  {
+    return this._listeResolutions;
+  }
   @Output() action = new EventEmitter<{src : string, name : string, index: number}>();
+  id_resolution : number;
   constructor( private generalService : GeneralService, public dialog: MatDialog) {}
   file;
   dialogRef
   @ViewChild('template') templateRef: TemplateRef<any>;
   imageChoisie = false;
+  initResolution(): void 
+  {
+    if(this.listeResolutions && this.listeResolutions.length>0)
+    {
+      this.id_resolution = this.listeResolutions[0].id;
+      this.resolution = {width : this.listeResolutions[0].width, height : this.listeResolutions[0].height};
+    }
+  }
+  resolutionChange()
+  {
+    var res = this.listeResolutions.find(r =>{return r.id ==  this.id_resolution});
+    if(res)
+      this.resolution = {width : res.width, height : res.height};
+  }
   addImage()
   {
     this.dialogRef = this.dialog.open(this.templateRef, {panelClass : "fullscreen-dialog" });

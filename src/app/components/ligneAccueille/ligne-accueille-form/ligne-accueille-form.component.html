@@ -36,12 +36,13 @@
                         [src]="getSrc()" 
                         [submit]="submit" 
                         [resolution]="{width : 100, height:200}" 
+                        [listeResolutions]="listeResolutions"
                         (action)="actionImage($event)"></app-image>
         </div>
         <div *ngIf="choixSelection == '2' || !showFiled('choix_selection')">
             <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
                 <mat-label>Article</mat-label>
-                <input disabled="true" [required]="requiredFiled('id_article') && (!ligneAccueille.id_categorie)"  matInput type="text" name="article_name" [(ngModel)]="ligneAccueille.article.name">
+                <input disabled="true" [required]="requiredFiled('id_article') && (ligneAccueille.id_categorie == null || ligneAccueille.id_categorie == -1)"  matInput type="text" name="article_name" [(ngModel)]="ligneAccueille.article.name">
                 <button matSuffix mat-icon-button aria-label="Clear" (click)="selectArticle()">
                 <mat-icon>search</mat-icon>
                 </button>
@@ -49,7 +50,7 @@
             </mat-form-field>
             <mat-form-field *ngIf="showFiled('id_categorie')" appearance="outline">
                 <mat-label>Catégorie</mat-label>
-                <input disabled="true" [required]="requiredFiled('id_categorie') && (!ligneAccueille.id_article)"  matInput type="text" name="id_categorie" [(ngModel)]="ligneAccueille.categorie.name">
+                <input disabled="true" [required]="requiredFiled('id_categorie') && (ligneAccueille.id_article == null || ligneAccueille.id_article == -1)"  matInput type="text" name="id_categorie" [(ngModel)]="ligneAccueille.categorie.name">
                 <button matSuffix mat-icon-button aria-label="Clear" (click)="selectCategorie()">
                 <mat-icon>search</mat-icon>
                 </button>

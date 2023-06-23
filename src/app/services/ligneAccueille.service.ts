@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LigneAccueille } from '../entites/ligneAccueil';
 import { LigneAccueilleFilter } from '../entites/ligneAccueilleFilter';
 import { Accueille } from '../entites/accueille';
+import { Resolution } from '../entites/resolution';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,12 @@ export class LigneAccueilleService
     {
       return this.http.put<any>(this.generalService.url + "/save-ligne-accueille" , ligneAccueille)
       .pipe(catchError(error? error: this.generalService.error))    
+    }
+    
+    getResolutionByIdAccueilType(id : number, error?) : Observable<Resolution[]>
+    {
+      return this.http.get<any>(this.generalService.url + "/get-resolution-by-id-accueil-type/" + id)
+      .pipe(catchError(error? error: this.generalService.error))  
     }
   }
   

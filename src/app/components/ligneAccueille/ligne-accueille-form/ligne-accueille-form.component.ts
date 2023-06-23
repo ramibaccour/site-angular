@@ -12,6 +12,7 @@ import { Categorie } from 'src/app/entites/categorie';
 import { Article } from 'src/app/entites/article';
 import { Accueille } from 'src/app/entites/accueille';
 import { NgForm } from '@angular/forms';
+import { Resolution } from 'src/app/entites/resolution';
 declare var $;
 declare var Quill;
 @Component({
@@ -34,6 +35,7 @@ export class LigneAccueilleFormComponent implements OnInit
   fieldsLigneAccueille : Field[] = new Array();
   texte : String;
   choixSelection: "1" | "2";
+  listeResolutions : {id : number, name : string, width : number, height : number}[];
   ngOnInit() 
   {
     this.getHeadLigneAccueille();
@@ -46,6 +48,18 @@ export class LigneAccueilleFormComponent implements OnInit
     {
       this.ligneAccueille.id_parent =  this.ligneAccueilleService.id_parent;
     }
+    this.getResolutionByIdAccueilType();
+  }
+  getResolutionByIdAccueilType()
+  {
+    this.ligneAccueilleService.getResolutionByIdAccueilType(this.ligneAccueilleService.accueille.accueilType.id).subscribe(listeResolution =>
+    {
+      this.listeResolutions = listeResolution.map(r =>
+      {
+        var tab = r.resolution.split("_")
+        return {name : r.resolution, id : r.id, width : parseInt(tab[0]), height:parseInt(tab[1])}
+      })
+    })
   }
   getHeadLigneAccueille()
   {
@@ -122,12 +136,12 @@ export class LigneAccueilleFormComponent implements OnInit
   {
     if ($("#texte").length)
     {
-      if (this.texte instanceof Quill)
-        this.destoryQuill('#texte');
-      this.texte = new Quill('#texte', 
-      {
-        theme: 'snow'
-      });
+      if (this.texte == undefined)
+        // this.destoryQuill('#texte');
+        this.texte = new Quill('#texte', 
+        {
+          theme: 'snow'
+        });
 
     }
   }
@@ -187,6 +201,20 @@ export class LigneAccueilleFormComponent implements OnInit
       }
       if(this.modeAdd())
         ligneAccueille.is_deleted = 0;
+      if(this.choixSelection == "2")
+      { 
+        ligneAccueille.name = "";
+        ligneAccueille.text = "";
+        ligneAccueille.image = "";
+        this.formData = new FormData();
+      }
+      else if(this.choixSelection == "1")
+      {
+        ligneAccueille.article = new Article();
+        ligneAccueille.categorie = new Categorie();
+        ligneAccueille.id_article = null;
+        ligneAccueille.id_categorie = null;
+      }
       this.ligneAccueilleService.saveLigneAccueille(ligneAccueille).subscribe(param =>
       {
         this.submit = false;
@@ -224,7 +252,8 @@ export class LigneAccueilleFormComponent implements OnInit
       {
         this.ligneAccueille.article = this.articleService.selectedArticle[0];
         this.ligneAccueille.id_article = this.articleService.selectedArticle[0].id;
-
+        this.ligneAccueille.id_categorie = -1;
+        this.ligneAccueille.categorie = new Categorie();
       }
       this.articleService.modeModal = false;
     });
@@ -240,25 +269,14 @@ export class LigneAccueilleFormComponent implements OnInit
       {
         this.ligneAccueille.categorie = this.categorieService.selectedCategorie[0];
         this.ligneAccueille.id_categorie = this.categorieService.selectedCategorie[0].id;
+        this.ligneAccueille.article = new Article();
+        this.ligneAccueille.id_article = -1;
       }
       this.categorieService.modeModal = false;
     });
   }
   choixSelectionChange()
   {
-    if(this.choixSelection == "2")
-    { 
-      this.ligneAccueille.name = "";
-      this.ligneAccueille.text = "";
-      this.setData(this.texte,"");
-      this.ligneAccueille.image = "assets/images/add-image.png";
-      this.formData = new FormData();
-    }
-    else if(this.choixSelection == "1")
-    {
-      this.ligneAccueille.article = new Article();
-      this.ligneAccueille.categorie = new Categorie();
-    }
     setTimeout(()=>
     {
       this.initQuil()

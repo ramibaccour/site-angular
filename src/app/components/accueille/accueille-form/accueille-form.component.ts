@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Accueille } from 'src/app/entites/accueille';
 import { GeneralService } from 'src/app/services/general.service';
 import { AccueilleService } from 'src/app/services/accueille.service';
@@ -18,6 +18,7 @@ import { CategorieService } from 'src/app/services/categorie.service';
 import { CategorieListeComponent } from '../../categorie/categorie-liste/categorie-liste.component';
 import { Categorie } from 'src/app/entites/categorie';
 import { Header } from 'src/app/entites/header';
+import { ImageComponent } from 'src/app/shared/utility/image/image.component';
 declare var Quill;
 declare var $;
 @Component({
@@ -48,6 +49,7 @@ export class AccueilleFormComponent implements OnInit
   texte;
   choixSelection:string;
   resolution : {width : number, height:number};
+  @ViewChild("imageAccueille") imageAccueille : ImageComponent;
   ngOnInit() 
   {
     this.getHeadAccueille();    
@@ -152,12 +154,12 @@ export class AccueilleFormComponent implements OnInit
   {
     if ($("#texte").length)
     {
-      if (this.texte instanceof Quill)
-        this.destoryQuill('#texte');
-      this.texte = new Quill('#texte', 
-      {
-        theme: 'snow'
-      });
+      if ( this.texte == undefined)
+        // this.destoryQuill('#texte');
+        this.texte = new Quill('#texte', 
+        {
+          theme: 'snow'
+        });
 
     }
   }
@@ -200,9 +202,23 @@ export class AccueilleFormComponent implements OnInit
     {
       if(this.modeAdd())
         this.accueille.is_deleted = 0;
-      this.accueille.text = this.getData(this.texte)  ;
+      this.accueille.text = this.getData(this.texte);      
       var accueille;
       accueille = JSON.parse(JSON.stringify(this.accueille))
+      if(this.choixSelection == "2")
+      { 
+        accueille.name = "";
+        accueille.text = "";
+        accueille.image = "";
+        this.formData = new FormData();
+      }
+      else if(this.choixSelection == "1")
+      {
+        accueille.article = new Article();
+        accueille.categorie = new Categorie();
+        accueille.id_article = null;
+        accueille.id_categorie = null;
+      }
       // il y a une image à enregister  
       if (this.formData.has('image'))
       {
@@ -213,6 +229,7 @@ export class AccueilleFormComponent implements OnInit
         }
         this.generalService.httpPost(this.formData, "/save-image",fn)
       }  
+
       this.accueilleService.saveAccueille(accueille).subscribe(accueille =>
       {
         this.submit = false;
@@ -358,7 +375,8 @@ export class AccueilleFormComponent implements OnInit
       {
         this.accueille.article = this.articleService.selectedArticle[0];
         this.accueille.id_article = this.articleService.selectedArticle[0].id;
-
+        this.accueille.categorie = new Categorie();
+        this.accueille.id_categorie = -1;
       }
       this.articleService.modeModal = false;
     });
@@ -374,25 +392,14 @@ export class AccueilleFormComponent implements OnInit
       {
         this.accueille.categorie = this.categorieService.selectedCategorie[0];
         this.accueille.id_categorie = this.categorieService.selectedCategorie[0].id;
+        this.accueille.article = new Article();
+        this.accueille.id_article = -1;
       }
       this.categorieService.modeModal = false;
     });
   }
   choixSelectionChange()
   {
-    if(this.choixSelection == "2")
-    { 
-      this.accueille.name = "";
-      this.accueille.text = "";
-      this.setData(this.texte,"");
-      this.accueille.image = "/assets/images/add-image.png";
-      this.formData = new FormData();
-    }
-    else if(this.choixSelection == "1")
-    {
-      this.accueille.article = new Article();
-      this.accueille.categorie = new Categorie();
-    }
     setTimeout(()=>
     {
       this.initQuil()
