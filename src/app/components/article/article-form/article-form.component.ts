@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Article } from 'src/app/entites/article';
 import { Field } from 'src/app/entites/field';
 import { Parametre } from 'src/app/entites/parametre';
+import { Resolution } from 'src/app/entites/resolution';
+import { TypeContent } from 'src/app/entites/typeContent';
 import { ArticleService } from 'src/app/services/article.service';
 import { GeneralService } from 'src/app/services/general.service';
 import { ParametreService } from 'src/app/services/parametre.service';
+import { ResolutionsService } from 'src/app/services/resolutions.service';
 declare var Quill : any;
 @Component({
   selector: 'app-article-form',
@@ -13,16 +16,32 @@ declare var Quill : any;
 })
 export class ArticleFormComponent implements OnInit 
 {
-  constructor (private generalService : GeneralService, private parametreService : ParametreService, private articleService : ArticleService){}
+  constructor (
+    private generalService : GeneralService, 
+    private parametreService : ParametreService, 
+    private articleService : ArticleService,
+    private resolutionsService : ResolutionsService
+    ){}
   article = new Article();
   submit = false;
   description;
   full_description;
   parametre : Parametre;
   fields : Field[] = new Array()
+  listeResolutions : Resolution[];
   ngOnInit() 
   {     
     this.getHeadArticle();
+    this.getListeResolution();
+    this.getListeImage();
+  }
+  getListeImage()
+  {
+
+  }
+  ajouterImage()
+  {
+    
   }
   initQuil()
   {
@@ -34,6 +53,13 @@ export class ArticleFormComponent implements OnInit
     {
       theme: 'snow'
     });
+  }
+  getListeResolution()
+  {
+    this.resolutionsService.getListeResolutionByTypeContent(TypeContent.ARTICLE).subscribe(resolution =>
+    {
+      this.listeResolutions = resolution;
+    })
   }
   getArticle(id)
   {

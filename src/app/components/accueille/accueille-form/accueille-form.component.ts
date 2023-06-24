@@ -71,10 +71,7 @@ export class AccueilleFormComponent implements OnInit
     var type = this.listeAccueilleType.find(type =>{return type.id == this.accueille.id_accueil_type})
     if(type)
     {
-      var tab = type.resolution.resolution.split("_");
-      var width = parseInt(tab[0]);
-      var height = parseInt(tab[1]);
-      this.resolution = {width, height}
+      this.resolution = {width : type.resolution.width, height : type.resolution.height}
     }
     setTimeout(()=>
     {
@@ -111,10 +108,7 @@ export class AccueilleFormComponent implements OnInit
         var type = this.listeAccueilleType.find(type =>{return type.id == this.accueille.id_accueil_type})
         if(type)
         {
-          var tab = type.resolution.resolution.split("_");
-          var width = parseInt(tab[0]);
-          var height = parseInt(tab[1]);
-          this.resolution = {width, height}
+          this.resolution = {width : type.resolution.width, height : type.resolution.height}
         }
         if(!this.accueille.article)
           this.accueille.article = new Article();

@@ -10,9 +10,8 @@ import { CategorieListeComponent } from '../../categorie/categorie-liste/categor
 import { ArticleListeComponent } from '../../article/article-liste/article-liste.component';
 import { Categorie } from 'src/app/entites/categorie';
 import { Article } from 'src/app/entites/article';
-import { Accueille } from 'src/app/entites/accueille';
 import { NgForm } from '@angular/forms';
-import { Resolution } from 'src/app/entites/resolution';
+import { ResolutionsService } from 'src/app/services/resolutions.service';
 declare var $;
 declare var Quill;
 @Component({
@@ -27,6 +26,7 @@ export class LigneAccueilleFormComponent implements OnInit
     private parametreService : ParametreService,
     private articleService : ArticleService,
     private categorieService : CategorieService,
+    private resolutionsService : ResolutionsService,
     private ligneAccueilleService : LigneAccueilleService){}
   ligneAccueille = new LigneAccueille();
   submit = false;
@@ -52,12 +52,11 @@ export class LigneAccueilleFormComponent implements OnInit
   }
   getResolutionByIdAccueilType()
   {
-    this.ligneAccueilleService.getResolutionByIdAccueilType(this.ligneAccueilleService.accueille.accueilType.id).subscribe(listeResolution =>
+    this.resolutionsService.getResolutionByIdAccueilType(this.ligneAccueilleService.accueille.accueilType.id).subscribe(listeResolution =>
     {
       this.listeResolutions = listeResolution.map(r =>
       {
-        var tab = r.resolution.split("_")
-        return {name : r.resolution, id : r.id, width : parseInt(tab[0]), height:parseInt(tab[1])}
+        return {name : r.width + " / " + r.height, id : r.id, width : r.width, height:r.height}
       })
     })
   }

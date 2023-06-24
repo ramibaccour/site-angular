@@ -30,6 +30,11 @@ export class ArticleService
     return this.http.get<any>(this.generalService.url + "/find-article/" + id )
     .pipe(catchError(error? error: this.generalService.error))  
   }
+  getListeArticleResolution( error?): Observable<Article>
+  {
+    return this.http.get<any>(this.generalService.url + "/liste-article-resolution" )
+    .pipe(catchError(error? error: this.generalService.error))  
+  }
   saveArticle(article : Article, error?)
   {
     return this.http.put<any>(this.generalService.url + "/save-article" , article)

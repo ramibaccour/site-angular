@@ -36,6 +36,15 @@
             </mat-tab>
             <mat-tab label="Liste images">
                 <br>
+                <div *ngFor="let resolution of listeResolutions" >
+                    <h4>{{resolution.width}} / {{resolution.height}}</h4>
+                    <button (click)="ajouterImage()" mat-icon-button style="color: blue;">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <div class="btn-close-frm">
+                        
+                    </div>
+                </div>
             </mat-tab>
             <mat-tab label="Liste catégorie">
                 <br>

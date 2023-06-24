@@ -1,6 +1,10 @@
+import { TypeContent } from "./typeContent";
+
 export class Resolution
 {
     id : number;
     name : string;
-    resolution : string;
+    width: number;
+    height: number;
+    type_content : TypeContent
 }

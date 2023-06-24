@@ -6,12 +6,12 @@
 </div>
 <div class="card-content">
     <app-table [header]="header" [data]="listeArticle.listeArticle" [pager]="pager" (action)="action($event)" ></app-table>
-    <div class="btn-close-frm">
+    <div *ngIf="modeModale()" class="btn-close-frm">
         <button (click)="close()" mat-raised-button class="btn-close">
             <mat-icon>close</mat-icon>
             Fermer
         </button>
-        <button  *ngIf="modeModale()"(click)="selectArticle()" mat-raised-button class="save">
+        <button (click)="selectArticle()" mat-raised-button class="save">
             <mat-icon>keyboard_return</mat-icon>
             Choisir
         </button>
