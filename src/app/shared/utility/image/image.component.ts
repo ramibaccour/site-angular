@@ -9,11 +9,13 @@ declare var $;
 })
 export class ImageComponent
 {
-  @Input() index : number = 0;
+  @Input() name : string = "Image";
+  @Input() index : string = "0";
   @Input() src : string;
   @Input() submit : boolean = false;
   @Input() required : boolean = false;
-  @Input() resolution : {width : number, height : number};
+  @Input() resolution : {id : number, name: string, width : number, height : number};
+  @Input() image;
   private _listeResolutions;
   @Input() set listeResolutions(listeResolutions: {id : number, name : string, width : number, height : number}[])
   {
@@ -24,7 +26,7 @@ export class ImageComponent
   {
     return this._listeResolutions;
   }
-  @Output() action = new EventEmitter<{src : string, name : string, index: number}>();
+  @Output() action = new EventEmitter<any>();
   id_resolution : number;
   constructor( private generalService : GeneralService, public dialog: MatDialog) {}
   file;
@@ -36,14 +38,14 @@ export class ImageComponent
     if(this.listeResolutions && this.listeResolutions.length>0)
     {
       this.id_resolution = this.listeResolutions[0].id;
-      this.resolution = {width : this.listeResolutions[0].width, height : this.listeResolutions[0].height};
+      this.resolution = this.listeResolutions[0]
     }
   }
   resolutionChange()
   {
     var res = this.listeResolutions.find(r =>{return r.id ==  this.id_resolution});
     if(res)
-      this.resolution = {width : res.width, height : res.height};
+      this.resolution= res;
   }
   addImage()
   {
@@ -78,7 +80,7 @@ export class ImageComponent
     if(this.file && this.file[0] && this.file[0].files && this.file[0].files[0] && this.file[0].files[0].name)
     {
       this.imageChoisie = true;
-      this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + this.file[0].files[0].name, index: this.index})
+      this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + this.file[0].files[0].name, index: this.index, image : this.image, resolution : this.resolution})
       this.dialogRef.close();
       this.src = srcImage;
     }

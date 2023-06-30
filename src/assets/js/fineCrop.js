@@ -11,7 +11,7 @@
             cropInput: 'myImage',
             cropOutput: 'mysource',
             zoomValue: 10,
-            index  : 0
+            index  : "0"
         };
         // options.cropWidth    options.cropHeight 
         var zoomWidth = 0;

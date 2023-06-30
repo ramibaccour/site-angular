@@ -7,6 +7,7 @@ import { ListeArticle } from '../entites/listeArticle';
 import { ArticleFilter } from '../entites/articleFilter';
 import { Article } from '../entites/article';
 import { MatDialog } from '@angular/material/dialog';
+import { Image } from '../entites/image';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,10 @@ export class ArticleService
   {
     return this.http.put<any>(this.generalService.url + "/save-article" , article)
     .pipe(catchError(error? error: this.generalService.error))    
+  }
+  getListeImageArticle(id : number ,error?) : Observable<Image[]>
+  {
+    return this.http.get<any>(this.generalService.url + "/liste-image-article/" + id)
+    .pipe(catchError(error? error: this.generalService.error))  
   }
 }

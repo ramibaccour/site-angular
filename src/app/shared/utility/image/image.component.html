@@ -1,7 +1,8 @@
 
 <div>
-    <mat-label>Image</mat-label>
-    <br>
+    <div *ngIf="name != ''">
+        <mat-label >{{name}}</mat-label>
+    </div>
     <img (click)="addImage()" [src]="src" class="add-image">
     <br>
     <mat-hint *ngIf="isRequired()" class="error">L'image' est obligatoire</mat-hint>
@@ -17,7 +18,7 @@
         </label>
         <img id="croppedImg-{{index}}" style="border:1px solid #000; margin:auto;max-width: calc(100% - 10%);">
         <br>
-        <mat-form-field *ngIf="!(resolution == null || resolution == undefined)" appearance="outline">
+        <mat-form-field *ngIf="listeResolutions && listeResolutions.length>0" appearance="outline">
             <mat-label>Resolution</mat-label>
             <mat-select  [(ngModel)]="id_resolution" name="id_resolution-{{index}}" (selectionChange)="resolutionChange()">
                 <mat-option *ngFor="let food of listeResolutions" [value]="food.id">

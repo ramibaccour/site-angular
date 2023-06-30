@@ -19,6 +19,8 @@ import { CategorieListeComponent } from '../../categorie/categorie-liste/categor
 import { Categorie } from 'src/app/entites/categorie';
 import { Header } from 'src/app/entites/header';
 import { ImageComponent } from 'src/app/shared/utility/image/image.component';
+import { Resolution } from 'src/app/entites/resolution';
+import { ImageService } from 'src/app/services/image.service';
 declare var Quill;
 declare var $;
 @Component({
@@ -31,6 +33,7 @@ export class AccueilleFormComponent implements OnInit
   constructor (
     private generalService : GeneralService, 
     private articleService : ArticleService,
+    private imageService : ImageService,
     private categorieService : CategorieService,
     private accueilleService : AccueilleService,
     private parametreService : ParametreService, 
@@ -48,7 +51,7 @@ export class AccueilleFormComponent implements OnInit
   fieldsAccueille : Field[] = new Array();
   texte;
   choixSelection:string;
-  resolution : {width : number, height:number};
+  resolution : Resolution;
   @ViewChild("imageAccueille") imageAccueille : ImageComponent;
   ngOnInit() 
   {
@@ -71,7 +74,7 @@ export class AccueilleFormComponent implements OnInit
     var type = this.listeAccueilleType.find(type =>{return type.id == this.accueille.id_accueil_type})
     if(type)
     {
-      this.resolution = {width : type.resolution.width, height : type.resolution.height}
+      this.resolution = type.resolution;
     }
     setTimeout(()=>
     {
@@ -108,7 +111,7 @@ export class AccueilleFormComponent implements OnInit
         var type = this.listeAccueilleType.find(type =>{return type.id == this.accueille.id_accueil_type})
         if(type)
         {
-          this.resolution = {width : type.resolution.width, height : type.resolution.height}
+          this.resolution = type.resolution
         }
         if(!this.accueille.article)
           this.accueille.article = new Article();
@@ -221,7 +224,7 @@ export class AccueilleFormComponent implements OnInit
         {
           this.formData = new FormData();
         }
-        this.generalService.httpPost(this.formData, "/save-image",fn)
+        this.imageService.saveImageFile(this.formData, "/save-image-file",fn)
       }  
 
       this.accueilleService.saveAccueille(accueille).subscribe(accueille =>

@@ -7,6 +7,7 @@
 <div class="card-content">
     <form *ngIf="fields && fields.length>0" #formContent="ngForm">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <!-------------------------- Formulaire --------------------------->
             <mat-tab label="Formulaire">
                 <br>
                 <div *ngIf="showFiled('name')">
@@ -34,15 +35,34 @@
                     </mat-form-field>
                 </div>
             </mat-tab>
+            <!-------------------------- Liste images --------------------------->
             <mat-tab label="Liste images">
                 <br>
-                <div *ngFor="let resolution of listeResolutions" >
-                    <h4>{{resolution.width}} / {{resolution.height}}</h4>
-                    <button (click)="ajouterImage()" mat-icon-button style="color: blue;">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                    <div class="btn-close-frm">
-                        
+                <div class="image-centent" *ngFor="let resolution of listeResolutions;let index = index" >
+                    <h3><b> Image {{resolution.width}} / {{resolution.height}}</b></h3>
+                    <div  class="image-centent-center">
+                        <span *ngIf="filterImageByResolution(resolution).length == 0">Aucune image</span>
+                        <br>
+                        <app-image 
+                            [name]="''"  
+                            [resolution]="resolution" 
+                            [index]="index + ''" 
+                            (action)="actionImage($event)" 
+                            [src]="'assets/images/add-image.png'">
+                        </app-image>
+                    </div>
+                    <div>
+                        <div class="display-flex">
+                            <app-image 
+                                [name]="''" 
+                                [image]="image"
+                                *ngFor="let image of filterImageByResolution(resolution);let index2 = index" 
+                                [resolution]="resolution" 
+                                [index]="index + '-' + index2" 
+                                (action)="actionImage($event)" 
+                                [src]="getSrc(image)">
+                            </app-image>
+                        </div>
                     </div>
                 </div>
             </mat-tab>

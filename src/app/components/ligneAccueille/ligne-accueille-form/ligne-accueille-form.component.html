@@ -32,10 +32,9 @@
             <app-image 
                         [required]="requiredFiled('image')" 
                         *ngIf="showFiled('image')" 
-                        [index]="1" 
+                        [index]="'1'" 
                         [src]="getSrc()" 
                         [submit]="submit" 
-                        [resolution]="{width : 100, height:200}" 
                         [listeResolutions]="listeResolutions"
                         (action)="actionImage($event)"></app-image>
         </div>

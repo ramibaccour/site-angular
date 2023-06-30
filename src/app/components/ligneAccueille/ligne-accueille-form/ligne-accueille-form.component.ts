@@ -12,6 +12,7 @@ import { Categorie } from 'src/app/entites/categorie';
 import { Article } from 'src/app/entites/article';
 import { NgForm } from '@angular/forms';
 import { ResolutionsService } from 'src/app/services/resolutions.service';
+import { ImageService } from 'src/app/services/image.service';
 declare var $;
 declare var Quill;
 @Component({
@@ -23,6 +24,7 @@ export class LigneAccueilleFormComponent implements OnInit
 {
   constructor (
     private generalService : GeneralService, 
+    private imageService : ImageService, 
     private parametreService : ParametreService,
     private articleService : ArticleService,
     private categorieService : CategorieService,
@@ -112,8 +114,7 @@ export class LigneAccueilleFormComponent implements OnInit
     this.image = event;
     this.formData.append('image', event.src);
     this.formData.append('name', event.name);
-  }
-  
+  }  
   getLigneAccueille(id)
   {
     if(id>0)
@@ -196,7 +197,7 @@ export class LigneAccueilleFormComponent implements OnInit
         {
           this.formData = new FormData();
         }
-        this.generalService.httpPost(this.formData, "/save-image",fn)
+        this.imageService.saveImageFile(this.formData, "/save-image-file",fn)
       }
       if(this.modeAdd())
         ligneAccueille.is_deleted = 0;
