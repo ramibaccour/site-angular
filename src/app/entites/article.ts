@@ -1,3 +1,5 @@
+import { Categorie } from "./categorie";
+
 export class Article
 {
     id : number;
@@ -18,6 +20,7 @@ export class Article
     is_deleted : number;
     title_seo : string;
     description_seo : string;
+    listeCategorie : Categorie[]
     constructor()
     {
         // this.id = -1;

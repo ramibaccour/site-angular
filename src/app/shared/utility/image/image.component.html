@@ -1,10 +1,24 @@
 
 <div>
-    <div *ngIf="name != ''">
-        <mat-label >{{name}}</mat-label>
+       
+    <div class="display-flex com-image" >
+        <div (click)="addImage()">
+            <div *ngIf="name">
+                <mat-label >{{name}}</mat-label>
+            </div> 
+            <img [ngStyle]="{width : width}" [src]="src" class="add-image">
+        </div>
+        <div *ngIf="image">
+            <mat-icon (click)="delImage()"  [matTooltip]="'Supprimer'" style="color: red;" >delete</mat-icon>
+            <br>
+            <mat-icon (click)="addImage()" [matTooltip]="'Modifier'" style="color: blue;">edit</mat-icon>
+            <br>
+            <mat-form-field  class="width-75" appearance="outline">
+                <mat-label>Ordre</mat-label>
+                <input matInput type="number" name="nom" [(ngModel)]="image.ordre" >
+            </mat-form-field>
+        </div>
     </div>
-    <img (click)="addImage()" [src]="src" class="add-image">
-    <br>
     <mat-hint *ngIf="isRequired()" class="error">L'image' est obligatoire</mat-hint>
 </div>
 <input type="file" id="upphoto-{{index}}" style="display:none;">
@@ -27,7 +41,7 @@
             </mat-select>
         </mat-form-field>
         <div id="action-{{index}}" class="flex-end">
-            <button (click)="save()" mat-raised-button class="save">
+            <button *ngIf="userHaveImage()" (click)="save()" mat-raised-button class="save">
                 <mat-icon>check</mat-icon>
                 Choisir
             </button>&nbsp;

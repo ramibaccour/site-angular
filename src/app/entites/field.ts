@@ -34,5 +34,6 @@ export class Field
                 icon :string,
                 label : string,
                 color :string
-              }[]
+              }[];
+    direction : "asc" | "desc"
 }

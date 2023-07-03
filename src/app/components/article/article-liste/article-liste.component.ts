@@ -7,6 +7,7 @@ import { GeneralService } from 'src/app/services/general.service';
 import { ArticleFormComponent } from '../article-form/article-form.component';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { Header } from 'src/app/entites/header';
+import { ActionTable } from 'src/app/entites/actionTable';
 
 @Component({
   selector: 'app-article-liste',
@@ -77,7 +78,7 @@ export class ArticleListeComponent implements OnInit
     var articleFilter = new ArticleFilter(0,dateFilter ,new DateFilter());
     return articleFilter;
   }
-  action(event)
+  action(event : ActionTable)
   {
     if(event.action == "pager" || event.action == "filter")
     {

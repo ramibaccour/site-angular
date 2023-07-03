@@ -9,7 +9,7 @@
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
             <mat-tab label="Formulaire">
                 <br>
-                <div>
+                <div *ngIf="showFiled('name')">
                     <mat-form-field class="width-200" appearance="outline">
                         <mat-label>Nom</mat-label>
                         <input matInput type="text" name="nom" [(ngModel)]="categorie.name" >
@@ -17,7 +17,7 @@
                     </mat-form-field>
                 </div>
                    
-                <div>
+                <div *ngIf="showFiled('ordre')">
                     <mat-form-field class="width-200" appearance="outline">
                         <mat-label>Ordre</mat-label>
                         <input matInput type="number" name="ordre" [(ngModel)]="categorie.ordre" >
@@ -25,11 +25,50 @@
                     </mat-form-field>
                 </div>
             </mat-tab>
-            <mat-tab label="Liste images">
+            <mat-tab *ngIf="!modeAdd()" label="Liste images">
                 <br>
+                <div class="image-centent" *ngFor="let resolution of listeResolutions;let index = index" >
+                    <h3><b> Image {{resolution.width}} / {{resolution.height}}</b></h3>
+                    <div  class="image-centent-center">
+                        <app-image 
+                            [width] = "'50px'"
+                            [name]="filterImageByResolution(resolution).length == 0? 'Aucune image' : 'Ajouter'"  
+                            [resolution]="resolution" 
+                            [index]="index + ''" 
+                            (action)="actionImage($event)" 
+                            [src]="'assets/images/add-image.png'">
+                        </app-image>
+                    </div>
+                    <br>
+                    <div>
+                        <div class="display-flex">
+                            <div
+                                *ngFor="let image of filterImageByResolution(resolution);let index2 = index" >
+                                <app-image 
+                                    [name]="''" 
+                                    [image]="image"
+                                    
+                                    [resolution]="resolution" 
+                                    [index]="index + '-' + index2" 
+                                    (action)="actionImage($event)" 
+                                    [src]="getSrc(image)">
+                                </app-image>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </mat-tab>
-            <mat-tab label="Seo">
+            <mat-tab *ngIf="!modeAdd()" label="Seo">
                 <br>
+                <mat-form-field class="width-200" appearance="outline">
+                    <mat-label>Titre</mat-label>
+                    <textarea matInput name="title_seo" [(ngModel)]="categorie.title_seo"></textarea>
+                </mat-form-field>
+                <br>
+                <mat-form-field class="width-400" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput name="description_seo" [(ngModel)]="categorie.description_seo"></textarea>
+                </mat-form-field>
             </mat-tab>
         </mat-tab-group>
        

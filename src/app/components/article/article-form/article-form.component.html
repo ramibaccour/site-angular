@@ -5,7 +5,7 @@
     <mat-icon (click)="close()" *ngIf="modeModale()" class="close-frm">close</mat-icon>
 </div>
 <div class="card-content">
-    <form *ngIf="fields && fields.length>0" #formContent="ngForm">
+    <form *ngIf="fieldsArticle && fieldsArticle.length>0" #formContent="ngForm">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
             <!-------------------------- Formulaire --------------------------->
             <mat-tab label="Formulaire">
@@ -36,53 +36,72 @@
                 </div>
             </mat-tab>
             <!-------------------------- Liste images --------------------------->
-            <mat-tab label="Liste images">
+            <mat-tab *ngIf="!modeAdd()" label="Liste images">
                 <br>
                 <div class="image-centent" *ngFor="let resolution of listeResolutions;let index = index" >
                     <h3><b> Image {{resolution.width}} / {{resolution.height}}</b></h3>
                     <div  class="image-centent-center">
-                        <span *ngIf="filterImageByResolution(resolution).length == 0">Aucune image</span>
-                        <br>
                         <app-image 
-                            [name]="''"  
+                            [width] = "'50px'"
+                            [name]="filterImageByResolution(resolution).length == 0? 'Aucune image' : 'Ajouter'"  
                             [resolution]="resolution" 
                             [index]="index + ''" 
                             (action)="actionImage($event)" 
                             [src]="'assets/images/add-image.png'">
                         </app-image>
                     </div>
+                    <br>
                     <div>
                         <div class="display-flex">
-                            <app-image 
-                                [name]="''" 
-                                [image]="image"
-                                *ngFor="let image of filterImageByResolution(resolution);let index2 = index" 
-                                [resolution]="resolution" 
-                                [index]="index + '-' + index2" 
-                                (action)="actionImage($event)" 
-                                [src]="getSrc(image)">
-                            </app-image>
+                            <div
+                                *ngFor="let image of filterImageByResolution(resolution);let index2 = index" >
+                                <app-image 
+                                    [name]="''" 
+                                    [image]="image"
+                                    
+                                    [resolution]="resolution" 
+                                    [index]="index + '-' + index2" 
+                                    (action)="actionImage($event)" 
+                                    [src]="getSrc(image)">
+                                </app-image>
+                            </div>
                         </div>
                     </div>
                 </div>
             </mat-tab>
-            <mat-tab label="Liste catégorie">
+            <mat-tab *ngIf="!modeAdd()" label="Liste catégorie">
                 <br>
+                <div class="btn-close-frm">
+                    <button (click)="ajouterCategorie()" mat-raised-button class="btn-add">
+                        <mat-icon>add</mat-icon>
+                        Ajouter
+                    </button>
+                </div>
+                <app-table [header]="header" [data]="listeCategorie" (action)="actionCategorie($event)"></app-table>
             </mat-tab>
-            <mat-tab label="Liste articles liés ">
+            <mat-tab *ngIf="!modeAdd()" label="Seo">
                 <br>
-            </mat-tab>
-            <mat-tab label="Seo">
+                <mat-form-field class="width-200" appearance="outline">
+                    <mat-label>Titre</mat-label>
+                    <textarea matInput name="title_seo" [(ngModel)]="article.title_seo"></textarea>
+                </mat-form-field>
                 <br>
+                <mat-form-field class="width-400" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput name="description_seo" [(ngModel)]="article.description_seo"></textarea>
+                </mat-form-field>
             </mat-tab>
+            <!-- <mat-tab *ngIf="!modeAdd()" label="Liste articles liés ">
+                <br>
+            </mat-tab> -->
             
-            <!-- <mat-tab label="liste couleurs">
+            <!-- <mat-tab *ngIf="!modeAdd()" label="liste couleurs">
                 <br>
             </mat-tab>
-            <mat-tab label="liste tailles">
+            <mat-tab *ngIf="!modeAdd()" label="liste tailles">
                 <br>
             </mat-tab>
-            <mat-tab label="liste caractéristique">
+            <mat-tab *ngIf="!modeAdd()" label="liste caractéristique">
                 <br>
             </mat-tab> -->
         </mat-tab-group>

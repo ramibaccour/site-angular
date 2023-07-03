@@ -36,25 +36,6 @@ export class CategorieListeComponent implements OnInit
     this.categorieFilter.is_deleted = 0; 
     this.categorieFilter.idList = [];
   }
-  buildTree(data : Categorie[], id_parent : number | null) 
-  {
-    var tree: TreeNode[];
-    tree = [];
-    for (var i = 0; i < data.length; i++) 
-    {
-      if (data[i].id_parent === id_parent) 
-      {
-        var node = 
-        {
-          label: data[i].name,
-          data: {id : data[i].id, selected : false},
-          children: this.buildTree(data, data[i].id)
-        };
-        tree.push(node);
-      }
-    }
-    return tree;
-  }
   unselectAllNode(node) 
   {
     node.data.selected = false
@@ -143,7 +124,7 @@ export class CategorieListeComponent implements OnInit
   {
     this.categorieService.listeCategorie(this.categorieFilter).subscribe(data =>
     {
-      this.categorieTree = this.buildTree(data,null);
+      this.categorieTree = this.categorieService.buildTree(data,null);
     })
   }
   findChildNodes(node, targetNodeId, childNodeList) 

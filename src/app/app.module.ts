@@ -13,8 +13,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
+import {DateAdapter, MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from "@angular/material-moment-adapter";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -26,6 +26,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatBadgeModule} from '@angular/material/badge';
 //------------------------End material----------------------
 //------------------------Begin Primeng----------------------
 import {OverlayPanelModule} from 'primeng/overlaypanel';
@@ -95,6 +96,7 @@ import { LigneAccueilleFormComponent } from './components/ligneAccueille/ligne-a
     MatExpansionModule,
     MatTabsModule,
     MatRadioModule,
+    MatBadgeModule,
     //------------------------End material----------------------
     
     //------------------------Begin Primeng----------------------

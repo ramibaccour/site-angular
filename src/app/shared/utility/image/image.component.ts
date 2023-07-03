@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Image } from 'src/app/entites/image';
 import { GeneralService } from 'src/app/services/general.service';
 declare var $;
 @Component({
@@ -15,7 +16,8 @@ export class ImageComponent
   @Input() submit : boolean = false;
   @Input() required : boolean = false;
   @Input() resolution : {id : number, name: string, width : number, height : number};
-  @Input() image;
+  @Input() image : Image;
+  @Input() width : string = "120px";
   private _listeResolutions;
   @Input() set listeResolutions(listeResolutions: {id : number, name : string, width : number, height : number}[])
   {
@@ -74,17 +76,26 @@ export class ImageComponent
       index : this.index
     });
   }
+  userHaveImage() : boolean
+  {
+    return this.file && this.file[0] && this.file[0].files && this.file[0].files[0] && this.file[0].files[0].name;
+  }
   save() 
   {
     var srcImage = $("#imageOptimiser-"+this.index).attr("src");
-    if(this.file && this.file[0] && this.file[0].files && this.file[0].files[0] && this.file[0].files[0].name)
+    if(this.userHaveImage())
     {
       this.imageChoisie = true;
-      this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + this.file[0].files[0].name, index: this.index, image : this.image, resolution : this.resolution})
+      this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + this.file[0].files[0].name, index: this.index, image : this.image, resolution : this.resolution, action : "SAVE"})
       this.dialogRef.close();
       this.src = srcImage;
     }
     else
       this.generalService.openSnackBar("Veuillez choisir une image", false);
+  }
+  delImage()
+  {
+    var srcImage = $("#imageOptimiser-"+this.index).attr("src");
+    this.action.emit({src : srcImage, name : this.image.name, index: this.index, image : this.image, resolution : this.resolution, action : "DELETE"})
   }
 }

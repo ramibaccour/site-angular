@@ -10,6 +10,7 @@ import { AccueilType } from 'src/app/entites/accueilType';
 import { Header } from 'src/app/entites/header';
 import { LigneAccueilleService } from 'src/app/services/ligneAccueille.service';
 import { LigneAccueilleFormComponent } from '../../ligneAccueille/ligne-accueille-form/ligne-accueille-form.component';
+import { ActionTable } from 'src/app/entites/actionTable';
 @Component({
   selector: 'app-accueille-liste',
   templateUrl: './accueille-liste.component.html',
@@ -72,7 +73,7 @@ export class AccueilleListeComponent implements OnInit
       this.generalService.showSpinner = false;
     })
   }
-  action(event)
+  action(event : ActionTable)
   {
     if(event.action == "pager" || event.action == "filter")
     {

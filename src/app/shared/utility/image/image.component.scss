@@ -27,6 +27,16 @@
     display: flex;
     margin-bottom: 10px;
 }
+.display-flex
+{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 7px;
+    padding: 5px;
+}
 .cropHolder {width: 100vw; height: 100vh; display: none;}
 .my-cropWrapper
 {
@@ -38,4 +48,22 @@
     margin: auto; 
     width: 100vw; 
     height: 100vh; 
+}
+.add-image,.display-flex mat-icon
+{
+    cursor: pointer;
+}
+.width-75
+{
+    width: 75px;
+}
+
+::ng-deep .com-image .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix 
+{ padding: 10px 0px !important;}
+::ng-deep .com-image .mdc-notched-outline 
+{ height: 45px; }
+
+::ng-deep .com-image .mat-mdc-form-field-infix 
+{
+    min-height: unset!important;
 }

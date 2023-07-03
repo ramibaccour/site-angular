@@ -16,5 +16,10 @@ h3
 }
 .image-centent-center
 {
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mat-badge-content {
+    font-family: 'add';
 }

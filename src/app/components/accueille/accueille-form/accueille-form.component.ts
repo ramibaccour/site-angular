@@ -21,6 +21,7 @@ import { Header } from 'src/app/entites/header';
 import { ImageComponent } from 'src/app/shared/utility/image/image.component';
 import { Resolution } from 'src/app/entites/resolution';
 import { ImageService } from 'src/app/services/image.service';
+import { ActionTable } from 'src/app/entites/actionTable';
 declare var Quill;
 declare var $;
 @Component({
@@ -313,7 +314,7 @@ export class AccueilleFormComponent implements OnInit
       this.generalService.showSpinner = false;
     })
   }
-  action(event)
+  action(event : ActionTable)
   {
     if(event.action == "pager" || event.action == "filter")
     {

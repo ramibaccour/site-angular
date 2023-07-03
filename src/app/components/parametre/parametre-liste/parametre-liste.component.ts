@@ -5,6 +5,7 @@ import { Parametre } from 'src/app/entites/parametre';
 import { GeneralService } from 'src/app/services/general.service';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { ParametreFormComponent } from '../parametre-form/parametre-form.component';
+import { ActionTable } from 'src/app/entites/actionTable';
 
 @Component({
   selector: 'app-parametre-liste',
@@ -59,7 +60,7 @@ export class ParametreListeComponent implements OnInit
     // parametreFilter.visible = 1;
     return parametreFilter;
   }
-  action(event)
+  action(event : ActionTable)
   {
     if(event.action == "pager" || event.action == "filter")
     {
