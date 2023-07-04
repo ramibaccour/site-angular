@@ -16,11 +16,10 @@ export class Field
                 "start" :  Date, 
                 "end" : Date
               },
-      data : 
-            {
-              id: string | undefined;
-              name: string | undefined;
-            }[]
+      data : any[];
+      // pour data (name ant id property for liste data)
+      name : string;
+      id : string;
     };
     show : boolean;
     required : boolean;

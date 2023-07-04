@@ -22,6 +22,11 @@ export class ParametreService
       return this.http.post<any>(this.generalService.url + "/liste-parametre" , param)
       .pipe(catchError(error? error: this.generalService.error))    
     }
+    getListeParametreType(error?): Observable<{type : string}[]>
+    {
+      return this.http.get<any>(this.generalService.url + "/liste-parametre-type/")
+      .pipe(catchError(error? error: this.generalService.error))  
+    }
     getParametre(id : number, error?) : Observable<Parametre>
     {
       return this.http.get<any>(this.generalService.url + "/find-parametre/" + id )

@@ -6,6 +6,8 @@ import { GeneralService } from 'src/app/services/general.service';
 import { ParametreService } from 'src/app/services/parametre.service';
 import { ParametreFormComponent } from '../parametre-form/parametre-form.component';
 import { ActionTable } from 'src/app/entites/actionTable';
+import { Header } from 'src/app/entites/header';
+import { Field } from 'src/app/entites/field';
 
 @Component({
   selector: 'app-parametre-liste',
@@ -25,7 +27,7 @@ export class ParametreListeComponent implements OnInit
     tabSize : this.tabSize
   }
   parametreFilter = this.getNewParametreFilter();
-  header;
+  header : Header;
   ngOnInit() 
   {
     this.getListeParametre(false);
@@ -40,6 +42,9 @@ export class ParametreListeComponent implements OnInit
         var header = JSON.parse(param.value? param.value : "");
         header.fields = header.fields.filter(field =>{return field.show});
         this.header = header;
+        var field = this.header.fields.find(h => {return h.name == "type"});
+        if(field)
+          this.getListeParametreType(field);
       }
     })
   }
@@ -54,10 +59,17 @@ export class ParametreListeComponent implements OnInit
       this.generalService.showSpinner = false;
     })
   }
+  getListeParametreType(field : Field)
+  {
+    this.parametreService.getListeParametreType().subscribe(listeParametre =>
+    {
+      field.filter.data = listeParametre
+    });
+  }
   getNewParametreFilter()
   {
     var parametreFilter = new ParametreFilter();
-    // parametreFilter.visible = 1;
+    //parametreFilter.visible = 1;
     return parametreFilter;
   }
   action(event : ActionTable)
