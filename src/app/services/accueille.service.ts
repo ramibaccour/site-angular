@@ -16,15 +16,18 @@ export class AccueilleService
   
     idAccueille : number = -1;
     dialogRefAccueille;
-    listeAccueille(accueilleFilter : AccueilleFilter, error?): Observable<Accueille[]>
-    {
-      return this.http.post<any>(this.generalService.url + "/liste-accueille" , accueilleFilter)
-      .pipe(catchError(error? error: this.generalService.error))    
-    }
+    selectedAccueille = new Array();
+    modeModal = false;
+    dialogRefCategorie;
     getAccueille(id : number, error?): Observable<Accueille>
     {
       return this.http.get<any>(this.generalService.url + "/find-accueille/" + id )
       .pipe(catchError(error? error: this.generalService.error))  
+    }
+    listeAccueille(accueilleFilter : AccueilleFilter, error?): Observable<Accueille[]>
+    {
+      return this.http.post<any>(this.generalService.url + "/liste-accueille" , accueilleFilter)
+      .pipe(catchError(error? error: this.generalService.error))    
     }
     saveAccueille(accueille : Accueille, error?)
     {

@@ -18,7 +18,7 @@
             <input  [required]="requiredFiled('ordre')" matInput type="number" name="ordre" [(ngModel)]="ligneAccueille.ordre" >
             <mat-hint *ngIf="submit && !ligneAccueille.ordre" class="error">Le prix est obligatoire</mat-hint>
         </mat-form-field>
-        <div *ngIf="choixSelection == '1' || !showFiled('choix_selection')">
+        <div [hidden]="!(choixSelection == '1' || !showFiled('choix_selection'))">
             <mat-form-field *ngIf="showFiled('name')" class="width-200" appearance="outline">
                 <mat-label>Nom</mat-label>
                 <input matInput type="text" name="nom" [(ngModel)]="ligneAccueille.name" >
@@ -38,7 +38,7 @@
                         [listeResolutions]="listeResolutions"
                         (action)="actionImage($event)"></app-image>
         </div>
-        <div *ngIf="choixSelection == '2' || !showFiled('choix_selection')">
+        <div [hidden]="!(choixSelection == '2' || !showFiled('choix_selection'))">
             <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
                 <mat-label>Article</mat-label>
                 <input disabled="true" [required]="requiredFiled('id_article') && (ligneAccueille.id_categorie == null || ligneAccueille.id_categorie == -1)"  matInput type="text" name="article_name" [(ngModel)]="ligneAccueille.article.name">

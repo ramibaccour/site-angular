@@ -1,4 +1,14 @@
 <div class="card-header">Liste accueilles</div>
 <div class="card-content">
     <app-table [header]="header" [data]="listeAccueille" (action)="action($event)" ></app-table>
+    <div *ngIf="modeModale()" class="btn-close-frm">
+        <button (click)="close()" mat-raised-button class="btn-close">
+            <mat-icon>close</mat-icon>
+            Fermer
+        </button>
+        <button (click)="selectArticle()" mat-raised-button class="save">
+            <mat-icon>keyboard_return</mat-icon>
+            Choisir
+        </button>
+    </div>
 </div>

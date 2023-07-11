@@ -38,6 +38,7 @@ export class LigneAccueilleFormComponent implements OnInit
   texte : String;
   choixSelection: "1" | "2";
   listeResolutions : {id : number, name : string, width : number, height : number}[];
+  nullValue;
   ngOnInit() 
   {
     this.getHeadLigneAccueille();
@@ -67,13 +68,18 @@ export class LigneAccueilleFormComponent implements OnInit
     this.parametreService.getParametre(4).subscribe(param =>
     {
       var header = JSON.parse(param.value? param.value : "");
-      this.fieldsLigneAccueille = header.fields;      
-      //mode edit
-      if(!this.modeAdd())
+      this.fieldsLigneAccueille = header.fields;     
+      setTimeout(()=>
       {
-        this.getLigneAccueille(this.ligneAccueilleService.ligneAccueille? this.ligneAccueilleService.ligneAccueille.id :0)
-      }
-      else
+        this.initQuil();
+        //mode edit
+        if(!this.modeAdd())
+        {
+          this.getLigneAccueille(this.ligneAccueilleService.ligneAccueille.id);
+        }
+      },50) 
+      //mode add      
+      if(this.modeAdd())
       {
           this.ligneAccueille.article = new Article();
           this.ligneAccueille.categorie = new Categorie();
@@ -82,6 +88,10 @@ export class LigneAccueilleFormComponent implements OnInit
   }
   showFiled(name : string) : boolean
   {
+    if(name == "text")
+    {
+      var d = name;
+    }
     if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
     {
       var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
@@ -117,7 +127,7 @@ export class LigneAccueilleFormComponent implements OnInit
   }  
   getLigneAccueille(id)
   {
-    if(id>0)
+    if(id && id>0)
       this.ligneAccueilleService.getLigneAccueille(id).subscribe(ligneAccueille =>
       {
         this.ligneAccueille = ligneAccueille;
@@ -125,11 +135,15 @@ export class LigneAccueilleFormComponent implements OnInit
           this.ligneAccueille.article = new Article();
         if(!this.ligneAccueille.categorie)
           this.ligneAccueille.categorie = new Categorie();
-        setTimeout(()=>
+        this.setData(this.texte,this.ligneAccueille.text) ;
+        if(this.ligneAccueille.name && this.ligneAccueille.name.length>0)        
         {
-          this.initQuil();
-          this.setData(this.texte,this.ligneAccueille.text)
-        },50)
+          this.choixSelection = '1';
+          this.choixSelectionChange()
+        }
+        else
+          this.choixSelection = '1'
+
       })
   }
   initQuil()
@@ -137,7 +151,6 @@ export class LigneAccueilleFormComponent implements OnInit
     if ($("#texte").length)
     {
       if (this.texte == undefined)
-        // this.destoryQuill('#texte');
         this.texte = new Quill('#texte', 
         {
           theme: 'snow'
@@ -188,6 +201,8 @@ export class LigneAccueilleFormComponent implements OnInit
       ))
     {
       var ligneAccueille;
+      this.ligneAccueille
+      this.ligneAccueille.text = this.getData(this.texte);
       ligneAccueille = JSON.parse(JSON.stringify(this.ligneAccueille))
       // il y a une image à enregister  
       if (this.formData.has('image'))
@@ -252,7 +267,7 @@ export class LigneAccueilleFormComponent implements OnInit
       {
         this.ligneAccueille.article = this.articleService.selectedArticle[0];
         this.ligneAccueille.id_article = this.articleService.selectedArticle[0].id;
-        this.ligneAccueille.id_categorie = -1;
+        this.ligneAccueille.id_categorie = this.nullValue;
         this.ligneAccueille.categorie = new Categorie();
       }
       this.articleService.modeModal = false;
@@ -270,7 +285,7 @@ export class LigneAccueilleFormComponent implements OnInit
         this.ligneAccueille.categorie = this.categorieService.selectedCategorie[0];
         this.ligneAccueille.id_categorie = this.categorieService.selectedCategorie[0].id;
         this.ligneAccueille.article = new Article();
-        this.ligneAccueille.id_article = -1;
+        this.ligneAccueille.id_article = this.nullValue;
       }
       this.categorieService.modeModal = false;
     });
@@ -279,7 +294,9 @@ export class LigneAccueilleFormComponent implements OnInit
   {
     setTimeout(()=>
     {
-      this.initQuil()
+      this.initQuil();
+      if(this.ligneAccueille)
+        this.setData(this.texte,this.ligneAccueille.text);
     },50)
   }
   requiredFiled(name : string) : boolean

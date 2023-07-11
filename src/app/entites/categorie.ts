@@ -2,6 +2,7 @@ export class Categorie
 {
     id : number;
     name : string;
+    description : string;
     id_parent : number;
     ordre : number;
     is_deleted : number;

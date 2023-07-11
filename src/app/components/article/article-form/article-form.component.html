@@ -40,6 +40,7 @@
                 <br>
                 <div class="image-centent" *ngFor="let resolution of listeResolutions;let index = index" >
                     <h3><b> Image {{resolution.width}} / {{resolution.height}}</b></h3>
+                    <p>{{resolution.name}}</p>
                     <div  class="image-centent-center">
                         <app-image 
                             [width] = "'50px'"

@@ -244,24 +244,28 @@ export class ArticleFormComponent implements OnInit
   {
     var listeCategorToAdd : ArticleCategorie[] = [];
     var listeCategorToDelete : ArticleCategorie[] = [];
-    this.initListeCategorie.forEach(intCat =>
+    if(this.initListeCategorie)
     {
-      if(this.listeCategorie.filter(cat =>{ return cat.id == intCat.id}).length == 0)   
-        listeCategorToDelete.push({id_article : this.article.id, id_categorie : intCat.id})
-    });
-    this.listeCategorie.forEach(cat =>
-    {
-      if(this.initListeCategorie.filter(intCat =>{ return intCat.id == cat.id}).length == 0)   
-        listeCategorToAdd.push({ id_article : this.article.id, id_categorie : cat.id})
-    });
-    if(listeCategorToAdd.length>0)
-      this.articleCategorieService.saveListeArticleCategorie(listeCategorToAdd).subscribe(()=>
+      this.initListeCategorie.forEach(intCat =>
       {
+        if(this.listeCategorie.filter(cat =>{ return cat.id == intCat.id}).length == 0)   
+          listeCategorToDelete.push({id_article : this.article.id, id_categorie : intCat.id})
       });
-    if(listeCategorToDelete.length>0)
-      this.articleCategorieService.deleteListeArticleCategorie(listeCategorToDelete).subscribe(()=>
+      this.listeCategorie.forEach(cat =>
       {
-      })
+        if(this.initListeCategorie.filter(intCat =>{ return intCat.id == cat.id}).length == 0)   
+          listeCategorToAdd.push({ id_article : this.article.id, id_categorie : cat.id})
+      });
+      if(listeCategorToAdd.length>0)
+        this.articleCategorieService.saveListeArticleCategorie(listeCategorToAdd).subscribe(()=>
+        {
+        });
+      if(listeCategorToDelete.length>0)
+        this.articleCategorieService.deleteListeArticleCategorie(listeCategorToDelete).subscribe(()=>
+        {
+        })
+    }
+    
   }
   initQuil()
   {

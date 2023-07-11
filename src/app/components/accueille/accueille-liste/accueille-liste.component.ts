@@ -32,6 +32,23 @@ export class AccueilleListeComponent implements OnInit
     this.accueilleFilter.is_deleted = 0;
     this.getHeadAccueille();
   }
+  close()
+  {
+    if(this.accueilleService.dialogRefCategorie)
+      this.accueilleService.dialogRefCategorie.close()
+  }
+  modeModale()
+  {
+    return this.accueilleService.modeModal;
+  }
+  
+  selectArticle()
+  {
+      if(this.accueilleService.selectedAccueille && this.accueilleService.selectedAccueille.length>0)
+        this.close();
+      else
+        this.generalService.openSnackBar("Veuillez sélectionner un élément",false);
+  }
   getTypeAccueille()
   {
     this.typeAccueilleService.getListeAccueilleType().subscribe(typeAccueille =>
@@ -56,6 +73,11 @@ export class AccueilleListeComponent implements OnInit
       {
         var header = JSON.parse(param.value? param.value : "");
         header.fields = header.fields.filter(field =>{return field.show});
+        if(this.modeModale())
+        {
+          header.fields = header.fields.filter(f =>{return f.name != "action"})
+          header.selectable = "unique";
+        }
         this.header = header;
         this.getTypeAccueille();
       }
@@ -101,7 +123,11 @@ export class AccueilleListeComponent implements OnInit
       {
         this.deleteAccueille(event)
       }
-    }    
+    }      
+    if(event.action == "list" || event.action == "unique")
+    {
+      this.accueilleService.selectedAccueille = event.selectedElement;
+    }
   }
   addLigneAccueille(row)
   {

@@ -82,7 +82,7 @@ export class ArticleListeComponent implements OnInit
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      event.filterTable.is_deleted = event.filter.is_deleted == true ? "1":  "0";
+      event.filterTable.is_deleted = event.filter.is_deleted == true ? 1:  0
       this.articleFilter = event.filterTable;
       if(event.action == "filter" && event.component.name == "is_deleted")
       {
