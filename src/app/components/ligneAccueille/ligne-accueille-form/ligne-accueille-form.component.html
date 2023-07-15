@@ -6,11 +6,14 @@
 </div>
 <div class="card-content">
     <form #formContent="ngForm"> 
-        <mat-radio-group *ngIf="showFiled('choix_selection')"  [required]="requiredFiled('choix_selection')"  (change)="choixSelectionChange()" name="choix_selection" [(ngModel)]="choixSelection">
-            <mat-radio-button value="1">Sélection libre</mat-radio-button>
-            <mat-radio-button value="2">Sélection du DB</mat-radio-button>
-        </mat-radio-group>
-        <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
+        <ng-container *ngIf="showFiled('choix_selection')" >
+            <mat-radio-group [required]="requiredFiled('choix_selection')"  (change)="choixSelectionChange()" name="choix_selection" [(ngModel)]="choixSelection">
+                <mat-radio-button value="1">Sélection libre</mat-radio-button>
+                <mat-radio-button value="2">Sélection du DB</mat-radio-button>
+            </mat-radio-group>
+            <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
+        </ng-container>
+        
        
         
         <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
@@ -23,7 +26,17 @@
                 <mat-label>Nom</mat-label>
                 <input matInput type="text" name="nom" [(ngModel)]="ligneAccueille.name" >
                 <mat-hint *ngIf="submit && !ligneAccueille.name" class="error">Le nom est obligatoire</mat-hint>
-            </mat-form-field>    
+            </mat-form-field>  
+            <mat-form-field *ngIf="showFiled('name2')" class="width-200" appearance="outline">
+                <mat-label>Nom 2</mat-label>
+                <input matInput type="text" name="nom2" [(ngModel)]="ligneAccueille.name2" >
+                <mat-hint *ngIf="submit && !ligneAccueille.name2" class="error">Le nom est obligatoire</mat-hint>
+            </mat-form-field> 
+            <mat-form-field *ngIf="showFiled('number1')" class="width-100" appearance="outline">
+                <mat-label>{{showFiledName("number1")}}</mat-label>
+                <input  [required]="requiredFiled('number1')" max="{{getFiled('number1').max}}" matInput type="number" name="number1" [(ngModel)]="ligneAccueille.number1" >
+                <mat-hint *ngIf="submit && !ligneAccueille.number1" class="error">Le {{showFiledName("number1")}} est obligatoire</mat-hint>
+            </mat-form-field>     
             <div *ngIf="showFiled('text')">
                 <mat-label>Texte</mat-label>
                 <div id="texte"></div>
@@ -39,7 +52,7 @@
                         (action)="actionImage($event)"></app-image>
         </div>
         <div [hidden]="!(choixSelection == '2' || !showFiled('choix_selection'))">
-            <mat-form-field *ngIf="showFiled('id_article')" appearance="outline">
+            <mat-form-field *ngIf="showFiled('id_article') && ligneAccueille && ligneAccueille.article" appearance="outline">
                 <mat-label>Article</mat-label>
                 <input disabled="true" [required]="requiredFiled('id_article') && (ligneAccueille.id_categorie == null || ligneAccueille.id_categorie == -1)"  matInput type="text" name="article_name" [(ngModel)]="ligneAccueille.article.name">
                 <button matSuffix mat-icon-button aria-label="Clear" (click)="selectArticle()">
@@ -47,7 +60,7 @@
                 </button>
                 <mat-hint *ngIf="submit && !ligneAccueille.id_article" class="error">L'article est obligatoire</mat-hint>
             </mat-form-field>
-            <mat-form-field *ngIf="showFiled('id_categorie')" appearance="outline">
+            <mat-form-field *ngIf="showFiled('id_categorie') && ligneAccueille && ligneAccueille.categorie" appearance="outline">
                 <mat-label>Catégorie</mat-label>
                 <input disabled="true" [required]="requiredFiled('id_categorie') && (ligneAccueille.id_article == null || ligneAccueille.id_article == -1)"  matInput type="text" name="id_categorie" [(ngModel)]="ligneAccueille.categorie.name">
                 <button matSuffix mat-icon-button aria-label="Clear" (click)="selectCategorie()">

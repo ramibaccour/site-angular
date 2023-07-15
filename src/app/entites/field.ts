@@ -27,6 +27,8 @@ export class Field
     order : number;
     listeIdTypeAccueille : number[];
     listeIdTypeAccueilleForParent : number[];
+    maxLength : number;
+    max : number;
     buttons :  
               {
                 name :string,

@@ -18,6 +18,7 @@
         var zoomHeight = 0;
         var myZoom = 100;
         var a,b,x,y;
+        contentType = "";
         a = 90/(100/window.screen.width);
         b = 90/(100/window.screen.height)
         
@@ -41,6 +42,7 @@
                 $("#action-" + settings.index).hide();
                 if (this.files && this.files[0]) 
                 {
+                    contentType = "image/" + this.files[0].name.split('.').pop();
                     var reader = new FileReader();
                     reader.onload = function (e) 
                     {
@@ -212,7 +214,7 @@
                         }
                         muFileReader.readAsDataURL(blob);
                         
-                    }, 'image/jpeg', 0.8);
+                    }, contentType, 0.8);
                 };
 
 
@@ -254,7 +256,7 @@
                 /* get the current input
                    for IE, 'oninput' doesn't work, should use 'onchange' 
                 */
-                if (navigator.appName == 'Microsoft Internet Explorer' || !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1)) {
+                if (!!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1)) {
                     alert("please do not use IE :) ");
                 } 
                 else 

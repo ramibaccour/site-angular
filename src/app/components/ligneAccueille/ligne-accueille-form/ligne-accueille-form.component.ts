@@ -86,12 +86,38 @@ export class LigneAccueilleFormComponent implements OnInit
       }
     })
   }
+  showFiledName(name : string) : string
+  {
+    if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
+    {
+      var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
+      if(myField)
+        return myField.label;
+    }
+    return "";
+  }
+  getFiled(name : string) : Field
+  {
+    if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
+    {
+      var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
+      if(myField)
+        return myField;
+    }
+    return new Field();
+  }
+  requiredFiled(name : string) : boolean
+  {
+    if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
+    {
+      var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
+      if(myField && myField.required)
+        return true;
+    }    
+    return false
+  }
   showFiled(name : string) : boolean
   {
-    if(name == "text")
-    {
-      var d = name;
-    }
     if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
     {
       var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
@@ -298,15 +324,5 @@ export class LigneAccueilleFormComponent implements OnInit
       if(this.ligneAccueille)
         this.setData(this.texte,this.ligneAccueille.text);
     },50)
-  }
-  requiredFiled(name : string) : boolean
-  {
-    if(this.fieldsLigneAccueille && this.fieldsLigneAccueille.length>0)
-    {
-      var myField = this.fieldsLigneAccueille.find(field =>{return field.name == name});
-      if(myField && myField.required)
-        return true;
-    }    
-    return false
   }
 }

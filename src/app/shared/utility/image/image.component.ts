@@ -15,7 +15,7 @@ export class ImageComponent
   @Input() src : string;
   @Input() submit : boolean = false;
   @Input() required : boolean = false;
-  @Input() resolution : {id : number, name: string, width : number, height : number};
+  @Input() resolution : {id : number, width : number, height : number};
   @Input() image : Image;
   @Input() width : string = "120px";
   private _listeResolutions;
@@ -86,7 +86,8 @@ export class ImageComponent
     if(this.userHaveImage())
     {
       this.imageChoisie = true;
-      this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + this.file[0].files[0].name, index: this.index, image : this.image, resolution : this.resolution, action : "SAVE"})
+      var extension = this.file[0].files[0].name.substring(this.file[0].files[0].name.lastIndexOf('.') + 1);
+      this.action.emit({src : srcImage, name : this.generalService.genererChaine(10) + "." + extension, index: this.index, image : this.image, resolution : this.resolution, action : "SAVE"})
       this.dialogRef.close();
       this.src = srcImage;
     }

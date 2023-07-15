@@ -18,11 +18,14 @@
                         </mat-select>
                         <mat-hint *ngIf="submit && !accueille.id_accueil_type" class="error">Le type est obligatoire</mat-hint>
                     </mat-form-field>
-                    <mat-radio-group *ngIf="showFiled('choix_selection')"  [required]="requiredFiled('choix_selection')"  (change)="choixSelectionChange()" name="choix_selection" [(ngModel)]="choixSelection">
-                        <mat-radio-button value="1">Sélection libre</mat-radio-button>
-                        <mat-radio-button value="2">Sélection du DB</mat-radio-button>
-                    </mat-radio-group>
-                    <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
+                    <ng-container *ngIf="showFiled('choix_selection')" >
+                        <mat-radio-group  [required]="requiredFiled('choix_selection')"  (change)="choixSelectionChange()" name="choix_selection" [(ngModel)]="choixSelection">
+                            <mat-radio-button value="1">Sélection libre</mat-radio-button>
+                            <mat-radio-button value="2">Sélection du DB</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-hint *ngIf="submit && !choixSelection" class="error">La sélection est obligatoire</mat-hint>
+                    </ng-container>
+                    
                     
                     <mat-form-field *ngIf="showFiled('ordre')" class="width-100" appearance="outline">
                         <mat-label>Ordre</mat-label>
@@ -39,7 +42,7 @@
                         <div *ngIf="showFiled('text')">
                             <mat-label>Texte</mat-label>
                             <div id="texte"></div>
-                            <mat-hint *ngIf="submit && !accueille.text" class="error">Le texte est obligatoire</mat-hint>
+                            <mat-hint *ngIf="submit && !(checkText())" class="error">Le texte est obligatoire</mat-hint>
                         </div>
                         <br>                    
                         <app-image 

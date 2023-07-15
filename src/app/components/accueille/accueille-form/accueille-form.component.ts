@@ -49,6 +49,7 @@ export class AccueilleFormComponent implements OnInit
   ligneAccueilleFilter = new LigneAccueilleFilter();
   header : Header;
   listeLigneAccueille : LigneAccueille[];
+  initListeLigneAccueille : LigneAccueille[];
   fieldsAccueille : Field[] = new Array();
   texte;
   choixSelection:string;
@@ -192,11 +193,25 @@ export class AccueilleFormComponent implements OnInit
     if(quill && quill.clipboard)
       quill.clipboard.dangerouslyPasteHTML(html);
   }
+  checkText() : boolean
+  {
+    return this.showFiled("text")&&
+    (
+      (this.requiredFiled('text') && this.getData(this.texte).length>0) || 
+      !this.requiredFiled('text')
+    ) ||
+    !this.showFiled('text')
+  }
   save(form:NgForm)
   {
     this.submit = true;
     // formulaire valide
-    if(form.valid && (this.requiredFiled('text') && this.getData(this.texte).length>0 || !this.requiredFiled('text')))
+    if(
+      form.valid && 
+      (
+        this.checkText()
+      )
+      )
     {
       if(this.modeAdd())
         this.accueille.is_deleted = 0;
@@ -310,9 +325,43 @@ export class AccueilleFormComponent implements OnInit
       this.generalService.showSpinner = true;
     this.ligneAccueilleService.listeLigneAccueille(this.ligneAccueilleFilter).subscribe(listeAccueille =>
     {
-      this.listeLigneAccueille = listeAccueille;
+      this.initListeLigneAccueille = JSON.parse(JSON.stringify(listeAccueille));
+      this.listeLigneAccueille = this.accueille.accueilType.sub_type == 'LIST'? listeAccueille : (this.accueille.accueilType.sub_type == 'LIST_GROUPE'? this.genererListeLigneAccueille(listeAccueille) : listeAccueille);
       this.generalService.showSpinner = false;
     })
+  }
+  genererListeLigneAccueille(listeLigneAccueille:LigneAccueille[]) : LigneAccueille[]
+  {
+    var header : Header = JSON.parse(JSON.stringify(this.header));
+    var is_deleted = header.fields.find(h =>{return h.name == "is_deleted"});
+    if(is_deleted)
+      is_deleted.filter.show = false;
+    var btn = header.fields.find(h =>{return h.name == "action"});
+    if(btn)
+      btn.buttons = btn.buttons.filter(b =>{return b.name  == "delete"});
+    var liste_accueille:LigneAccueille[] = [];
+    listeLigneAccueille.forEach(la =>
+    {
+      if(!la.id_parent)
+      {
+        la.ROWEXPAND = 
+        {
+          data :listeLigneAccueille.filter(l=>{return l.id_parent == la.id}) ,
+          header : header
+        }  
+        liste_accueille.push(la);
+      }
+    });
+    // recherche des element que leur parent n'existe pas pour les affichier
+    var lstLigneAccueilleFiltred = listeLigneAccueille.filter(la =>{return la.id_parent});
+    lstLigneAccueilleFiltred.forEach(idLigneAccueille => 
+    {
+      if(listeLigneAccueille.filter(lstLA =>{return lstLA.id == idLigneAccueille.id_parent}).length == 0)
+      {
+        liste_accueille.push(idLigneAccueille);
+      }
+    });
+    return liste_accueille
   }
   action(event : ActionTable)
   {
@@ -338,6 +387,10 @@ export class AccueilleFormComponent implements OnInit
       {
         this.deleteAccueille(event)
       }
+      if(event.component.name == "add")
+      {
+        this.addLigneAccueille(event.row["id"])
+      }
     }    
   }
   editLigneAccueille(row)
@@ -354,13 +407,19 @@ export class AccueilleFormComponent implements OnInit
   }
   deleteAccueille(event)
   {
+    var lst : {idList : number[]} = {idList : []};
+    if(!event.row.id_parent)
+      lst.idList = this.initListeLigneAccueille.filter(la =>{return la.id_parent == event.row.id}).map(la =>{return la.id});
+    lst.idList.push(event.row.id);
+
     var fn  = ()=>
     {
       this.getListeLigneAccueille();
       var btnDel = event.component.icon == "delete"
       this.generalService.openSnackBar(btnDel? "Supprimer" : "Restaurer",true);
     };
-    this.generalService.deleteElement("/delete-ligne-accueille/" + event.row["id"],fn,event.component.icon);
+    this.generalService.deleteElement("/delete-ligne-accueille", fn,event.component.icon,this.generalService.erreur, lst);
+    
   }
   selectArticle()
   {

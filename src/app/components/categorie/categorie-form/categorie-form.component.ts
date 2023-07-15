@@ -21,6 +21,7 @@ import { ResolutionsService } from 'src/app/services/resolutions.service';
 import { AccueilleListeComponent } from '../../accueille/accueille-liste/accueille-liste.component';
 import {  CategorieAccueille } from 'src/app/entites/CategorieAccueille';
 import { NgForm } from '@angular/forms';
+import { ResolutionByContent } from 'src/app/entites/resolutionByContent';
 declare var Quill : any;
 @Component({
   selector: 'app-categorie-form',
@@ -44,7 +45,7 @@ export class CategorieFormComponent implements OnInit
   fields : Field[] = new Array()
   listeImage : Image[] = [];
   initListeImage : Image[] = [];
-  listeResolutions : Resolution[];
+  listeResolutionsByTypeContent : ResolutionByContent[];
   listeAccueille : Accueille[];
   initListeAccueille : Accueille[];
   header : Header;
@@ -287,7 +288,7 @@ export class CategorieFormComponent implements OnInit
   {
     this.resolutionsService.getListeResolutionByTypeContent(TypeContent.CATEGORIE).subscribe(resolution =>
     {
-      this.listeResolutions = resolution;
+      this.listeResolutionsByTypeContent = resolution;
     })
   }
   getListeImage()

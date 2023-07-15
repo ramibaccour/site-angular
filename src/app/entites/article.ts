@@ -4,10 +4,12 @@ export class Article
 {
     id : number;
     name : string;
+    name2 : string;
     description : string;
     full_description : string;
     price : number;
     new_price : number;
+    date1 : Date;
     debut_promo : Date;
     fin_promo : Date;
     badge : string;

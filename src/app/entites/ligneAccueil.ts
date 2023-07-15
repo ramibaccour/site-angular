@@ -8,7 +8,7 @@ export class LigneAccueille extends baseAccueille
     listeResolution : Resolution[];
     id_parent : number;
     ROWEXPAND : {
-                    data : Resolution[], 
+                    data : LigneAccueille[], 
                     header : Header
                 }
     ligneAccueille : LigneAccueille;

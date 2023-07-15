@@ -17,6 +17,8 @@ import { CategorieListeComponent } from '../../categorie/categorie-liste/categor
 import { ActionTable } from 'src/app/entites/actionTable';
 import { ArticleCategorieService } from 'src/app/services/articleCategorie.service';
 import { ArticleCategorie } from 'src/app/entites/ArticleCategorie';
+import { ResolutionByContent } from 'src/app/entites/resolutionByContent';
+import { NgForm } from '@angular/forms';
 declare var Quill : any;
 @Component({
   selector: 'app-article-form',
@@ -39,7 +41,7 @@ export class ArticleFormComponent implements OnInit
   description;
   full_description;
   fieldsArticle : Field[] = new Array();
-  listeResolutions : Resolution[];
+  listeResolutionsByTypeContent : ResolutionByContent[];
   listeImage : Image[] = [];
   initListeImage : Image[] = [];
   initListeCategorie: Categorie[];
@@ -208,15 +210,39 @@ export class ArticleFormComponent implements OnInit
   {
     this.resolutionsService.getListeResolutionByTypeContent(TypeContent.ARTICLE).subscribe(resolution =>
     {
-      this.listeResolutions = resolution;
+      this.listeResolutionsByTypeContent = resolution;
     })
   }
-  save()
+  checkText() : boolean
   {
+    return (this.showFiled("description")&&
+    (
+      (this.requiredFiled('description') && this.getData(this.description).length>0) || 
+      !this.requiredFiled('description')
+    ) ||
+    !this.showFiled('description')) &&
+    (this.showFiled("full_description")&&
+    (
+      (this.requiredFiled('full_description') && this.getData(this.full_description).length>0) || 
+      !this.requiredFiled('full_description')
+    ) ||
+    !this.showFiled('full_description'))
+  }
+  save(form:NgForm)
+  {
+    this.submit = true;
+    // formulaire valide
+    if(
+      form.valid && 
+      (
+        this.checkText()
+      )
+      )
     if(this.modeAdd())
       this.article.is_deleted = 0;
     this.article.description = this.getData(this.description);
     this.article.full_description = this.getData(this.full_description);
+    var u = this.description.getText();
     if(!this.article.title_seo && this.article.name)
     {
       this.article.title_seo = this.article.name;
@@ -335,6 +361,36 @@ export class ArticleFormComponent implements OnInit
     var myField = this.fieldsArticle.find(field =>{return field.name == name});
     if(myField && myField.active)
       return true;
+    return false
+  }
+  showFiledName(name : string) : string
+  {
+    if(this.fieldsArticle && this.fieldsArticle.length>0)
+    {
+      var myField = this.fieldsArticle.find(field =>{return field.name == name});
+      if(myField)
+        return myField.label;
+    }
+    return "";
+  }
+  getFiled(name : string) : Field
+  {
+    if(this.fieldsArticle && this.fieldsArticle.length>0)
+    {
+      var myField = this.fieldsArticle.find(field =>{return field.name == name});
+      if(myField)
+        return myField;
+    }
+    return new Field();
+  }
+  requiredFiled(name : string) : boolean
+  {
+    if(this.fieldsArticle && this.fieldsArticle.length>0)
+    {
+      var myField = this.fieldsArticle.find(field =>{return field.name == name});
+      if(myField && myField.required)
+        return true;
+    }    
     return false
   }
 }

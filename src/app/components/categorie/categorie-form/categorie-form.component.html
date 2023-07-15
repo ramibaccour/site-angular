@@ -31,14 +31,14 @@
             </mat-tab>
             <mat-tab *ngIf="!modeAdd()" label="Liste images">
                 <br>
-                <div class="image-centent" *ngFor="let resolution of listeResolutions;let index = index" >
-                    <h3><b> Image {{resolution.width}} / {{resolution.height}}</b></h3>
-                    <p>{{resolution.name}}</p>
+                <div class="image-centent" *ngFor="let resolutionByTypeContent of listeResolutionsByTypeContent;let index = index" >
+                    <h3><b> Image {{resolutionByTypeContent.resolution.width}} / {{resolutionByTypeContent.resolution.height}}</b></h3>
+                    <p>{{resolutionByTypeContent.name}}</p>
                     <div  class="image-centent-center">
                         <app-image 
                             [width] = "'50px'"
-                            [name]="filterImageByResolution(resolution).length == 0? 'Aucune image' : 'Ajouter'"  
-                            [resolution]="resolution" 
+                            [name]="filterImageByResolution(resolutionByTypeContent.resolution).length == 0? 'Aucune image' : 'Ajouter'"  
+                            [resolution]="resolutionByTypeContent.resolution" 
                             [index]="index + ''" 
                             (action)="actionImage($event)" 
                             [src]="'assets/images/add-image.png'">
@@ -48,12 +48,12 @@
                     <div>
                         <div class="display-flex">
                             <div
-                                *ngFor="let image of filterImageByResolution(resolution);let index2 = index" >
+                                *ngFor="let image of filterImageByResolution(resolutionByTypeContent.resolution);let index2 = index" >
                                 <app-image 
                                     [name]="''" 
                                     [image]="image"
                                     
-                                    [resolution]="resolution" 
+                                    [resolution]="resolutionByTypeContent.resolution" 
                                     [index]="index + '-' + index2" 
                                     (action)="actionImage($event)" 
                                     [src]="getSrc(image)">
