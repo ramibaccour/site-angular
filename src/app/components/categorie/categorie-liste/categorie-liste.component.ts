@@ -19,6 +19,7 @@ import { CategorieFilter } from 'src/app/entites/categorieFilter';
   templateUrl: './categorie-liste.component.html',
   styleUrls: ['./categorie-liste.component.scss']
 })
+
 export class CategorieListeComponent implements OnInit
 {
   constructor (private categorieService : CategorieService, private generalService : GeneralService){}

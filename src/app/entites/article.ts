@@ -22,7 +22,8 @@ export class Article
     is_deleted : number;
     title_seo : string;
     description_seo : string;
-    listeCategorie : Categorie[]
+    id_model_affichage : number;
+    listeCategorie : Categorie[];
     constructor()
     {
         // this.id = -1;

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TreeNode } from 'primeng/api';
 import { Article } from 'src/app/entites/article';
 import { Categorie } from 'src/app/entites/categorie';
 import { Field } from 'src/app/entites/field';
@@ -8,6 +7,7 @@ import { Image } from 'src/app/entites/image';
 import { Resolution } from 'src/app/entites/resolution';
 import { TypeContent } from 'src/app/entites/typeContent';
 import { ArticleService } from 'src/app/services/article.service';
+import { ModelAffichageService } from 'src/app/services/modelAffichage.service';
 import { CategorieService } from 'src/app/services/categorie.service';
 import { GeneralService } from 'src/app/services/general.service';
 import { ImageService } from 'src/app/services/image.service';
@@ -19,6 +19,7 @@ import { ArticleCategorieService } from 'src/app/services/articleCategorie.servi
 import { ArticleCategorie } from 'src/app/entites/ArticleCategorie';
 import { ResolutionByContent } from 'src/app/entites/resolutionByContent';
 import { NgForm } from '@angular/forms';
+import { ModelAffichage } from 'src/app/entites/modelAffichage';
 declare var Quill : any;
 @Component({
   selector: 'app-article-form',
@@ -34,6 +35,7 @@ export class ArticleFormComponent implements OnInit
     private parametreService : ParametreService, 
     private categorieService : CategorieService, 
     private articleService : ArticleService,
+    private modelAffichageService : ModelAffichageService,
     private resolutionsService : ResolutionsService
     ){}
   article = new Article();
@@ -46,6 +48,7 @@ export class ArticleFormComponent implements OnInit
   initListeImage : Image[] = [];
   initListeCategorie: Categorie[];
   listeCategorie: Categorie[];
+  listeModelAffichage : ModelAffichage[];
   header : Header;
   ngOnInit() 
   {     
@@ -53,7 +56,15 @@ export class ArticleFormComponent implements OnInit
     this.getListeResolution();
     this.getListeImage();
     this.getListeCategorie();
+    this.getListeModelAffichage();
     this.getHeadCategorie();
+  }
+  getListeModelAffichage()
+  {
+    this.modelAffichageService.getListeModelAffichage().subscribe(listeModelAffichage =>
+    {
+      this.listeModelAffichage = listeModelAffichage;
+    })
   }
   getHeadCategorie()
   {
@@ -238,33 +249,39 @@ export class ArticleFormComponent implements OnInit
         this.checkText()
       )
       )
-    if(this.modeAdd())
-      this.article.is_deleted = 0;
-    this.article.description = this.getData(this.description);
-    this.article.full_description = this.getData(this.full_description);
-    var u = this.description.getText();
-    if(!this.article.title_seo && this.article.name)
-    {
-      this.article.title_seo = this.article.name;
-    }
-    if(!this.article.description_seo && (this.article.description || this.article.full_description))
-    {
-      this.article.description_seo = this.article.full_description? this.full_description.getText() : this.description.getText() 
-    }
-    this.article.listeCategorie = this.listeCategorie;
-    this.saveImage();
-    this.saveCategorie();
-    this.articleService.saveArticle(this.article).subscribe(article =>
-    {
-      if(article && article.id && article.id>0)
       {
-        this.generalService.openSnackBar("Enregister",true)
-        this.close();
+        if(this.modeAdd())
+          this.article.is_deleted = 0;
+        this.article.description = this.getData(this.description);
+        this.article.full_description = this.getData(this.full_description);
+        var u = this.description.getText();
+        if(!this.article.title_seo && this.article.name)
+        {
+          this.article.title_seo = this.article.name;
+        }
+        if(!this.article.description_seo && (this.article.description || this.article.full_description))
+        {
+          this.article.description_seo = this.article.full_description? this.full_description.getText() : this.description.getText() 
+        }
+        this.article.listeCategorie = this.listeCategorie;
+        this.saveImage();
+        this.saveCategorie();
+        this.articleService.saveArticle(this.article).subscribe(article =>
+        {
+          if(article && article.id && article.id>0)
+          {
+            this.generalService.openSnackBar("Enregister",true)
+            this.close();
+          }
+          if(this.modeAdd())
+          {
+            this.article = new Article();
+            this.setData(this.description, "");
+            this.setData(this.full_description, "");
+          }
+        })
       }
-      this.article = new Article();
-      this.setData(this.description, "");
-      this.setData(this.full_description, "");
-    })
+    
   }
   saveCategorie()
   {

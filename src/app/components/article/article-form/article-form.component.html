@@ -32,6 +32,16 @@
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
+                
+                <mat-form-field *ngIf="showFiled('id_model_affichage')" class="width-200" appearance="outline">
+                    <mat-label>{{showFiledName("id_model_affichage")}}</mat-label>
+                    <mat-select [required]="requiredFiled('id_model_affichage')" [(ngModel)]="article.id_model_affichage" name="id_model_affichage">
+                        <mat-option *ngFor="let food of listeModelAffichage" [value]="food.id">
+                        {{food.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint *ngIf="submit && !article.id_model_affichage" class="error">{{showFiledName("id_model_affichage")}} est obligatoire</mat-hint>
+                </mat-form-field>
                 <div  *ngIf="showFiled('description')">
                     <mat-label>{{showFiledName("description")}}</mat-label>
                     <div id="description"></div>
