@@ -24,19 +24,29 @@
         <div [hidden]="!(choixSelection == '1' || !showFiled('choix_selection'))">
             <mat-form-field *ngIf="showFiled('name')" class="width-200" appearance="outline">
                 <mat-label>Nom</mat-label>
-                <input matInput type="text" name="nom" [(ngModel)]="ligneAccueille.name" >
+                <input  [required]="requiredFiled('name')" matInput type="text" name="nom" [(ngModel)]="ligneAccueille.name" >
                 <mat-hint *ngIf="submit && !ligneAccueille.name" class="error">Le nom est obligatoire</mat-hint>
             </mat-form-field>  
             <mat-form-field *ngIf="showFiled('name2')" class="width-200" appearance="outline">
                 <mat-label>Nom 2</mat-label>
-                <input matInput type="text" name="nom2" [(ngModel)]="ligneAccueille.name2" >
+                <input  [required]="requiredFiled('name2')" matInput type="text" name="nom2" [(ngModel)]="ligneAccueille.name2" >
                 <mat-hint *ngIf="submit && !ligneAccueille.name2" class="error">Le nom est obligatoire</mat-hint>
             </mat-form-field> 
             <mat-form-field *ngIf="showFiled('number1')" class="width-100" appearance="outline">
                 <mat-label>{{showFiledName("number1")}}</mat-label>
                 <input  [required]="requiredFiled('number1')" max="{{getFiled('number1').max}}" matInput type="number" name="number1" [(ngModel)]="ligneAccueille.number1" >
                 <mat-hint *ngIf="submit && !ligneAccueille.number1" class="error">Le {{showFiledName("number1")}} est obligatoire</mat-hint>
-            </mat-form-field>     
+            </mat-form-field>    
+            <mat-form-field *ngIf="showFiled('linkedin')" class="width-200" appearance="outline">
+                <mat-label>{{showFiledName("linkedin")}}</mat-label>
+                <input [required]="requiredFiled('linkedin')" matInput type="text" name="linkedin" [(ngModel)]="ligneAccueille.linkedin" >
+                <mat-hint *ngIf="submit && !ligneAccueille.linkedin" class="error">{{showFiledName("linkedin")}} est obligatoire</mat-hint>
+            </mat-form-field>  
+            <mat-form-field *ngIf="showFiled('facebook')" class="width-200" appearance="outline">
+                <mat-label>{{showFiledName("facebook")}}</mat-label>
+                <input [required]="requiredFiled('facebook')" matInput type="text" name="facebook" [(ngModel)]="ligneAccueille.facebook" >
+                <mat-hint *ngIf="submit && !ligneAccueille.facebook" class="error">{{showFiledName("facebook")}} est obligatoire</mat-hint>
+            </mat-form-field> 
             <div *ngIf="showFiled('text')">
                 <mat-label>Texte</mat-label>
                 <div id="texte"></div>

@@ -228,13 +228,13 @@ export class ArticleFormComponent implements OnInit
   {
     return (this.showFiled("description")&&
     (
-      (this.requiredFiled('description') && this.getData(this.description).length>0) || 
+      (this.requiredFiled('description') && this.description.getText().trim()!="") || 
       !this.requiredFiled('description')
     ) ||
     !this.showFiled('description')) &&
     (this.showFiled("full_description")&&
     (
-      (this.requiredFiled('full_description') && this.getData(this.full_description).length>0) || 
+      (this.requiredFiled('full_description') && this.full_description.getText().trim()!="") || 
       !this.requiredFiled('full_description')
     ) ||
     !this.showFiled('full_description'))

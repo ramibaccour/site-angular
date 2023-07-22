@@ -35,7 +35,7 @@ export class LigneAccueilleFormComponent implements OnInit
   formData = new FormData();
   image : {src : string, name : string, index: number,file : File | null};
   fieldsLigneAccueille : Field[] = new Array();
-  texte : String;
+  texte;
   choixSelection: "1" | "2";
   listeResolutions : {id : number, name : string, width : number, height : number}[];
   nullValue;
@@ -222,7 +222,7 @@ export class LigneAccueilleFormComponent implements OnInit
     if(
       form.valid && 
       (
-        (this.showFiled('text') && (this.requiredFiled('text') && this.getData(this.texte).length>0 || !this.requiredFiled('text'))) ||
+        (this.showFiled('text') && (this.requiredFiled('text') && this.texte.getText().trim()!="" || !this.requiredFiled('text'))) ||
         !this.showFiled('text')
       ))
     {

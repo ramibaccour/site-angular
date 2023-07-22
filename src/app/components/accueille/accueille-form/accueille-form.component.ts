@@ -197,7 +197,7 @@ export class AccueilleFormComponent implements OnInit
   {
     return this.showFiled("text")&&
     (
-      (this.requiredFiled('text') && this.getData(this.texte).length>0) || 
+      (this.requiredFiled('text') && this.texte.getText().trim() !="" ) || 
       !this.requiredFiled('text')
     ) ||
     !this.showFiled('text')

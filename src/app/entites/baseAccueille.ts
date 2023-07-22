@@ -16,7 +16,8 @@ export  class baseAccueille
     is_deleted : number;
     id_article : number;
     id_categorie : number;
-
+    facebook : string;
+    linkedin : string;
     article : Article;
     categorie : Categorie;
 }
