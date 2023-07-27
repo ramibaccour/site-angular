@@ -101,3 +101,33 @@
 {
     cursor: pointer;
 }
+// pour masquer les fleche de input type number
+// Define a mixin to hide the arrows on number inputs
+@mixin hide-number-input-arrows 
+{
+    /* Hide the outer spin button */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button 
+    {
+      -webkit-appearance: none;
+      margin: 0; /* Remove default margin */
+    }
+  
+    /* Optional: Add some styles to make the input visually consistent */
+    &[type='number'] 
+    {
+      -moz-appearance: textfield; /* Firefox specific */
+      appearance: textfield; /* Hide the default number input styling */
+    }
+}
+  
+// Usage example:
+.number-input 
+{
+    @include hide-number-input-arrows;
+    /* Add any other custom styles for your number input here */
+}
+.font-size-13
+{
+    font-size: 13px!important;
+}

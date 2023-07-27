@@ -19,13 +19,13 @@ export class MenuComponent
       [
           {
               label: 'Ajouter',
-              icon:'pi pi-fw pi-align-left',
+              icon:'pi pi-fw pi-plus',
               routerLink : "/article/formulaire"
               
           },
           {
               label: 'Liste',
-              icon:'pi pi-fw pi-align-right',
+              icon:'pi pi-fw pi-list',
               routerLink : "/article/liste"
           }
       ]
@@ -37,12 +37,12 @@ export class MenuComponent
       [
           {
               label: 'Ajouter',
-              icon:'pi pi-fw pi-align-left',
+              icon:'pi pi-fw pi-plus',
               routerLink : "/categorie/formulaire"
           },
           {
               label: 'Liste',
-              icon:'pi pi-fw pi-align-right',
+              icon:'pi pi-fw pi-list',
               routerLink : "/categorie/liste"
           }
       ]
@@ -54,12 +54,12 @@ export class MenuComponent
       [
           {
               label: 'Ajouter',
-              icon:'pi pi-fw pi-align-left',
+              icon:'pi pi-fw pi-plus',
               routerLink : "/accueille/formulaire"
           },
           {
               label: 'Liste',
-              icon:'pi pi-fw pi-align-right',
+              icon:'pi pi-fw pi-list',
               routerLink : "/accueille/liste"
           }
       ]
@@ -71,7 +71,7 @@ export class MenuComponent
       [ 
         {
             label: 'Liste',
-            icon:'pi pi-fw pi-align-right',
+            icon:'pi pi-fw pi-list',
             routerLink : "/parametre/liste"
         }
       ]

@@ -30,16 +30,15 @@
                 <div *ngFor="let field of header.fields" class="cell-header" [ngStyle]="getStyleFieldsResponsive(field)" >
                     <ng-container *ngIf="field.filter && (field.filter.show != undefined? field.filter.show : true)" >
 <!------------------------------------------------ filter text -------------------------------------------------->
-                        <div *ngIf="field.filter.type == 'text'">
+                        <div *ngIf="field.filter.type == 'text' || field.filter.type == 'number'">
                             <mat-form-field  [ngStyle]="{'width':'100%'}" appearance="outline">
                                 <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
-                                <input (input)="filter(field,'filter')" matInput [(ngModel)]="field.filter.value">
-                                <mat-icon matSuffix>search</mat-icon>
+                                <input [type]="field.filter.type" (input)="filter(field,'filter')" matInput [(ngModel)]="field.filter.value" [ngClass]="field.filter.type=='text'? '' : 'number-input'">
+                                <mat-icon [innerHtml]="getIcone(field)" matSuffix (click)="openMenu(field)"  [matMenuTriggerFor]="field.filter.type=='text'? textMenu : numberMenu"></mat-icon>
                             </mat-form-field>
-                            
-                        </div>
+                        </div><!-- keyboard_arrow_right keyboard_arrow_left -->
                         <!-- -------------------------select filter------------------------- -->  
-                        <div *ngIf="field.filter.type == 'select'">
+                        <div *ngIf="field.filter.type == 'select'"> 
                             <mat-form-field 
                                 [ngStyle]="{'width':'100%'}"
                                 appearance="outline"
@@ -70,7 +69,7 @@
                               </mat-form-field>
                         </div>    
                         <!-- -------------------------custom-select filter------------------------- -->
-                        <div *ngIf="field.filter.type == 'custom-select'">
+                        <div *ngIf="field.filter.type == 'custom-select'"> 
                             <div class="display-flex-align-items-center">
                                 <mat-form-field 
                                     *ngIf="field.filter.data && field.filter.data.length>0"
@@ -88,7 +87,7 @@
                             </div>
                         </div>
                         <!-- -------------------------date filter------------------------- -->
-                        <div *ngIf="field.filter.type == 'date'">
+                        <div *ngIf="field.filter.type == 'date'"> 
                             <mat-form-field  [ngStyle]="{'width':'100%'}"  appearance="outline">
                                 <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
@@ -107,7 +106,7 @@
                         
                         </div>
 <!------------------------------------------------ filter checkbox -------------------------------------------------->
-                        <div *ngIf="field.filter.type == 'checkbox'">
+                        <div *ngIf="field.filter.type == 'checkbox'"> 
                             <mat-checkbox (change)="filter(field,'filter')" class="example-margin" [(ngModel)]="field.filter.value"></mat-checkbox>
                         </div>                    
                     </ng-container>
@@ -215,3 +214,15 @@
     </div>
 
 </div>
+<mat-menu #textMenu="matMenu">
+    <button (click)="setOperator('%')" mat-menu-item>%</button>
+    <button (click)="setOperator('=')" mat-menu-item>=</button>
+    <button (click)="setOperator('%%')" mat-menu-item>%%</button>
+</mat-menu>
+<mat-menu #numberMenu="matMenu">
+    <button (click)="setOperator('=')" mat-menu-item>=</button>
+    <button (click)="setOperator('>')" mat-menu-item>></button>
+    <button (click)="setOperator('>=')" mat-menu-item>>=</button>
+    <button (click)="setOperator('<')" mat-menu-item><</button>
+    <button (click)="setOperator('<=')" mat-menu-item><=</button>
+</mat-menu>

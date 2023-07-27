@@ -27,6 +27,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatMenuModule} from '@angular/material/menu';
 //------------------------End material----------------------
 //------------------------Begin Primeng----------------------
 import {OverlayPanelModule} from 'primeng/overlaypanel';
@@ -97,6 +98,7 @@ import { LigneAccueilleFormComponent } from './components/ligneAccueille/ligne-a
     MatTabsModule,
     MatRadioModule,
     MatBadgeModule,
+    MatMenuModule,
     //------------------------End material----------------------
     
     //------------------------Begin Primeng----------------------

@@ -1,7 +1,7 @@
 export class Field
 {
     name : string;
-    type : string;
+    type : "checkbox" | "text" | "select" | "multi-select" | "custom-select" | "date" | "number";
     label : string;
     minWidth : string;
     width : string;
@@ -20,6 +20,7 @@ export class Field
       // pour data (name ant id property for liste data)
       name : string;
       id : string;
+      operator : "%" | "=" | "%%" | ">" | ">=" | "<" | "<=" ;
     };
     show : boolean;
     required : boolean;

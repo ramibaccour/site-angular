@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Output,  EventEmitter, ViewEncapsulation  } from '@angular/core';
+import { Component, Input, OnInit, Output,  EventEmitter, ViewEncapsulation, ViewChild  } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { DomSanitizer } from '@angular/platform-browser'
 import * as moment from 'moment';
 @Component({
@@ -10,6 +11,8 @@ import * as moment from 'moment';
 export class TableComponent implements OnInit 
 {
   constructor(private sanitized: DomSanitizer) { }
+  @ViewChild('textMenu') textMenu!: MatMenuTrigger;
+  @ViewChild('numberMenu') numberMenu!: MatMenuTrigger;
   disabledBtnNext : boolean = false;
   disabledBtnPreview : boolean = false;
   isInisialisedTabSize = false;
@@ -75,6 +78,7 @@ export class TableComponent implements OnInit
       
     this.onResized({target : {innerWidth : window.innerWidth}})
   }
+  
   initTabSize()
   {
     var tab;
@@ -319,6 +323,32 @@ export class TableComponent implements OnInit
   transform(value) 
   {
     return this.sanitized.bypassSecurityTrustHtml(value);
+  }
+  myF;
+  openMenu(field)
+  {
+    this.myF = field;
+    // if(field.filter.type=='text')
+    //   this.textMenu.openMenu() ;
+    // else 
+    //   this.numberMenu.openMenu();
+  }
+  setOperator(operator)
+  {
+    this.myF.filter.operator = operator
+  }
+  getIcone(field) : string
+  {
+    if(!field.filter.operator)
+      field.filter.operator = "%%";
+    var result = field.filter.operator == "%"? '<i class="pi pi-percentage" style="font-size: 1rem"></i>': 
+    field.filter.operator == "="? "drag_handle" : 
+    field.filter.operator == "%%"? '<i class="font-size-13 pi pi-percentage" ></i> <i class="font-size-13 pi pi-percentage" ></i>' : 
+    field.filter.operator == ">"? '<i class="pi pi-chevron-right" ></i>' : 
+    field.filter.operator == ">="? '<i class="pi pi-chevron-right" ></i>=' : 
+    field.filter.operator == "<"? '<i class="pi pi-chevron-left" ></i>' : 
+    field.filter.operator == "<="? '<i class="pi pi-chevron-left" ></i>=' : '<i class="font-size-13 pi pi-percentage" ></i> <i class="font-size-13 pi pi-percentage" ></i>';
+    return result;
   }
   checkHaveExpandeRow() : boolean
   {
