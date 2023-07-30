@@ -1,15 +1,40 @@
-import { Article } from "./article";
-import { DateFilter } from "./dateFilter";
+import { BaseFilter } from "./baseFilter";
+import { Pager } from "./pager";
 
-export class ArticleFilter extends Article
+export class ArticleFilter extends Pager
 {
-    debut_promoFilter : DateFilter
-    fin_promoFilter : DateFilter
-    constructor (is_deleted : number,debutPromo : DateFilter, finPromo : DateFilter)
+    filter : 
+    {
+        id : BaseFilter;
+        name : BaseFilter;
+        name2 : BaseFilter;
+        description : BaseFilter;
+        full_description : BaseFilter;
+        price : BaseFilter;
+        new_price : BaseFilter;
+        BaseFilter1 : BaseFilter;
+        debut_promo : BaseFilter;
+        fin_promo : BaseFilter;
+        badge : BaseFilter;
+        disponible : BaseFilter;
+        quantite : BaseFilter;
+        valider : BaseFilter;
+        id_fournisseur : BaseFilter;
+        id_marque : BaseFilter;
+        tva : BaseFilter;
+        is_deleted : BaseFilter;
+        title_seo : BaseFilter;
+        description_seo : BaseFilter;
+        id_model_affichage : BaseFilter;
+    }
+    
+    pager : Pager;
+    constructor (pager : Pager, is_deleted : BaseFilter)
     {
         super();
-        this.is_deleted = is_deleted;
-        this.debut_promoFilter = debutPromo;
-        this.fin_promoFilter = finPromo;
+        this.pager = pager;
+        var filter;
+        filter = {is_deleted : is_deleted};
+        this.filter = filter;
     }
 }

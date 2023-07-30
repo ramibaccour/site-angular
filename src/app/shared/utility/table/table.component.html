@@ -34,7 +34,7 @@
                             <mat-form-field  [ngStyle]="{'width':'100%'}" appearance="outline">
                                 <mat-label  [ngClass]="responsiveSwitcher ? 'display-none':''">{{responsiveSwitcher ? '':field.label }}</mat-label>
                                 <input [type]="field.filter.type" (input)="filter(field,'filter')" matInput [(ngModel)]="field.filter.value" [ngClass]="field.filter.type=='text'? '' : 'number-input'">
-                                <mat-icon [innerHtml]="getIcone(field)" matSuffix (click)="openMenu(field)"  [matMenuTriggerFor]="field.filter.type=='text'? textMenu : numberMenu"></mat-icon>
+                                <mat-icon [innerHtml]="transform(getIcone(field))" matSuffix (click)="openMenu(field)"  [matMenuTriggerFor]="field.filter.type=='text'? textMenu : numberMenu"></mat-icon>
                             </mat-form-field>
                         </div><!-- keyboard_arrow_right keyboard_arrow_left -->
                         <!-- -------------------------select filter------------------------- -->  

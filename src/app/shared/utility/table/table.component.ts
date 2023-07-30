@@ -69,6 +69,7 @@ export class TableComponent implements OnInit
   responsiveSwitcher = true;
   localPager = {page :0,size : 0};
   selectedElement;
+  myField;
   ngOnInit(): void 
   {
     if(this.pager)
@@ -166,7 +167,8 @@ export class TableComponent implements OnInit
   pageChange(event)
   {
     this.pager.page = event.pageIndex
-    this.pager.size = event.pageSize
+    this.pager.size = event.pageSize;
+    this.pager.limit = this.pager.page * this.pager.size;
     this.filter("","pager")    
   }
   setSelectedElement()
@@ -202,18 +204,30 @@ export class TableComponent implements OnInit
     {
       if(field.filter)
       {
-        // rObj[field.name] = field.filter.value;
+        if(field.filter.type == "number" && field.filter.value != null && field.filter.value != "")
+        {
+          if(field.filter.value.toString().indexOf(".")>=0)
+            field.filter.value = parseFloat(field.filter.value);
+          else
+            field.filter.value = parseInt(field.filter.value);
+        }
         if(field.filter.type != "date")
-          rObj[field.filter.returnProperty? field.filter.returnProperty : field.name] = field.filter.value;
+          rObj[field.filter.returnProperty? field.filter.returnProperty : field.name] = field.filter;
         else
         {
           if(field.filter.value.start && field.filter.value.end)
           {
-            rObj[field.filter.returnProperty? field.filter.returnProperty : field.name] ={start: this.setFormaDateServer(new Date (field.filter.value.start)), end: this.setFormaDateServer(new Date (field.filter.value.end))} ;
+            var dateFilter = JSON.parse(JSON.stringify(field.filter));
+            dateFilter.start = this.setFormaDateServer(new Date (field.filter.value.start));
+            dateFilter.end = this.setFormaDateServer(new Date (field.filter.value.end))
+            rObj[field.filter.returnProperty? field.filter.returnProperty : field.name] = dateFilter ;
           }
           else
           {
-            rObj[field.filter.returnProperty? field.filter.returnProperty : field.name] ={start:"",end : ""};
+            var dateFilter = JSON.parse(JSON.stringify(field.filter));
+            dateFilter.start = "";
+            dateFilter.end ="";
+            rObj[field.filter.returnProperty? field.filter.returnProperty : field.name] = dateFilter;
           }
         }         
       }
@@ -324,10 +338,9 @@ export class TableComponent implements OnInit
   {
     return this.sanitized.bypassSecurityTrustHtml(value);
   }
-  myF;
   openMenu(field)
   {
-    this.myF = field;
+    this.myField = field;
     // if(field.filter.type=='text')
     //   this.textMenu.openMenu() ;
     // else 
@@ -335,7 +348,8 @@ export class TableComponent implements OnInit
   }
   setOperator(operator)
   {
-    this.myF.filter.operator = operator
+    this.myField.filter.operator = operator;
+    this.filter(this.myField.name,"filter");
   }
   getIcone(field) : string
   {

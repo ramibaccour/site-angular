@@ -19,7 +19,7 @@
                         <mat-hint *ngIf="submit && !accueille.id_accueil_type" class="error">Le type est obligatoire</mat-hint>
                     </mat-form-field>
                     <ng-container *ngIf="showFiled('choix_selection')" >
-                        <mat-radio-group  [required]="requiredFiled('choix_selection')"  (change)="choixSelectionChange()" name="choix_selection" [(ngModel)]="choixSelection">
+                        <mat-radio-group  [required]="requiredFiled('choix_selection')"  name="choix_selection" [(ngModel)]="choixSelection">
                             <mat-radio-button value="1">Sélection libre</mat-radio-button>
                             <mat-radio-button value="2">Sélection du DB</mat-radio-button>
                         </mat-radio-group>
@@ -41,8 +41,8 @@
                         </mat-form-field>
                         <div *ngIf="showFiled('text')">
                             <mat-label>Texte</mat-label>
-                            <div id="texte"></div>
-                            <mat-hint *ngIf="submit && !(checkText())" class="error">Le texte est obligatoire</mat-hint>
+                            <p-editor [required]="requiredFiled('text')" [(ngModel)]="accueille.text" name="texte" [style]="{ height: '320px' }"></p-editor>
+                            <mat-hint *ngIf="submit && !accueille.text" class="error">Le texte est obligatoire</mat-hint>
                         </div>
                         <br>                    
                         <app-image 

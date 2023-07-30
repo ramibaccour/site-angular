@@ -22,6 +22,7 @@ import { ImageComponent } from 'src/app/shared/utility/image/image.component';
 import { Resolution } from 'src/app/entites/resolution';
 import { ImageService } from 'src/app/services/image.service';
 import { ActionTable } from 'src/app/entites/actionTable';
+import { BaseFilter } from 'src/app/entites/baseFilter';
 declare var Quill;
 declare var $;
 @Component({
@@ -78,10 +79,10 @@ export class AccueilleFormComponent implements OnInit
     {
       this.resolution = type.resolution;
     }
-    setTimeout(()=>
-    {
-      this.initQuil()
-    },50)
+    // setTimeout(()=>
+    // {
+    //   this.initQuil()
+    // },50)
   }
   getSrc()
   {
@@ -119,13 +120,14 @@ export class AccueilleFormComponent implements OnInit
           this.accueille.article = new Article();
         if(!this.accueille.categorie)
           this.accueille.categorie = new Categorie();
-        setTimeout(()=>
-        {
-          this.initQuil();
-          this.setData(this.texte,this.accueille.text)
-        },50)
-        this.ligneAccueilleFilter.is_deleted = 0;
-        this.ligneAccueilleFilter.id_accueil = this.accueilleService.idAccueille;
+        // setTimeout(()=>
+        // {
+        //   this.initQuil();
+        //   this.setData(this.texte,this.accueille.text)
+        // },50)
+        var filter;
+        filter = {is_deleted : {operator : "=", value : 0}, id_accueil : {operator : "=", value : this.accueilleService.idAccueille}};
+        this.ligneAccueilleFilter.filter = filter;
         this.getHeadLigneAccueille();   
       })   
     }
@@ -149,19 +151,19 @@ export class AccueilleFormComponent implements OnInit
       this.getListeLigneAccueille();
     });
   }
-  initQuil()
-  {
-    if ($("#texte").length)
-    {
-      if ( this.texte == undefined)
-        // this.destoryQuill('#texte');
-        this.texte = new Quill('#texte', 
-        {
-          theme: 'snow'
-        });
+  // initQuil()
+  // {
+  //   if ($("#texte").length)
+  //   {
+  //     if ( this.texte == undefined)
+  //       // this.destoryQuill('#texte');
+  //       this.texte = new Quill('#texte', 
+  //       {
+  //         theme: 'snow'
+  //       });
 
-    }
-  }
+  //   }
+  // }
   destoryQuill(selector)
   {
     if($(selector)[0])
@@ -181,41 +183,36 @@ export class AccueilleFormComponent implements OnInit
         console.error('editor not exists');
     }
   }
-  getData(quill) : string
-  {
-    if(quill && quill.root)
-      return quill.root.innerHTML;
-    return "";
-  }
+  // getData(quill) : string
+  // {
+  //   if(quill && quill.root)
+  //     return quill.root.innerHTML;
+  //   return "";
+  // }
   
-  setData(quill,html) 
-  {
-    if(quill && quill.clipboard)
-      quill.clipboard.dangerouslyPasteHTML(html);
-  }
-  checkText() : boolean
-  {
-    return this.showFiled("text")&&
-    (
-      (this.requiredFiled('text') && this.texte.getText().trim() !="" ) || 
-      !this.requiredFiled('text')
-    ) ||
-    !this.showFiled('text')
-  }
+  // setData(quill,html) 
+  // {
+  //   if(quill && quill.clipboard)
+  //     quill.clipboard.dangerouslyPasteHTML(html);
+  // }
+  // checkText() : boolean
+  // {
+  //   return this.showFiled("text")&&
+  //   (
+  //     (this.requiredFiled('text') && this.texte.getText().trim() !="" ) || 
+  //     !this.requiredFiled('text')
+  //   ) ||
+  //   !this.showFiled('text')
+  // }
   save(form:NgForm)
   {
     this.submit = true;
     // formulaire valide
-    if(
-      form.valid && 
-      (
-        this.checkText()
-      )
-      )
+    if(form.valid)
     {
       if(this.modeAdd())
         this.accueille.is_deleted = 0;
-      this.accueille.text = this.getData(this.texte);      
+      // this.accueille.text = this.getData(this.texte);      
       var accueille;
       accueille = JSON.parse(JSON.stringify(this.accueille))
       if(this.choixSelection == "2")
@@ -250,8 +247,9 @@ export class AccueilleFormComponent implements OnInit
         {
           this.generalService.openSnackBar("Enregister",true);        
           this.close();
-          this.ligneAccueilleFilter.is_deleted = 0;
-          this.ligneAccueilleFilter.id_accueil = accueille.id;
+          var filter;
+          filter = {is_deleted : {operator : "=", value : 0}, id_accueil : {operator : "=", value : accueille.id}};
+          this.ligneAccueilleFilter.filter = filter
           this.getHeadLigneAccueille();
         }
       })      
@@ -367,9 +365,9 @@ export class AccueilleFormComponent implements OnInit
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      event.filterTable.is_deleted = event.filter.is_deleted == true ? "1":  "0";
-      this.ligneAccueilleFilter = event.filterTable;
-      this.ligneAccueilleFilter.id_accueil = this.accueilleService.idAccueille;
+      event.filterTable.is_deleted.value = event.filter.is_deleted.value == true ? 1:  0;
+      this.ligneAccueilleFilter.filter = event.filterTable;
+      this.ligneAccueilleFilter.filter.id_accueil = {value : this.accueilleService.idAccueille, operator : "="};
       if(event.action == "filter" && event.component.name == "is_deleted")
       {
         this.generalService.changeIconDelete(event, this.header)          
@@ -455,11 +453,11 @@ export class AccueilleFormComponent implements OnInit
       this.categorieService.modeModal = false;
     });
   }
-  choixSelectionChange()
-  {
-    setTimeout(()=>
-    {
-      this.initQuil()
-    },50)
-  }
+  // choixSelectionChange()
+  // {
+  //   setTimeout(()=>
+  //   {
+  //     this.initQuil()
+  //   },50)
+  // }
 }

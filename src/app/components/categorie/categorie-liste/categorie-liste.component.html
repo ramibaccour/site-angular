@@ -13,15 +13,15 @@
     </p-tree>
     <br>
     <div class="btn-close-frm">
-        <button (click)="supprimer()" mat-raised-button class="btn-close">
+        <button *ngIf="!modeModale()" (click)="supprimer()" mat-raised-button class="btn-close">
             <mat-icon>edit</mat-icon>
             Supprimer
         </button>
-        <button (click)="modifier()" mat-raised-button class="btn-update">
+        <button *ngIf="!modeModale()" (click)="modifier()" mat-raised-button class="btn-update">
             <mat-icon>edit</mat-icon>
             Modifier
         </button>
-        <button (click)="ajouter()" mat-raised-button class="btn-add">
+        <button *ngIf="!modeModale()" (click)="ajouter()" mat-raised-button class="btn-add">
             <mat-icon>edit</mat-icon>
             Ajouter
         </button>

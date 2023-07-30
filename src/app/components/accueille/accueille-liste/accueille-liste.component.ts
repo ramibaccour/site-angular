@@ -29,7 +29,9 @@ export class AccueilleListeComponent implements OnInit
   listeTypeAccueille : AccueilType[]
   ngOnInit() 
   {
-    this.accueilleFilter.is_deleted = 0;
+    var filer;
+    filer = {is_deleted : {operator : "=", value : 0}};
+    this.accueilleFilter.filter = filer;
     this.getHeadAccueille();
   }
   close()
@@ -99,14 +101,13 @@ export class AccueilleListeComponent implements OnInit
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      event.filterTable.is_deleted = event.filter.is_deleted == true ? "1":  "0";
-      this.accueilleFilter = event.filterTable;
+      event.filterTable.is_deleted.value = event.filter.is_deleted.value == true ? 1:  0;
+      this.accueilleFilter.filter = event.filterTable;
       if(event.action == "filter" && event.component.name == "is_deleted")
       {
         this.generalService.changeIconDelete(event, this.header)          
       }
       this.getListeAccueille()
-      
     }
     if(event.action == "cellClick")
     {

@@ -24,7 +24,8 @@ export class ParametreListeComponent implements OnInit
     count : 0,
     size : 5,
     page : 0,
-    tabSize : this.tabSize
+    tabSize : this.tabSize,
+    limit :  0
   }
   parametreFilter = this.getNewParametreFilter();
   header : Header;
@@ -52,7 +53,7 @@ export class ParametreListeComponent implements OnInit
   {
     if(setSpinner)
       this.generalService.showSpinner = true;
-    this.parametreService.listeParametre((this.pager.page * this.pager.size).toString(), this.pager.size.toString(),this.parametreFilter).subscribe(listeParametre =>
+    this.parametreService.listeParametre(this.parametreFilter).subscribe(listeParametre =>
     {
       this.listeParametre = listeParametre;
       this.pager.count = listeParametre.count;
@@ -69,14 +70,18 @@ export class ParametreListeComponent implements OnInit
   getNewParametreFilter()
   {
     var parametreFilter = new ParametreFilter();
-    //parametreFilter.visible = 1;
+    parametreFilter.pager = this.pager;
+    var filter;
+    filter = {id : {value : "", operator:""}};
+    parametreFilter.filter = filter
+    //parametreFilter.filter.visible.value = 1;
     return parametreFilter;
   }
   action(event : ActionTable)
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      this.parametreFilter = event.filterTable;
+      this.parametreFilter.filter = event.filterTable;
     
       this.getListeParametre()
       

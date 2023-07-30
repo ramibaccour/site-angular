@@ -1,3 +1,5 @@
+import { Filter } from "./filter";
+
 export class Field
 {
     name : string;
@@ -5,23 +7,7 @@ export class Field
     label : string;
     minWidth : string;
     width : string;
-    filter : 
-    {
-      show : boolean;
-      type : string;
-      showEmptyValue : boolean,
-      returnProperty : string,
-      value : string | 
-              {
-                "start" :  Date, 
-                "end" : Date
-              },
-      data : any[];
-      // pour data (name ant id property for liste data)
-      name : string;
-      id : string;
-      operator : "%" | "=" | "%%" | ">" | ">=" | "<" | "<=" ;
-    };
+    filter : Filter
     show : boolean;
     required : boolean;
     active : boolean;

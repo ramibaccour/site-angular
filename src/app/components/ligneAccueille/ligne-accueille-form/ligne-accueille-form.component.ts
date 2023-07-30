@@ -215,16 +215,20 @@ export class LigneAccueilleFormComponent implements OnInit
     if(quill && quill.clipboard)
       quill.clipboard.dangerouslyPasteHTML(html);
   }
+  checkText() : boolean
+  {
+    return (this.showFiled("text")&&
+    (
+      (this.requiredFiled('text') && this.texte.getText().trim()!="") || 
+      !this.requiredFiled('text')
+    ) ||
+    !this.showFiled('text')) 
+  }
   save(form:NgForm)
   {
     this.submit = true;
     // formulaire valide
-    if(
-      form.valid && 
-      (
-        (this.showFiled('text') && (this.requiredFiled('text') && this.texte.getText().trim()!="" || !this.requiredFiled('text'))) ||
-        !this.showFiled('text')
-      ))
+    if(form.valid && this.checkText())
     {
       var ligneAccueille;
       this.ligneAccueille

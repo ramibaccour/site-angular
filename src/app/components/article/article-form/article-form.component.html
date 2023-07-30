@@ -44,12 +44,14 @@
                 </mat-form-field>
                 <div  *ngIf="showFiled('description')">
                     <mat-label>{{showFiledName("description")}}</mat-label>
-                    <div id="description"></div>
+                    <p-editor [required]="requiredFiled('description')" [(ngModel)]="article.description" name="texte" [style]="{ height: '320px' }"></p-editor>
+                    
                 </div>
                 <br>
                 <div  *ngIf="showFiled('full_description')">
                     <mat-label>{{showFiledName("full_description")}}</mat-label>
-                    <div id="full_description"></div>
+                    <p-editor #fullDescription (EditorTextChangeEvent)="fullDescriptionChange($event)" [required]="requiredFiled('full_description')" [(ngModel)]="article.full_description" name="texte" [style]="{ height: '320px' }"></p-editor>
+                    
                 </div>
             </mat-tab>
             <!-------------------------- Liste images --------------------------->

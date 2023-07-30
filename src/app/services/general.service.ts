@@ -128,7 +128,7 @@ export class GeneralService
       var btn = header.buttons.find(b =>{return b.name == "delete"});
       if(btn)
       {
-        if( event.filter.is_deleted == true )
+        if( event.filter.is_deleted.value == true || event.filter.is_deleted.value == 1 )
         {
           btn.icon = "restore";
           btn.label = "Restaurer";

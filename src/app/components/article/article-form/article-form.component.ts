@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Article } from 'src/app/entites/article';
 import { Categorie } from 'src/app/entites/categorie';
 import { Field } from 'src/app/entites/field';
@@ -20,6 +20,8 @@ import { ArticleCategorie } from 'src/app/entites/ArticleCategorie';
 import { ResolutionByContent } from 'src/app/entites/resolutionByContent';
 import { NgForm } from '@angular/forms';
 import { ModelAffichage } from 'src/app/entites/modelAffichage';
+import { ArticleCategorieFilter } from 'src/app/entites/articleCategorieFilter';
+import { Editor } from 'primeng/editor';
 declare var Quill : any;
 @Component({
   selector: 'app-article-form',
@@ -49,7 +51,8 @@ export class ArticleFormComponent implements OnInit
   initListeCategorie: Categorie[];
   listeCategorie: Categorie[];
   listeModelAffichage : ModelAffichage[];
-  header : Header;
+  header : Header;//
+  @ViewChild("fullDescription") fullDescription : Editor;
   ngOnInit() 
   {     
     this.getHeadArticle();
@@ -58,6 +61,10 @@ export class ArticleFormComponent implements OnInit
     this.getListeCategorie();
     this.getListeModelAffichage();
     this.getHeadCategorie();
+  }
+  fullDescriptionChange(event)
+  {
+    var a = event
   }
   getListeModelAffichage()
   {
@@ -224,75 +231,77 @@ export class ArticleFormComponent implements OnInit
       this.listeResolutionsByTypeContent = resolution;
     })
   }
-  checkText() : boolean
-  {
-    return (this.showFiled("description")&&
-    (
-      (this.requiredFiled('description') && this.description.getText().trim()!="") || 
-      !this.requiredFiled('description')
-    ) ||
-    !this.showFiled('description')) &&
-    (this.showFiled("full_description")&&
-    (
-      (this.requiredFiled('full_description') && this.full_description.getText().trim()!="") || 
-      !this.requiredFiled('full_description')
-    ) ||
-    !this.showFiled('full_description'))
-  }
+  // checkText() : boolean
+  // {
+  //   return (this.showFiled("description")&&
+  //   (
+  //     (this.requiredFiled('description') && this.description.getText().trim()!="") || 
+  //     !this.requiredFiled('description')
+  //   ) ||
+  //   !this.showFiled('description')) &&
+  //   (this.showFiled("full_description")&&
+  //   (
+  //     (this.requiredFiled('full_description') && this.full_description.getText().trim()!="") || 
+  //     !this.requiredFiled('full_description')
+  //   ) ||
+  //   !this.showFiled('full_description'))
+  // }
   save(form:NgForm)
   {
     this.submit = true;
     // formulaire valide
-    if(
-      form.valid && 
-      (
-        this.checkText()
-      )
-      )
+    if(form.valid)
+    {
+      if(this.modeAdd())
+        this.article.is_deleted = 0;
+      // this.article.description = this.getData(this.description);
+      // this.article.full_description = this.getData(this.full_description);
+      // var u = this.description.getText();
+      if(!this.article.title_seo && this.article.name)
       {
-        if(this.modeAdd())
-          this.article.is_deleted = 0;
-        this.article.description = this.getData(this.description);
-        this.article.full_description = this.getData(this.full_description);
-        var u = this.description.getText();
-        if(!this.article.title_seo && this.article.name)
-        {
-          this.article.title_seo = this.article.name;
-        }
-        if(!this.article.description_seo && (this.article.description || this.article.full_description))
-        {
-          this.article.description_seo = this.article.full_description? this.full_description.getText() : this.description.getText() 
-        }
-        this.article.listeCategorie = this.listeCategorie;
-        this.saveImage();
-        this.saveCategorie();
-        this.articleService.saveArticle(this.article).subscribe(article =>
-        {
-          if(article && article.id && article.id>0)
-          {
-            this.generalService.openSnackBar("Enregister",true)
-            this.close();
-          }
-          if(this.modeAdd())
-          {
-            this.article = new Article();
-            this.setData(this.description, "");
-            this.setData(this.full_description, "");
-          }
-        })
+        this.article.title_seo = this.article.name;
       }
+      if(!this.article.description_seo && (this.article.description || this.article.full_description))
+      {
+        this.article.description_seo = this.article.full_description? this.full_description.getText() : this.description.getText() 
+      }
+      this.article.listeCategorie = this.listeCategorie;
+      this.saveImage();
+      this.saveCategorie();
+      this.articleService.saveArticle(this.article).subscribe(article =>
+      {
+        if(article && article.id && article.id>0)
+        {
+          this.generalService.openSnackBar("Enregister",true)
+          this.close();
+        }
+        if(this.modeAdd())
+        {
+          this.article = new Article();
+          // this.setData(this.description, "");
+          // this.setData(this.full_description, "");
+        }
+      })
+    }
     
   }
   saveCategorie()
   {
     var listeCategorToAdd : ArticleCategorie[] = [];
-    var listeCategorToDelete : ArticleCategorie[] = [];
+    var listeCategorToDelete : ArticleCategorieFilter[] = [];
     if(this.initListeCategorie)
     {
       this.initListeCategorie.forEach(intCat =>
       {
         if(this.listeCategorie.filter(cat =>{ return cat.id == intCat.id}).length == 0)   
-          listeCategorToDelete.push({id_article : this.article.id, id_categorie : intCat.id})
+          listeCategorToDelete.push(
+            {
+              filter : 
+              {
+                id_article : {value : this.article.id, operator : "="},
+                id_categorie : {value : intCat.id, operator : "="}
+              }
+            })
       });
       this.listeCategorie.forEach(cat =>
       {
@@ -310,36 +319,36 @@ export class ArticleFormComponent implements OnInit
     }
     
   }
-  initQuil()
-  {
-    this.description = new Quill('#description', 
-    {
-      theme: 'snow'
-    });
-    this.full_description = new Quill('#full_description', 
-    {
-      theme: 'snow'
-    });
-  }
+  // initQuil()
+  // {
+  //   this.description = new Quill('#description', 
+  //   {
+  //     theme: 'snow'
+  //   });
+  //   this.full_description = new Quill('#full_description', 
+  //   {
+  //     theme: 'snow'
+  //   });
+  // }
   getArticle(id)
   {
     if(id && id>0)
       this.articleService.getArticle(id).subscribe(art =>
       {
         this.article = art;
-        this.setData(this.description, this.article.description)
-        this.setData(this.full_description, this.article.full_description)
+        // this.setData(this.description, this.article.description)
+        // this.setData(this.full_description, this.article.full_description)
       })
   }
-  getData(quill)
-  {
-    return quill.root.innerHTML;
-  }
+  // getData(quill)
+  // {
+  //   return quill.root.innerHTML;
+  // }
   
-  setData(quill,html) 
-  {
-    quill.clipboard.dangerouslyPasteHTML(html);
-  }
+  // setData(quill,html) 
+  // {
+  //   quill.clipboard.dangerouslyPasteHTML(html);
+  // }
   modeModale() : boolean
   {
     if(this.articleService.idArticle && this.articleService.idArticle >0)
@@ -367,7 +376,7 @@ export class ArticleFormComponent implements OnInit
       this.fieldsArticle = header.fields;
       setTimeout(()=>
       {
-        this.initQuil();
+        // this.initQuil();
         this.getArticle(this.articleService.idArticle);
       },50)
      

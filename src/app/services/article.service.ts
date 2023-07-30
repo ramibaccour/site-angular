@@ -20,10 +20,9 @@ export class ArticleService
   modeModal = false;
   dialogRefArticle;
   selectedArticle : Article[];
-  listeArticle(page,limit,articleFilter : ArticleFilter, error?): Observable<ListeArticle>
+  listeArticle(articleFilter : ArticleFilter, error?): Observable<ListeArticle>
   {
-    var param = {...{pager : {page,limit}}, ...{filter :articleFilter}};
-    return this.http.post<any>(this.generalService.url + "/liste-article" , param)
+    return this.http.post<any>(this.generalService.url + "/liste-article" , articleFilter)
     .pipe(catchError(error? error: this.generalService.error))    
   }
   getArticle(id : number, error?): Observable<Article>

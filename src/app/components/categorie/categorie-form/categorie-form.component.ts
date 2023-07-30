@@ -54,7 +54,9 @@ export class CategorieFormComponent implements OnInit
   description;
   ngOnInit() 
   {     
-    this.accueilleFilter.is_deleted = 0;
+    var filter;
+    filter = {is_deleted : {operator : "=", value : 0}}
+    this.accueilleFilter.filter = filter; 
     this.getHeadCategorie();
     this.getListeResolution();
     this.getListeImage();
@@ -104,7 +106,7 @@ export class CategorieFormComponent implements OnInit
   {
     if(event.action == "pager" || event.action == "filter")
     {
-      event.filterTable.is_deleted = event.filter.is_deleted == true ? "1":  "0";
+      event.filterTable.is_deleted.value = event.filter.is_deleted.value == true ? 1:  0;
       this.accueilleFilter = event.filterTable;
       if(event.action == "filter" && event.component.name == "is_deleted")
       {

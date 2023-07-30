@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { MatDialog } from '@angular/material/dialog';
 import { ArticleCategorie } from '../entites/ArticleCategorie';
+import { ArticleCategorieFilter } from '../entites/articleCategorieFilter';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +17,7 @@ export class ArticleCategorieService
       return this.http.put<any>(this.generalService.url + "/save-liste-article-categorie" , listeArticleCategorie)
       .pipe(catchError(error? error: this.generalService.error))    
     }
-    deleteListeArticleCategorie(listeArticleCategorie : ArticleCategorie[],error?)
+    deleteListeArticleCategorie(listeArticleCategorie : ArticleCategorieFilter[],error?)
     {
         return this.http.post<any>(this.generalService.url + "/delete-liste-article-categorie", listeArticleCategorie)
         .pipe(catchError(error? error: this.generalService.error))    

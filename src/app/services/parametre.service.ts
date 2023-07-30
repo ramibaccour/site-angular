@@ -16,10 +16,9 @@ export class ParametreService
   
     idParametre : number = -1;
     dialogRefParametre
-    listeParametre(page,limit,parametreFilter : ParametreFilter, error?): Observable<ListeParametre>
+    listeParametre(parametreFilter : ParametreFilter, error?): Observable<ListeParametre>
     {
-      var param = {...{pager : {page,limit}}, ...{filter :parametreFilter}};
-      return this.http.post<any>(this.generalService.url + "/liste-parametre" , param)
+      return this.http.post<any>(this.generalService.url + "/liste-parametre" , parametreFilter)
       .pipe(catchError(error? error: this.generalService.error))    
     }
     getListeParametreType(error?): Observable<{type : string}[]>

@@ -34,7 +34,9 @@ export class CategorieListeComponent implements OnInit
   }
   initCategorieFilter()
   {
-    this.categorieFilter.is_deleted = 0; 
+    var filter;
+    filter = {is_deleted : {operator : "=", value : 0}}
+    this.categorieFilter.filter = filter; 
     this.categorieFilter.idList = [];
   }
   unselectAllNode(node) 

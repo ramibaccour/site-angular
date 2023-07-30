@@ -34,6 +34,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {SidebarModule} from 'primeng/sidebar';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {TreeModule} from 'primeng/tree';
+import { EditorModule } from 'primeng/editor';
 //------------------------End Primeng----------------------
 import { MainComponent } from './shared/layout/main/main.component';
 import { TopbarComponent } from './shared/layout/topbar/topbar.component';
@@ -106,6 +107,7 @@ import { LigneAccueilleFormComponent } from './components/ligneAccueille/ligne-a
     SidebarModule,
     PanelMenuModule,
     TreeModule,
+    EditorModule
     //------------------------End Primeng----------------------
 
   ],
